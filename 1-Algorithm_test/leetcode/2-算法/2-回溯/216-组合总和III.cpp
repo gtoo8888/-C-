@@ -5,6 +5,8 @@
 using namespace std;
 
 
+
+
 void PrintVector(vector<int> str)  {
 	for(auto it = str.begin();it !=  str.end();it++)
 		cout << *it << " ";
@@ -40,6 +42,8 @@ public:
 		}
 		for(int i = StartIndex;i <= 9;i++) {
 			sum += i;
+			if(sum > n)//里面可以再剪一次
+				return;
 			path.push_back(i);
 			PrintVector(path);
 			backtraining(k,n,sum,i+1);
@@ -56,9 +60,8 @@ public:
 	
 int main() {
 	Solution solution;
-	int k = 9;//个数 
-	int n = 45;//和 
-	
+	int k = 3;//个数 
+	int n = 7;//和 
 	
 	auto ans = solution.combinationSum3(k,n);
 	

@@ -1,8 +1,14 @@
+#ifndef _ALGORITHM_UTIL_
+#define _ALGORITHM_UTIL_
+
+// #include "C:\\Users\\Yan\\Desktop\\languguetest\\Cplusplustest\algorithm_util.h"
+
 #include <iostream>
 #include <vector>
 #include <algorithm>
 #include <set>
 #include <map>
+#include <queue>
 #include <unordered_set>
 #include <unordered_map>
 //#include <iomanip>//<< setw(5)
@@ -16,16 +22,23 @@ public:
 };
 //	for_each(temp.begin(),temp.end(),printVector());
 
-void printVector(vector<int> v){
-	for(auto it : v)
-		cout << it << " ";
-}
-
+// 最早的方法
 // void PrintVector(vector<int> v){
 // 	for(auto it = v.begin();it != v.end();it++)
 // 		cout << *it << " ";
 // 	cout << endl; 
 // }
+
+void PrintVector(vector<int> v){
+	for(auto it : v)
+		cout << it << " ";
+	cout << endl;
+}
+
+void PrintVSector(vector<string> v){
+	for(auto it : v)
+		cout << it << " ";
+}
 
 void PrintSet(set<int> s) {
 	// for(set<int>::iterator it = s.begin();it != s.end();it++)
@@ -36,16 +49,12 @@ void PrintSet(set<int> s) {
 }
 
 void PrintMap(map<int,int> m) {
+// 	for(auto it = m.begin();it != m.end();it++)
+// 		cout << (*it).first << " " << it->second << endl;
 	for(auto it : m)
 		printf("%d %d\n",it.first,it.second);
 	cout << endl;	
 }
-
-// void PrintMap(unordered_map<int,int> m) {
-// 	for(auto it = m.begin();it != m.end();it++)
-// 		cout << (*it).first << " " << it->second << endl;
-// 	cout << endl;	
-// }
 
 void PrintUnorder_Map(unordered_map<int,int> m) {
 	for(auto it : m)
@@ -71,13 +80,6 @@ void PrintQueue(queue<int> q){
 	cout << endl; 
 }
 	
-class Solution {
-public:
-    bool isHappy(int n) {
-
-    }
-};
-
 void PrintBool(bool val){
 	if(val == true)		cout << "true" << endl;
 	else				cout << "false" << endl;
@@ -128,7 +130,7 @@ void releaseNode(ListNode* node)
 }
 
 //输出链表 
-void printListNode(ListNode* head){
+void PrintListNode(ListNode* head){
 	while(head != nullptr){
 		cout << head -> val << " ";
 		head = head -> next;
@@ -154,8 +156,7 @@ void PrintBit(int n) {
 }
 
 		
-int main() {
-
+int test_util() {
 	//单个输入 
 	vector<int> temp;
 	for(int i = 0;i < 10;i++)
@@ -195,7 +196,7 @@ int main() {
     }
     
     //输出链表、释放链表 
-    printListNode(head);
+    PrintListNode(head);
     releaseNode(head);
     
     ListNode* dummyhead = new ListNode(0,head);//虚拟头结点
@@ -234,4 +235,5 @@ int main() {
 }
 
 
+#endif /* _ALGORITHM_UTIL_ */
 

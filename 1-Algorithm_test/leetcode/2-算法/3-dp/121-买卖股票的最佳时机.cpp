@@ -1,52 +1,67 @@
-#include <iostream>
+#include <iostream> 
 #include <vector>
 using namespace std;
+#include "C:\\Users\\Yan\\Desktop\\languguetest\\Cplusplustest\algorithm_util.h"
 
-void printVector(vector<int> v){
-	for(vector<int>::iterator it = v.begin();it != v.end();it++)
-		cout << *it << " ";
-	cout << endl; 
-}
 
-void PrintVVector(vector<vector<int>> v){
-	for(auto iter = v.begin();iter != v.end();iter++){
-		auto it_temp = *iter;
-		for(auto it = it_temp.begin();it != it_temp.end();it++)
-			cout << *it << " ";
-		cout << endl;
-	}
-	cout << endl;
-}
+// class Solution {
+// public:
+//     int maxProfit(vector<int>& prices) {
+//         int len = prices.size();
+//         vector<vector<int> > dp(len,vector<int>(2));
+//         dp[0][0] -= prices[0];  //ç¬¬iå¤©æŒæœ‰è‚¡ç¥¨æ‰€å¾—æœ€å¤šç°é‡‘
+//         dp[0][1] = 0;           //ç¬¬iå¤©ä¸æŒæœ‰è‚¡ç¥¨æ‰€å¾—æœ€å¤šç°é‡‘
+//         for(int i = 1;i < prices.size();i++) {
+          
+//             dp[i][0] = max(dp[i-1][0],-prices[i]);//ä¸€ä¸ªä¸€ä¸ªçœ‹ä¸‹æ¥ï¼Œä¹°è‚¡ç¥¨éœ€è¦èŠ±çš„é’±æœ€å°‘çš„
+//             dp[i][1] = max(dp[i-1][1],dp[i-1][0] + prices[i]);//æ‹¿åœ¨æ‰‹ä¸Šçš„é’±ï¼Œä»˜æ‰ä¹°å…¥è‚¡ç¥¨åçš„é’±
+
+//             PrintVVector(dp);
+//         }
+//         return dp[len-1][1];//è‚¯å®šæ˜¯ä¹°æ‰åˆ’ç®—
+//     }
+// };
+
+
+// class Solution {
+// public:
+//     int maxProfit(vector<int>& prices) {
+// 		int n = prices.size();
+// 		if(n == 1)
+// 			return 0;
+// 		int minPrice = prices[0];
+// 		vector<int> dp(n+1);
+// 		dp[1] = prices[0];
+// 		for(int i = 1;i < n;i++){
+// 			minPrice = min(minPrice,prices[i]);
+// 			dp[i] = max(dp[i-1],prices[i] - minPrice);
+// 			PrintVector(dp);
+// 		}	
+// 		return dp[n-1];
+//     }
+// };
+
 
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
-        int len = prices.size();
-        vector<vector<int> > dp(len,vector<int>(2));
-        dp[0][0] -= prices[0];  //µÚiÌì³ÖÓĞ¹ÉÆ±ËùµÃ×î¶àÏÖ½ğ
-        dp[0][1] = 0;           //µÚiÌì²»³ÖÓĞ¹ÉÆ±ËùµÃ×î¶àÏÖ½ğ
-        for(int i = 1;i < prices.size();i++) {
-          
-            dp[i][0] = max(dp[i-1][0],-prices[i]);//Ò»¸öÒ»¸ö¿´ÏÂÀ´£¬Âò¹ÉÆ±ĞèÒª»¨µÄÇ®×îÉÙµÄ
-            dp[i][1] = max(dp[i-1][1],dp[i-1][0] + prices[i]);//ÄÃÔÚÊÖÉÏµÄÇ®£¬¸¶µôÂòÈë¹ÉÆ±ºóµÄÇ®
-
-            PrintVVector(dp);
-        }
-        return dp[len-1][1];//¿Ï¶¨ÊÇÂòµô»®Ëã
+		int low = INT32_MAX;
+		int price = 0;
+		for(int i = 0;i < prices.size();i++){
+			low = min(prices[i],low);
+			price = max(prices[i] - low,price);
+		}
+		return price;
     }
 };
 
-
-
-int main() {
+int main(){
 	Solution solution;
-	vector<int> prices = {7,1,5,3,6,4};
+	// vector<int> prices = {5,1,5,3,6,4};
+	// vector<int> prices = {7,6,4,3,1};
+	vector<int> prices = {1};
 	
 	auto ans = solution.maxProfit(prices);
-	
 	cout << ans << endl;
 	return 0;
 }
-
-
-
