@@ -1,14 +1,46 @@
 {
+    // See https://go.microsoft.com/fwlink/?LinkId=733558 
+    // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "cplusplustest",
+            "label": "cplusplustest",   //任务的名字，就是刚才在命令面板中选择的时候所看到的，可以自己设置
             "type": "shell",
-            "command": "g++ ./123.cpp -o 123 -g -std=c++11",
-            "problemMatcher": [],
+            // "command": "g++ ./123.cpp -o 123 -g -std=c++11", // 可以使用一行命令的方法，不需要下面添加参数
+            "command": "g++",   // 或者就只写g++,下面添加参数
+            // "args": [//编译时候的参数
+            //     "./123.cpp",    // 想要调试的文件，可以写相对路径也可以写绝对路径
+            //     "-o",           // 指定生成可执行文件的名称
+            //     "debug.exe",    // 如果不加后缀名，自动会添加.exe
+            //     "-g",           // 添加gdb调试选项
+            //     "-std=c++11"    // 使用C++11标准
+            // ],
+            "args": [
+                "-g",
+                "${file}",   // 自动查找当前执行的文件
+                "-o",
+                "${fileDirname}\\${fileBasenameNoExtension}.exe",   // 设置生成的文件名，可以为中文
+                "-std=c++11",
+                // "-fexec-charset=GBK" //解决中文乱码问题,还没有遇到过
+            ],
+            "problemMatcher": {
+                // "owner": "cpp",
+                // "fileLocation": [
+                //     "relative",
+                //     "${workspaceRoot}"
+                // ],
+                // "pattern": {
+                //     "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                //     "file": 1,
+                //     "line": 2,
+                //     "column": 3,
+                //     "severity": 4,
+                //     "message": 5
+                // }
+            },   // 问题分析器，现在看起来c++好像不支持？
             "group": {
                 "kind": "build",
-                "isDefault": true
+                "isDefault": true   //表示快捷键Ctrl+Shift+B可以运行该任务
             },
         }
     ]

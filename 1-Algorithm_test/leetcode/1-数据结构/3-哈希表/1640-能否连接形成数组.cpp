@@ -12,27 +12,20 @@ public:
 		for(int i = 0;i < pieces.size();i++){
 			index[pieces[i][0]] = i;
 		}
-		for(int i = 0;i < arr.size();){
+		for(int i = 0;i < arr.size();i++){
 			auto it = index.find(arr[i]);
-			if(it == index.end()){	// 濡傛灉鏁扮粍杩樻病鏈夎瀹岋紝灏卞凡缁忔壘涓嶅埌杩欎釜瀛楀瓧绗︿簡锛岃鏄庢湁闂
+			if(it == index.end()){	// 如果数组还没有读完，就已经找不到这个字字符了，说明有问题
 				return false;
 			}
-			int now_index = index[arr[i]];
-			for(int j = 0;j < pieces[now_index].size();j++){	// 濡傛灉璇诲彇鍒颁簡锛屽氨鎶婅繖鏁板瓧璇诲畬
-				printf("%d %d %d\n",arr[i],pieces[now_index][j],j);
-				if(arr[i] != pieces[now_index][j]){
+			for(int j = 0;j < pieces[index[arr[i]]].size();j++){	// 如果读取到了，就把这数字读完
+				printf("%d %d %d\n",arr[i],pieces[index[arr[i]]][j],j);
+				if(arr[i] != pieces[index[arr[i]]][j]){
 					return false;
 				}
 				i++;
-				if(i == arr.size())
-					break;
+				// if(i == arr.size())
+				// 	break;
 			}
-			// for(int x : pieces[it->second]){
-			// 	printf("%d %d\n",arr[i],x);
-			// 	if(arr[i++] != x){
-			// 		return false;
-			// 	}
-			// }
 		}
 		return true;
     }
