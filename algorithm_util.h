@@ -22,6 +22,10 @@ public:
 };
 //	for_each(temp.begin(),temp.end(),printVector());
 
+void PrintAuto(int it){
+	cout << it << endl;
+}
+
 // 最早的方法
 // void PrintVector(vector<int> v){
 // 	for(auto it = v.begin();it != v.end();it++)
@@ -35,9 +39,22 @@ void PrintVector(vector<int> v){
 	cout << endl;
 }
 
-void PrintVSector(vector<string> v){
+void PrintVCector(vector<char> v){
 	for(auto it : v)
 		cout << it << " ";
+	cout << endl;
+}
+
+void PrintVSector(vector<string> v){
+	for(auto it : v)
+		// cout << it << " ";
+		cout << it << endl;
+}
+
+void PrintVBector(vector<bool> v){
+	for(auto it : v)
+		cout << it << " ";
+	cout << endl;
 }
 
 void PrintSet(set<int> s) {
@@ -56,13 +73,13 @@ void PrintMap(map<int,int> m) {
 	cout << endl;	
 }
 
-void PrintUnorder_Map(unordered_map<int,int> m) {
+void PrintUnorder_Map(unordered_map<char,int> m) {
 	for(auto it : m)
 		printf("%d %d\n",it.first,it.second);
 	cout << endl;	
 }
 
-vector<int> NumSeparate(int n) {//每个位拆开求和 
+vector<int> NumSeparate(int n) {//每个位拆开
 	vector<int> ans;
 	int temp = n;
 	while(temp != 0){
@@ -104,6 +121,23 @@ void PrintVVector(vector<vector<int>>& v){
 		cout << endl;
 	}
 	cout << endl;
+}
+
+void PrintVVCector(vector<vector<char>>& v){
+	for(auto iter : v){
+		auto it_tmp = iter;
+		for(auto it : it_tmp)
+			cout << it << " ";
+		cout << endl;
+	}
+	cout << endl;
+}
+
+void PrintPriQueue(priority_queue<long,vector<int>,greater<long>> pri){
+	while(!pri.empty()){
+		cout << pri.top() << endl;
+		pri.pop();
+	}
 }
 
 struct ListNode{

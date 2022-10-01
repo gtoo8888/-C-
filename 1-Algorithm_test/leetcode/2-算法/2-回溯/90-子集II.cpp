@@ -60,7 +60,7 @@ public:
 	
 int main() {
 	Solution solution;
-	vector<int> nums = {1,2,2};
+	vector<int> nums = {1,2,3,3};
 	
 	auto ans = solution.subsetsWithDup(nums);
 	
