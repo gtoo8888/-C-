@@ -48,7 +48,7 @@ public:
                 pre[i][j] = pre[i-1][j] + pre[i][j-1] - pre[i-1][j-1] + matrix[i-1][j-1];
             }
         }
-        // PrintVVector(pre);
+        PrintVVector(pre);
     }
     
     int sumRegion(int row1, int col1, int row2, int col2) {
@@ -58,14 +58,15 @@ public:
 };
 
 int main() {
-    vector<vector<int>> matrix = {{3,0,1,4,2},{5,6,3,2,1},{1,2,0,1,5},{4,1,0,1,7},{1,0,3,0,5}};
+    // vector<vector<int>> matrix = {{3,0,1,4,2},{5,6,3,2,1},{1,2,0,1,5},{4,1,0,1,7},{1,0,3,0,5}};
+    vector<vector<int>> matrix = {{1,2,3},{4,5,6},{7,8,9}};
     NumMatrix *obj = new NumMatrix(matrix);
-    int param_1 = obj->sumRegion(2,1,4,3);
-    cout << param_1 << endl;
-    param_1 = obj->sumRegion(1,1,2,2);
-    cout << param_1 << endl;
-    param_1 = obj->sumRegion(1,2,2,4);
-    cout << param_1 << endl;
+    // int param_1 = obj->sumRegion(2,1,4,3);
+    // cout << param_1 << endl;
+    // param_1 = obj->sumRegion(1,1,2,2);
+    // cout << param_1 << endl;
+    // param_1 = obj->sumRegion(1,2,2,4);
+    // cout << param_1 << endl;
 	return 0;
 }
 

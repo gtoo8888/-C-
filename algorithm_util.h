@@ -22,10 +22,6 @@ public:
 };
 //	for_each(temp.begin(),temp.end(),printVector());
 
-void PrintAuto(int it){
-	cout << it << endl;
-}
-
 // 最早的方法
 // void PrintVector(vector<int> v){
 // 	for(auto it = v.begin();it != v.end();it++)
@@ -33,51 +29,83 @@ void PrintAuto(int it){
 // 	cout << endl; 
 // }
 
-void PrintVector(vector<int> v){
+// 常用的方法
+// void PrintVector(vector<int> v){
+// 	for(auto it : v)
+// 		cout << it << " ";
+// 	cout << endl;
+// }
+
+// 使用模板来简化
+template<typename T>
+void PrintVector(vector<T> v){
 	for(auto it : v)
 		cout << it << " ";
 	cout << endl;
 }
-
-void PrintVCector(vector<char> v){
+// 模板偏特化
+// 对于string有特殊处理
+template<typename T>
+void PrintVector(vector<string> v){
 	for(auto it : v)
-		cout << it << " ";
-	cout << endl;
-}
-
-void PrintVSector(vector<string> v){
-	for(auto it : v)
-		// cout << it << " ";
 		cout << it << endl;
 }
 
-void PrintVBector(vector<bool> v){
-	for(auto it : v)
-		cout << it << " ";
-	cout << endl;
-}
+// void PrintSet(set<int> s) {
+// 	for(set<int>::iterator it = s.begin();it != s.end();it++)
+// 		printf("%d ",*it);
+// 	cout << endl;	
+// }
 
-void PrintSet(set<int> s) {
-	// for(set<int>::iterator it = s.begin();it != s.end();it++)
-	// 	printf("%d ",*it);
+// void PrintSet(set<int> s) {
+// 	for(auto it : s)
+// 		cout << it << endl;
+// 	cout << endl;	
+// }
+
+template<typename T>
+void PrintSet(set<T> s) {
 	for(auto it : s)
-		printf("%d ",it);
+		cout << it << endl;
 	cout << endl;	
 }
 
-void PrintMap(map<int,int> m) {
-// 	for(auto it = m.begin();it != m.end();it++)
-// 		cout << (*it).first << " " << it->second << endl;
-	for(auto it : m)
-		printf("%d %d\n",it.first,it.second);
+// void PrintMap(map<int,int> m) {
+// // 	for(auto it = m.begin();it != m.end();it++)
+// // 		cout << (*it).first << " " << it->second << endl;
+// 	for(auto it : m)
+// 		printf("%d %d\n",it.first,it.second);
+// 	cout << endl;	
+// }
+
+template<typename T,typename N>
+void PrintMap(map<T,T> m) {
+	for(auto it = m.begin();it != m.end();it++)
+		cout << (*it).first << " " << it->second << endl;
 	cout << endl;	
 }
 
-void PrintUnorder_Map(unordered_map<char,int> m) {
+template<typename T>
+void PrintUnorder_Set(unordered_set<T> m) {
 	for(auto it : m)
-		printf("%d %d\n",it.first,it.second);
+		cout << it << endl;
 	cout << endl;	
 }
+
+// void PrintUnorder_Map(unordered_map<char,int> m) {
+// 	for(auto it : m)
+// 		cout << it.first << " " << it.second << endl;
+// 		// printf("%d %d\n",it.first,it.second);
+// 	cout << endl;	
+// }
+
+template<typename T,typename N>
+void PrintUnorder_Map(unordered_map<T,N> m) {
+	for(auto it : m)
+		cout << it.first << " " << it.second << endl;
+	cout << endl;	
+}
+
 
 vector<int> NumSeparate(int n) {//每个位拆开
 	vector<int> ans;
@@ -103,6 +131,7 @@ void PrintBool(bool val){
 	cout << endl;
 }
 
+// 最原始的方法
 // void PrintVVector(vector<vector<int>>& v){
 // 	for(auto iter = v.begin();iter != v.end();iter++){
 // 		auto it_temp = *iter;
@@ -113,17 +142,20 @@ void PrintBool(bool val){
 // 	cout << endl;
 // }
 
-void PrintVVector(vector<vector<int>>& v){
-	for(auto iter : v){
-		auto it_tmp = iter;
-		for(auto it : it_tmp)
-			cout << it << " ";
-		cout << endl;
-	}
-	cout << endl;
-}
+// 常用的方法
+// void PrintVVector(vector<vector<int>>& v){
+// 	for(auto iter : v){
+// 		auto it_tmp = iter;
+// 		for(auto it : it_tmp)
+// 			cout << it << " ";
+// 		cout << endl;
+// 	}
+// 	cout << endl;
+// }
 
-void PrintVVCector(vector<vector<char>>& v){
+// 使用模板简化函数
+template<typename T>
+void PrintVVector(vector<vector<T>> v){
 	for(auto iter : v){
 		auto it_tmp = iter;
 		for(auto it : it_tmp)
@@ -163,6 +195,15 @@ void releaseNode(ListNode* node)
 	    }
 }
 
+// 创建列表节点
+ListNode* CreateListNode(vector<int> value){
+	int len = value.size();
+	ListNode* head = new ListNode(value[len -1]);
+	for(int i = 1;i < len;i++)
+		head = new ListNode(value[len-1-i],head);
+	return head;
+}
+
 //输出链表 
 void PrintListNode(ListNode* head){
 	while(head != nullptr){
@@ -186,11 +227,33 @@ void PrintBit(int n) {
     }
 	reverse(str.begin(),str.end());
 	cout << str << endl;
-    cout << endl;
 }
 
 		
+void turnVVector(string str1){
+	for(int i = 0;i < str1.size();i++){
+		if(str1[i] == '[')
+			str1[i] = '{';
+		if(str1[i] == ']')
+			str1[i] = '}';
+		if(str1[i] == '\"')
+			str1[i] = '\'';
+	}
+	cout << str1 << endl;
+}
+
+bool myconpare(pair<string,int> p1,pair<string,int> p2){
+	if(p1.second > p2.second)
+		return true;
+	// else if(p1.second < p2.second)
+    else
+		return false;
+    return true;
+}
+
 int test_util() {
+	vector<int> example1 = {1,2,3,4,5};
+	vector<string> example2 = {"aa","bb","cc","dd"};
 	//单个输入 
 	vector<int> temp;
 	for(int i = 0;i < 10;i++)
@@ -253,17 +316,36 @@ int test_util() {
 	//输出二维数组 
 	PrintVVector(temp8);
 
+    vector<vector<int>> temp12 = {{1,2,3},{4,5,6},{7,8,9}};
 	vector<vector<char>> temp9 = { 	{'X','X','X','X','X'},
 								{'X','O','O','O','X'},
 								{'X','X','O','X','X'},
 								{'O','O','X','X','X'},
 								{'X','O','X','X','X'}};
 	PrintVVector(temp8);
+	PrintVVector(temp12);
+
+
+	vector<int> example_vector1 = {1,2,3,4};
+	vector<char> example_vector2 = {'4','5','6'};
+	vector<bool> example_vector3 = {false,true,false,true};
+	vector<string> example_vector4 = {"XSW","CDE","VFR"};
+	PrintVector(example_vector1);
+	PrintVector(example_vector2);
+	PrintVector(example_vector3);
+	PrintVector(example_vector4);
+	
 
 	
 	PrintBit(11);
 //	auto temp = max_element(grid[0].begin(),grid[0].end());
 //	cout << *temp << " " << temp-grid[0].begin() << endl;
+
+	string temp10 = "[  [1,3,1],  [1,5,1],  [4,2,1]]";
+	turnVVector(temp10);
+
+	vector<pair<string,int>> temp11;
+	sort(temp11.begin(),temp11.end(),myconpare);	// 使用后面一个排序
 	
 	return 0;
 }
