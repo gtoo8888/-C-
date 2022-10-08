@@ -4,13 +4,16 @@
 // #include "C:\\Users\\Yan\\Desktop\\languguetest\\Cplusplustest\algorithm_util.h"
 
 #include <iostream>
+#include <cmath>
 #include <vector>
 #include <algorithm>
 #include <set>
 #include <map>
 #include <queue>
+#include <stack>
 #include <unordered_set>
 #include <unordered_map>
+#include <numeric> // iota() 批量递增
 //#include <iomanip>//<< setw(5)
 using namespace std;
 
@@ -30,11 +33,11 @@ public:
 // }
 
 // 常用的方法
-// void PrintVector(vector<int> v){
-// 	for(auto it : v)
-// 		cout << it << " ";
-// 	cout << endl;
-// }
+void PrintVector(vector<int> v){
+	for(auto it : v)
+		cout << it << " ";
+	cout << endl;
+}
 
 // 使用模板来简化
 template<typename T>
@@ -45,7 +48,7 @@ void PrintVector(vector<T> v){
 }
 // 模板偏特化
 // 对于string有特殊处理
-template<typename T>
+// template<typename T>
 void PrintVector(vector<string> v){
 	for(auto it : v)
 		cout << it << endl;
@@ -117,9 +120,19 @@ vector<int> NumSeparate(int n) {//每个位拆开
 	return ans;
 }
 
-void PrintQueue(queue<int> q){
+template<typename T>
+void PrintStack(stack<T> st){
+	while(!st.empty()){
+		cout << st.top() << endl;
+		st.pop();
+	}
+	cout << endl; 
+}
+
+template<typename T>
+void PrintQueue(queue<T> q){
 	while(!q.empty()){
-		printf("%d ",q.front());
+		cout << q.front() << endl;
 		q.pop();
 	}
 	cout << endl; 
@@ -229,6 +242,28 @@ void PrintBit(int n) {
 	cout << str << endl;
 }
 
+int str_to_num(string str){
+	reverse(str.begin(),str.end());
+	// cout << str << endl;
+	int num = 0;
+	for(int i = 0;i < str.size();i++){	
+		// 返回浮点数，如果不向上取整就有精度问题,9*100.00会变成999
+		num += (str[i]-'0')*ceil(pow(10,i));
+		// printf("%d %d %f\n",num,i,ceil(pow(10,i));
+	}
+	return num;
+}
+
+string num_to_str(int num){
+	string str;
+	while(num != 0){
+		int tmp = num%10;
+		str.push_back('0'+tmp);
+		num /= 10;
+	}
+	reverse(str.begin(),str.end());
+	return str;
+}
 		
 void turnVVector(string str1){
 	for(int i = 0;i < str1.size();i++){

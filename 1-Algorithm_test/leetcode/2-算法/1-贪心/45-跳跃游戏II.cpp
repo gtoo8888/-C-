@@ -32,7 +32,7 @@ int main() {
 
 	auto ans = solution.jump(nums);
 	
-	PrintAuto(ans);
+	cout << ans << endl;
 	return 0;
 }
 
