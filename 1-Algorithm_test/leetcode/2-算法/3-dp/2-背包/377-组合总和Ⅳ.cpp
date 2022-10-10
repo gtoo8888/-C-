@@ -17,9 +17,9 @@ public:
         dp[0] = 1;
         for(int j = 0;j <= target;j++) {
             for(int i = 0;i < nums.size();i++) {
-                if(j - nums[i] >= 0 && dp[j] < INT_MAX - dp[j - nums[i]])
+                if(j - nums[i] >= 0 && dp[j] < INT32_MAX - dp[j - nums[i]])
                   dp[j] += dp[j - nums[i]];
-                printVector(dp);
+                // printVector(dp);
             }
             cout << endl;
         }

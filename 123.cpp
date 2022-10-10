@@ -1,54 +1,55 @@
 #include <iostream>
-#include <algorithm>
 #include <vector>
-#include <stack>
-#include <string>
+#include <unordered_set>
 using namespace std;
-
 #include "C:\\Users\\Yan\\Desktop\\languguetest\\Cplusplustest\algorithm_util.h"
+
+
+// 如果使用移位的操作，如果输入为一个负数，会形成死循环
+// 由于移位以后负数前面会自动补1
+// class Solution {
+// public:
+//     int hammingWeight(uint32_t n) {
+// 		int count = 0;
+// 		while (n != 0){
+// 			if(n & 1  == 1)	//就取出最后一位，看看是不是1
+// 				count++;	//是的话就累加
+// 			n >>= 1;
+// 			// printf("%d\n",n);
+// 		}
+//         return count;
+//     }
+// };
 
 class Solution {
 public:
-    int maxValue(vector<vector<int>>& grid) {
-		int n = grid.size();
-		int m = grid[0].size();
-		// if(n == 0 && m == 0)
-		// 	return 0;
-		vector<vector<int>> dp(n,vector<int>(m,0));
-		dp[0][0] = grid[0][0];
-		for(int i = 1;i < m;i++){
-			dp[0][i] = dp[0][i-1] + grid[0][i];
+    int hammingWeight(uint32_t n) {
+		PrintBit(n);
+		int count = 0;
+		while (n != 0){
+			count++;
+			n = n&(n-1); //这个操作每一次可以消掉一个1
+			PrintBit(n);
 		}
-		for(int i = 1;i < n;i++){
-			dp[i][0] = dp[i-1][0] + grid[i][0];
-		}
-		for(int i = 1;i < n;i++){
-			for(int j = 1;j < m;j++){
-				dp[i][j] = max(dp[i-1][j],dp[i][j-1]) + grid[i][j];
-			}
-		}
-		PrintVVector(dp);
-		return dp[n-1][m-1];
+        return count;
     }
 };
-		
-int main() {
-	Solution solution;
-	// vector<vector<int>> grid ={  {1,3,1},  {1,5,1},  {4,2,1}};
-	// vector<vector<int>> grid ={  {1,3,1}};
-	// vector<vector<int>> grid ={{1},{3},{4}};
-	// vector<vector<int>> grid ={{1}};
-	// vector<vector<int>> grid ={{}};
-	vector<vector<int>> grid ={{1,2,5},{3,2,1}};
 
-	PrintVVector(grid);
-
-	auto ans = solution.maxValue(grid);
-
-	cout << ans << endl;
 
 	
+int main() {
+	Solution sol;
+	// uint32_t nums = 3;	
+	// uint32_t nums = 127;	
+
+	// uint32_t nums = -65535;	
+
+	uint32_t nums = 0;	
+
+	auto ans = sol.hammingWeight(nums);
+	cout << ans << endl;
 	return 0;
 }
+
 
 

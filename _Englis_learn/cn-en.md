@@ -85,6 +85,8 @@ propose | 打算
 exponentially |以指数方式
 scenes | 场景
 
+pervasive computing | 普适计算
+
 
 # 词组
 

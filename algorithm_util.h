@@ -17,6 +17,14 @@
 //#include <iomanip>//<< setw(5)
 using namespace std;
 
+// 最大质因数
+int gcd(int a,int b) { return b?gcd(b,a%b):a;}
+
+// 最小公倍数
+int lcm(int m,int g)  {
+     return m/gcd(m,g)*g;
+}
+
 class PrintVector{
 public:
 	void operator ()(int val) {
@@ -123,7 +131,7 @@ vector<int> NumSeparate(int n) {//每个位拆开
 template<typename T>
 void PrintStack(stack<T> st){
 	while(!st.empty()){
-		cout << st.top() << endl;
+		cout << st.top() << " ";
 		st.pop();
 	}
 	cout << endl; 
@@ -173,6 +181,24 @@ void PrintVVector(vector<vector<T>> v){
 		auto it_tmp = iter;
 		for(auto it : it_tmp)
 			cout << it << " ";
+		cout << endl;
+	}
+	cout << endl;
+}
+
+
+void PrintVVVector(vector<vector<vector<int>>> grid){
+	int n = grid.size();
+	int m = grid[0].size();
+	int l = grid[0][0].size();
+	int k = 0;
+	for(int k = 0;k < l;k++){	// 把每一面的数组作为一个切片
+		for(int i = 0;i < n;i++){
+			for(int j = 0;j < m;j++){
+				cout << grid[i][j][k] << " ";		
+			}
+			cout << endl;
+		}	
 		cout << endl;
 	}
 	cout << endl;
@@ -229,15 +255,17 @@ void PrintListNode(ListNode* head){
 //n & 1 == 1判断这一位是不是1
 //n | 0 == 0判断这一位是不是0
 //二进制输出
-void PrintBit(int n) {
+// 一定要把输入的数字强制转化成uint32_t的
+// 如果是int类型,为负数的时候，会进入死循环，无法输出
+void PrintBit(uint32_t n) {	// uint32_t保证了输入为负数时，不会报错
 	string str;
-    while(n != 0 ) {
-        if(n & 1 == 1)  
-            str.push_back('1');
-        else   
-            str.push_back('0');
-        n >>= 1;
-    }
+	while(n != 0) {
+		if(n & 1 == 1)  
+			str.push_back('1');
+		else   
+			str.push_back('0');
+		n >>= 1;
+	}
 	reverse(str.begin(),str.end());
 	cout << str << endl;
 }
@@ -382,6 +410,23 @@ int test_util() {
 	vector<pair<string,int>> temp11;
 	sort(temp11.begin(),temp11.end(),myconpare);	// 使用后面一个排序
 	
+
+	vector<vector<vector<int>>> temp13 = {
+		{
+			{1,2,3},
+			{4,5,6},
+			{7,8,9},
+		},
+		{
+			{2,3,4},
+			{5,6,7},
+			{8,9,10},
+		},
+	};
+	PrintVVVector(temp13);
+
+
+	int tt1 = accumulate(temp3.begin(),temp3.end(),0);
 	return 0;
 }
 

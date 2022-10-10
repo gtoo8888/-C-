@@ -6,14 +6,6 @@
 using namespace std;
 #include "C:\\Users\\Yan\\Desktop\\languguetest\\Cplusplustest\algorithm_util.h"
 
-
-int gcd(int a,int b) { return b?gcd(b,a%b):a;}
-
-//求两个数的最小公倍数
-int lcm(int m,int g)  {
-     return m/gcd(m,g)*g;
-}
-
 class Solution {
 public:
     int commonFactors(int a, int b) {
