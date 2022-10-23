@@ -87,7 +87,24 @@ scenes | 场景
 
 pervasive computing | 普适计算
 
+annotation | 注解
+inspired | 启发
 
+
+intelligent | 智能
+lawn | 草坪
+Lawn Cutter | 割草机
+lawn mower | 割草机
+Grass Cutter Robot  | 割草机
+Smart lawn mower | 智能割草机
+intelligent lawn mower | 智能割草机
+smart lawn mower for grass trimming | 智能割草机
+autonomous lawn mowing robot | 自动割草机
+autonomous navigation of lawn  mower | 割草机自主导航
+boundary | 边界
+
+predicate | 谓词
+steal | 
 # 词组
 
 divided into  | 分为

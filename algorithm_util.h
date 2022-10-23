@@ -41,11 +41,11 @@ public:
 // }
 
 // 常用的方法
-void PrintVector(vector<int> v){
-	for(auto it : v)
-		cout << it << " ";
-	cout << endl;
-}
+// void PrintVector(vector<int> v){
+// 	for(auto it : v)
+// 		cout << it << " ";
+// 	cout << endl;
+// }
 
 // 使用模板来简化
 template<typename T>
@@ -99,7 +99,7 @@ void PrintMap(map<T,T> m) {
 template<typename T>
 void PrintUnorder_Set(unordered_set<T> m) {
 	for(auto it : m)
-		cout << it << endl;
+		cout << it << " ";
 	cout << endl;	
 }
 
@@ -427,6 +427,11 @@ int test_util() {
 
 
 	int tt1 = accumulate(temp3.begin(),temp3.end(),0);
+
+
+	vector<int> value1 = {1,2,4};
+	ListNode* list1 = CreateListNode(value1);
+
 	return 0;
 }
 

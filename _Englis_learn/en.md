@@ -56,8 +56,42 @@
 54. dimmed 
 55. tunnel 
 56. limitations 
+## yolov5
+57. resume 
+58. evolve 
+59. metadata 
+60. hyperparameter 
+61. mutate 
+62. constrain 
+63. attributes 
+64. epoch 
+65. finetune 
 # 不常用的
 1. stalwarts  
+# 论文
+1. semantic 
+2. segmentation 
+3. obtain 
+4. capability 
+5. boundary 
+6. propose 
+7. exponentially 
+8. scenes 
+9. pervasive computing 
+10. annotation 
+11. inspired 
+12. intelligent 
+13. lawn 
+14. lawn cutter 
+15. lawn mower 
+16. grass cutter robot  
+17. smart lawn mower 
+18. intelligent lawn mower 
+19. smart lawn mower for grass trimming 
+20. autonomous lawn mowing robot 
+21. autonomous navigation of lawn  mower 
+22. boundary 
+23. predicate 
 # 词组
 1. divided into  
 2. drops down 
@@ -66,3 +100,4 @@
 1. integrated development environment (ide)
 2. gnu compiler collection (gcc)
 3. minimalist gnu for windows (mingw) 
+4. artificial intelligence (ai)
