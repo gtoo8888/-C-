@@ -1,12 +1,12 @@
 #ifndef _ALGORITHM_UTIL_
 #define _ALGORITHM_UTIL_
 
-// #include "C:\\Users\\Yan\\Desktop\\languguetest\\Cplusplustest\algorithm_util.h"
+// #include "C:\\Users\\Yan\\Desktop\\languguetest\\Cplusplustest\\algorithm_util.h"
 
 #include <iostream>
+#include <algorithm>
 #include <cmath>
 #include <vector>
-#include <algorithm>
 #include <set>
 #include <map>
 #include <queue>
@@ -15,6 +15,7 @@
 #include <unordered_map>
 #include <numeric> // iota() 批量递增
 //#include <iomanip>//<< setw(5)
+#include "data_struct.h"
 using namespace std;
 
 // 最大质因数
@@ -209,47 +210,6 @@ void PrintPriQueue(priority_queue<long,vector<int>,greater<long>> pri){
 		cout << pri.top() << endl;
 		pri.pop();
 	}
-}
-
-struct ListNode{
-	int val;
-	ListNode *next;
-	ListNode() : val(0), next(nullptr) {}
-	ListNode(int x) : val(x), next(nullptr) {}
-	ListNode(int x,ListNode *next) : val(x), next(next){}
-};
-
-//释放new开辟的空间，不进行会导致内存泄漏
-void releaseNode(ListNode* node)
-{
-    ListNode* temp = NULL;
-    if (node == NULL)
-        cout << "链表节点内存为空\n";
-    else
-	    while (node != NULL){
-	        temp = node;
-	        node = node->next;
-	        delete temp;
-	        cout << "节点内存清除成功\n";
-	    }
-}
-
-// 创建列表节点
-ListNode* CreateListNode(vector<int> value){
-	int len = value.size();
-	ListNode* head = new ListNode(value[len -1]);
-	for(int i = 1;i < len;i++)
-		head = new ListNode(value[len-1-i],head);
-	return head;
-}
-
-//输出链表 
-void PrintListNode(ListNode* head){
-	while(head != nullptr){
-		cout << head -> val << " ";
-		head = head -> next;
-	}
-	cout << endl;
 }
 
 //n & 1 == 1判断这一位是不是1

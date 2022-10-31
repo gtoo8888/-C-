@@ -2,32 +2,7 @@
 using namespace std;
 #include <vector> 
 #include <string>
-
-
-
-struct TreeNode {
-	int val;
-	TreeNode *left;
-	TreeNode *right;
-	TreeNode() : val(0), left(nullptr), right(nullptr) {}
-	TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-	TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
-};
-
-
-void printVector(vector<int> v){
-	for(vector<int>::iterator it = v.begin();it != v.end();it++)
-		cout << *it << " ";
-	cout << endl; 
-}
-
-
-void PrePrint(TreeNode* root) {
-	if(root == nullptr)	return;
-	cout << root->val << " ";
-	PrePrint(root->left);
-	PrePrint(root->right);
-}
+#include "C:\\Users\\Yan\\Desktop\\languguetest\\Cplusplustest\\algorithm_util.h"
 
 class Solution {
 public:
