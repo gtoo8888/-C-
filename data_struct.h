@@ -56,6 +56,8 @@ void releaseNode(ListNode* node){
 
 // ´´½¨¶þ²æÊ÷
 TreeNode* CreateBinaryTree(vector<int> data){
+	if(data.size() == 0)
+		return nullptr;
 	vector<string> str_data(data.size()," ");
 	for(int i = 0;i < data.size();i++){
 		if(data[i] != null)

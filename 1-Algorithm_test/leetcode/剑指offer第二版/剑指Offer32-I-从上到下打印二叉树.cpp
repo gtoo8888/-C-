@@ -29,9 +29,11 @@ public:
 
 int main(){
 	Solution solution;
-	vector<int> data = {3,9,20,null,null,15,7};
-	TreeNode* root = NULL;
-	root = CreateBinaryTree(data);
+	// vector<int> data = {3,9,20,null,null,15,7};
+	// TreeNode* root = NULL;
+	// root = CreateBinaryTree(data);
+
+	TreeNode* root = nullptr;
 			
 	auto ans = solution.levelOrder(root);
 	PrintVector(ans);

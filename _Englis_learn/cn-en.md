@@ -105,6 +105,14 @@ boundary | 边界
 
 predicate | 谓词
 steal | 
+
+
+# 计算机网络自顶向下
+# DNS实验
+ Command Prompt | 命令提示符
+ ordinary | 普通的
+ destination | 目的地
+ Examine  | 检查
 # 词组
 
 divided into  | 分为
