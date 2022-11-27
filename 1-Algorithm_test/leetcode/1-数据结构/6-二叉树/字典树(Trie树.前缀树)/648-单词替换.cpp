@@ -3,7 +3,7 @@
 #include <queue>
 #include <string.h>
 #include <sstream>
-#include "C:\\Users\\Yan\\Desktop\\languguetest\\Cplusplustest\algorithm_util.h"
+#include "E:\\Desktop\\languguetest\\Cplusplustest\\algorithm_util.h"
 using namespace std;
 
 class Trie{

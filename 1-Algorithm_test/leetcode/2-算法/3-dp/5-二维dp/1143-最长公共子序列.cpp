@@ -2,7 +2,7 @@
 #include <vector>
 #include <cmath>
 using namespace std;
-#include "C:\\Users\\Yan\\Desktop\\languguetest\\Cplusplustest\algorithm_util.h"
+#include "E:\\Desktop\\languguetest\\Cplusplustest\\algorithm_util.h"
 
 // 看代码随想录时候写的
 // class Solution {

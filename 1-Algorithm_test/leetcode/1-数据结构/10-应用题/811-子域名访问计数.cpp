@@ -3,7 +3,7 @@ using namespace std;
 #include <vector> 
 #include <cmath> 
 
-#include "C:\\Users\\Yan\\Desktop\\languguetest\\Cplusplustest\algorithm_util.h"
+#include "E:\\Desktop\\languguetest\\Cplusplustest\\algorithm_util.h"
 
 int str_to_num(string str){
 	reverse(str.begin(),str.end());

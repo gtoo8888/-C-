@@ -2,7 +2,7 @@
 #include <vector>
 #include <unordered_set>
 using namespace std;
-#include "C:\\Users\\Yan\\Desktop\\languguetest\\Cplusplustest\algorithm_util.h"
+#include "E:\\Desktop\\languguetest\\Cplusplustest\\algorithm_util.h"
 
 // 其实和斐波那契数列一样的思想
 // 但是是不好想到的数学公式

@@ -1,7 +1,7 @@
 #include <algorithm> 
 #include <iostream>
 using namespace std;
-#include "C:\\Users\\Yan\\Desktop\\languguetest\\Cplusplustest\\algorithm_util.h"
+#include "E:\\Desktop\\languguetest\\Cplusplustest\\algorithm_util.h"
 
 // ???sqrt????????
 // class Solution {

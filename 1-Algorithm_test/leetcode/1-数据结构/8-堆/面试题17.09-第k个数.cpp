@@ -4,7 +4,7 @@
 #include <unordered_set>
 #include <queue>
 using namespace std;
-#include "C:\\Users\\Yan\\Desktop\\languguetest\\Cplusplustest\algorithm_util.h"
+#include "E:\\Desktop\\languguetest\\Cplusplustest\\algorithm_util.h"
 
 void PrintPriQueue(priority_queue<long,vector<long>,greater<long>> pri){
 	while(!pri.empty()){

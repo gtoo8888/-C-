@@ -4,7 +4,7 @@ using namespace std;
 #include <string>
 #include <queue>
 #define null 0xffff
-#include "C:\\Users\\Yan\\Desktop\\languguetest\\Cplusplustest\\algorithm_util.h"
+#include "E:\\Desktop\\languguetest\\Cplusplustest\\algorithm_util.h"
 
 
 class Solution {

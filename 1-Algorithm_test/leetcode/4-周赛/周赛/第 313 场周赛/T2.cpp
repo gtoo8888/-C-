@@ -4,7 +4,7 @@
 #include <string>
 #include <unordered_map>
 using namespace std;
-#include "C:\\Users\\Yan\\Desktop\\languguetest\\Cplusplustest\algorithm_util.h"
+#include "E:\\Desktop\\languguetest\\Cplusplustest\\algorithm_util.h"
 
 
 int gcd(int a,int b) { return b?gcd(b,a%b):a;}

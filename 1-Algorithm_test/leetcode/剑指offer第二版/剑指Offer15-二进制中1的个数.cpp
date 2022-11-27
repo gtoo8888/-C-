@@ -2,7 +2,7 @@
 #include <vector>
 #include <unordered_set>
 using namespace std;
-#include "C:\\Users\\Yan\\Desktop\\languguetest\\Cplusplustest\algorithm_util.h"
+#include "E:\\Desktop\\languguetest\\Cplusplustest\\algorithm_util.h"
 
 
 // 如果使用移位的操作，如果输入为一个负数，会形成死循环
