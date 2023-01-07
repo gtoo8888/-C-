@@ -17,7 +17,7 @@ void turnVVector(string str1){
 
 
 int main() {
-	string str1 = " [[1,2,3],[4,5,6],[7,8,9]]";
+	string str1 = "[[1,2],[3,1],[2,4],[2,3],[4,4]]";
 	turnVVector(str1);
 
 	vector<vector<int>> grid ={{1,2,5},{3,2,1}};
