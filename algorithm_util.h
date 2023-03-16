@@ -231,6 +231,34 @@ void PrintBit(uint32_t n) {	// uint32_t保证了输入为负数时，不会报错
 	cout << str << endl;
 }
 
+
+void PrintTreeLevelOrder(TreeNode* root) {
+    vector<vector<int>> TreeNodeSave;
+    queue<TreeNode*> que;
+    if(root != nullptr)	
+        que.push(root);
+    
+    while(!que.empty()){
+        int size = que.size(); 
+        vector<int> temp;//为了存放每层的数据 
+        // 这里一定要使用固定大小size，不要使用que.size()，因为que.size是不断变化的
+        for(int i = 0;i < size;i++){
+            TreeNode* node_temp = que.front();//将需要的结点读取出来后就pop掉 
+            que.pop();
+            temp.push_back(node_temp->val);//节点的值输入每一层的向量中 
+            
+            if(node_temp->left != nullptr)
+                que.push(node_temp->left);
+            if(node_temp->right != nullptr)
+                que.push(node_temp->right);
+        }
+        
+        TreeNodeSave.push_back(temp);
+    }
+    PrintVVector(TreeNodeSave);	
+}
+
+
 int str_to_num(string str){
 	reverse(str.begin(),str.end());
 	// cout << str << endl;
