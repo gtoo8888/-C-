@@ -102,6 +102,9 @@ smart lawn mower for grass trimming | 智能割草机
 autonomous lawn mowing robot | 自动割草机
 autonomous navigation of lawn  mower | 割草机自主导航
 boundary | 边界
+Boundary Detection | 边界检测
+edge detection | 边界检测
+Cross-view Scene Parsing | 跨视图场景解析
 
 predicate | 谓词
 steal | 
