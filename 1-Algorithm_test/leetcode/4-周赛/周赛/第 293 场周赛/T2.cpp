@@ -7,23 +7,11 @@
 #include <set>
 using namespace std;
 
-
-void PrintVector(vector<int> v){for(auto it : v) cout << it << " ";cout << endl;}
-void PrintVSector(vector<string> v){for(auto it : v)cout << it << endl;cout << endl;}
-void PrintVVector(vector<vector<int>>& v){for(auto iter : v){auto it_tmp = iter;for(auto it : it_tmp)cout << it << " ";cout << endl;}cout << endl;}
-void PrintBool(bool val){if(val == true)cout << "true" << endl;else cout << "false" << endl;cout << endl;}
-void PrintMap(unordered_map<int,int> m) {for(auto it : m)printf("%d %d\n",it.first,it.second);cout << endl;}
-
 void printarrary(int a[]){
 	for(int i = 0;i < 26;i++)
 		printf("%d ",a[i]);
 }
 
-void PrintSet(set<int> s) {
-	for(auto it : s)
-		printf("%d ",it);
-	cout << endl;	
-}
 
 // class Solution {
 // public:

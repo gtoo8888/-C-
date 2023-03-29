@@ -58,7 +58,6 @@ int main() {
 							"zo4 4 7",
 							"ab1 off key dog",
 							"a8 act zoo"};
-	// PrintVSector(logs);	
 
 	auto ans = solution.reorderLogFiles(logs);
 	

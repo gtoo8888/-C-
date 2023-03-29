@@ -3,12 +3,6 @@
 #include <algorithm>
 using namespace std;
 
-void PrintVSector(vector<string> v){
-	for(auto it = v.begin();it != v.end();it++)
-		cout << *it << endl;
-	cout << endl; 
-}
-
 
 class Solution {
 public:

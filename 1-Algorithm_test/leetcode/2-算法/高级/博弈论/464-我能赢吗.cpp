@@ -8,36 +8,6 @@
 using namespace std;
 
 
-void printVSector(vector<string> str)  {
-	for(auto it = str.begin();it !=  str.end();it++)
-		cout << *it << endl;
-	cout << endl;
-}
-
-void printUnordered_Set(unordered_set<int> &set)  {
-	for(auto it : set)
-		printf("%d ",it);
-	cout << endl;
-}
-
-void PrintBool(bool val){
-	if(val == true)		cout << "true" << endl;
-	else				cout << "false" << endl;
-	cout << endl;
-}
-
-void PrintBit(int n) {
-	string str;
-    while(n != 0 ) {
-        if(n & 1 == 1)  
-            str.push_back('1');
-        else   
-            str.push_back('0');
-        n >>= 1;
-    }
-	reverse(str.begin(),str.end());
-	cout << str << endl;
-}
 
 // 用哈希表保存遍历过的状态
 // class Solution {

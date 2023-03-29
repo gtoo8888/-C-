@@ -3,18 +3,6 @@
 #include <algorithm>
 using namespace std;
 
-void printVector(vector<char> v){
-	for(vector<char>::iterator it = v.begin();it != v.end();it++)
-		cout << *it << " ";
-	cout << endl; 
-}
-
-
-void printVSector(vector<string> v){
-	for(auto it = v.begin();it != v.end();it++)
-		cout << *it << " ";
-	cout << endl; 
-}
 
 class Solution {
 public:
