@@ -203,7 +203,7 @@ void PrintVVVector(vector<vector<vector<int>>> grid){
 		}	
 		cout << endl;
 	}
-	cout << endl;
+	cout << "<<<<<<<<<<<<<<<<<" << endl;
 }
 
 void PrintPriQueue(priority_queue<long,vector<int>,greater<long>> pri){
