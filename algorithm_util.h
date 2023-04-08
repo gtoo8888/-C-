@@ -218,7 +218,7 @@ void PrintPriQueue(priority_queue<long,vector<int>,greater<long>> pri){
 //二进制输出
 // 一定要把输入的数字强制转化成uint32_t的
 // 如果是int类型,为负数的时候，会进入死循环，无法输出
-void PrintBit(uint32_t n) {	// uint32_t保证了输入为负数时，不会报错
+string PrintBit(uint32_t n) {	// uint32_t保证了输入为负数时，不会报错
 	string str;
 	while(n != 0) {
 		if(n & 1 == 1)  
@@ -228,7 +228,7 @@ void PrintBit(uint32_t n) {	// uint32_t保证了输入为负数时，不会报错
 		n >>= 1;
 	}
 	reverse(str.begin(),str.end());
-	cout << str << endl;
+	return str;
 }
 
 

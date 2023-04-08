@@ -1,22 +1,7 @@
 #include <iostream> 
-#include <vector>
-#include <queue>
 #include <string.h>
 using namespace std;
-#define null 0xfffff 
-
-
-void printVector(vector<int> &v){
-	for(vector<int>::iterator it = v.begin();it != v.end();it++)
-		cout << *it << " ";
-	cout << endl;
-}
-
-void PrintBool(bool val){
-	if(val == true)		cout << "true" << endl;
-	else				cout << "false" << endl;
-	cout << endl;
-}
+#include "E:\\Desktop\\languguetest\\Cplusplustest\\algorithm_util.h"
 
 
 class Trie {

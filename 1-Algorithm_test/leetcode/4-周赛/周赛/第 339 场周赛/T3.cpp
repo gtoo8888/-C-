@@ -6,9 +6,17 @@ class Solution {
 public:
     int miceAndCheese(vector<int>& reward1, vector<int>& reward2, int k) {
 		int n = reward1.size();
-        int m1 = k,m2 = n-k;
-		sort(reward1.begin(),reward1.end());
-		return -1;
+		int ans = accumulate(reward2.begin(),reward2.end(),0);
+		vector<int> sub(n,0);
+		for(int i = 0;i < n;i++){
+			sub[i] = reward1[i]-reward2[i];
+		}
+		sort(sub.begin(),sub.end(),greater<int>());
+		for(int i = 0;i < k;i++){
+			ans += sub[i];
+		}
+		// PrintVector(sub);
+		return ans;
     }
 };
 

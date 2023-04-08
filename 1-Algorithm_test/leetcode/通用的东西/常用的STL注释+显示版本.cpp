@@ -1,11 +1,11 @@
 #include <iostream>
+#include <cmath>
+#include <ctime>
 #include <vector>
 #include <queue>
 #include <stack>
 #include <unordered_map>
 #include <algorithm>
-
-
 #include <list>
 
 #include <typeinfo>
@@ -77,9 +77,6 @@ void test_vector(void){
     v1.clear();
 }
 
-void test_vector_display(void){
-    sort(v.begin(),v.end(),less<int>())
-}
 
 
 void test_algorithm_display(void){
@@ -134,6 +131,44 @@ void test_algorithm_binary_search_display(void){
 }
 
 
+void test_sqrt(int n){
+	clock_t start,end; 
+	start = clock();  
+	for (int i = 1; i <= n; i++)
+		double num = sqrt(1.0 * i);
+	end = clock(); 
+	cout<<"sqrt time = "<<double(end-start)/CLOCKS_PER_SEC * 1000<<"ms"<<endl;
+
+
+	start = clock();  
+	for (int i = 1; i <= n; i++)
+		double num = __builtin_sqrt(1.0 * i);
+	end = clock(); 
+	cout<<"__builtin_sqrt time = "<<double(end-start)/CLOCKS_PER_SEC * 1000<<"ms"<<endl;
+
+
+	start = clock();  
+	for (int i = 1; i <= n; i++)
+		double num = __builtin_sqrtf(1.0 * i);
+	end = clock(); 
+	cout<<"__builtin_sqrtf time = "<<double(end-start)/CLOCKS_PER_SEC * 1000<<"ms"<<endl;
+}
+
+void test_gcc(void){
+    int t1 = __builtin_popcount(7); // x中1的个数
+	int t2 = __builtin_popcountl(13);
+	int t3 = __builtin_popcountll(13);
+	int t4 = __builtin_ctz(4); // 末尾0的个数 // 2
+	int t5 = __builtin_clz(4); // 前导0的个数 // 29
+	int t6 = __builtin_parity(3); // x中1的奇偶性 // 偶数为0 // 0
+	int t7 = __builtin_ffs(4); // 返回括号内数的二进制表示形式中最后一个1在第几位（从后往前）
+	double t8 = __builtin_sqrt(3); // 快速开平方 8位返回double,这个速度和sqrt差不多
+	float t9 = __builtin_sqrtf(3); // 快速开平方 4位返回float
+	double t10 = sqrt(3); // 返回double
+	// float t11 = __builtin_sqrt(3);
+}
+
+
 void test_data(void){
     vector<int> v1;
     vector<vector<int>> v2;
@@ -142,10 +177,14 @@ void test_data(void){
     unordered_map<int,vector<int>> map2;
 
 }
+
+
 int main(){
-    test_vector();
+    // test_vector();
     // test_algorithm_display();
-    test_algorithm_binary_search_display();
-    test_data();
+    // test_algorithm_binary_search_display();
+    // test_data();
+    test_gcc();
+	// test_sqrt(100000000);
     return 0;
 }
