@@ -106,8 +106,21 @@ Boundary Detection | 边界检测
 edge detection | 边界检测
 Cross-view Scene Parsing | 跨视图场景解析
 
+
 predicate | 谓词
 steal | 
+
+
+Multi-Robot | 多机器人
+Multi-Objective | 多目标
+task allocation | 任务分配
+
+agronomy | 农学
+International Journal of Agricultural and Biological Engineering
+IJABE   | 
+
+Soft Computing | 
+International Journal of Advanced Robotic Systems
 
 
 # 计算机网络自顶向下

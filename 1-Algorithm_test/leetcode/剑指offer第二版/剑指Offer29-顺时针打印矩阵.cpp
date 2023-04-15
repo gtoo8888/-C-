@@ -2,18 +2,17 @@
 #include <iostream>
 #include <vector>
 using namespace std;
-
 #include "E:\\Desktop\\languguetest\\Cplusplustest\\algorithm_util.h"
-
 
 class Solution {
 public:
     vector<int> spiralOrder(vector<vector<int>>& matrix) {
 		int n = matrix.size();
 		int len = n-1;
+		vector<int> ans;
 		while(len){
 			for(int i = 0;i < 4;i++){
-				
+				// ans.push_back(matrix[])
 			}
 			len -= 2;
 		}
