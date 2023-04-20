@@ -79,7 +79,7 @@ void PrintVector(vector<string> v){
 template<typename T>
 void PrintSet(set<T> s) {
 	for(auto it : s)
-		cout << it << endl;
+		cout << it << " ";
 	cout << endl;	
 }
 
