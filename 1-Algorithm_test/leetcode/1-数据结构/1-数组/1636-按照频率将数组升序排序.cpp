@@ -5,13 +5,7 @@
 using namespace std;
 #include "E:\\Desktop\\languguetest\\Cplusplustest\\algorithm_util.h"
 
-void PrintVP(vector<pair<int,int>> vp) {
-	for(auto it : vp)
-		printf("%d %d\n",it.first,it.second);
-	cout << endl;	
-}
-
-bool myconpare(pair<int,int> p1,pair<int,int> p2){
+bool mycompare(pair<int,int> p1,pair<int,int> p2){
 	if(p1.second > p2.second)
 		return false;
 	else if(p1.second < p2.second)
@@ -23,6 +17,7 @@ bool myconpare(pair<int,int> p1,pair<int,int> p2){
 			return false;
 	}
 }
+
 class Solution {
 public:
     vector<int> frequencySort(vector<int>& nums) {
@@ -36,9 +31,9 @@ public:
 		for(auto it : map1){
 			vp.emplace_back(pair<int,int>(it.first,it.second));
 		}
-		PrintVP(vp);
-		sort(vp.begin(),vp.end(),myconpare);
-		PrintVP(vp);
+		// PrintVP(vp);
+		sort(vp.begin(),vp.end(),mycompare);
+		// PrintVP(vp);
 		vector<int> ans;
 		for(auto it : vp){
 			for(int i = 0;i < it.second;i++){

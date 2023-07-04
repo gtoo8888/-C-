@@ -14,6 +14,7 @@
 #include <stack>
 #include <unordered_set>
 #include <unordered_map>
+#include <bitset>
 #include <numeric> // iota() ÅúÁ¿µÝÔö
 //#include <iomanip>//<< setw(5)
 #include "data_struct.h"
@@ -62,6 +63,13 @@ void PrintVector(vector<T> v){
 void PrintVector(vector<string> v){
 	for(auto it : v)
 		cout << it << endl;
+}
+
+template<typename T,typename N>
+void PrintVP(vector<pair<T,N>> vp) {
+	for(auto it : vp)
+		cout << it.first << " " << it.second << endl;
+	cout << endl;	
 }
 
 // void PrintSet(set<int> s) {

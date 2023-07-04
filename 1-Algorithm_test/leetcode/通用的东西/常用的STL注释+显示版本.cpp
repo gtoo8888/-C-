@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <algorithm>
 #include <list>
+#include <bitset>
 
 #include <typeinfo>
 using namespace std;
@@ -179,12 +180,54 @@ void test_data(void){
 }
 
 
+void test_bitset(void){
+    bitset<8> bits("10101010");
+    cout << bits << endl;  // 10101010
+    cout << bits.to_string() << endl; // 10101010
+    cout << bits.to_ulong() << endl; // 170
+    cout << bits.to_ullong() << endl; // 170
+    for(int i = 0; i < bits.size(); i++){
+        cout << bits[i] << " ";
+    }
+    cout << endl;
+    bits.flip(); // 对二进制数进行按位取反操作
+    cout << bits.to_string() << endl; // 01010101
+
+    bitset<1> bits1("10101010");
+    bitset<2> bits2("10101010");
+    bitset<4> bits4("10101010");
+    bitset<8> bits8("10101010");
+    bitset<32> bits32("10101010");
+    bitset<64> bits64("10101010");
+    bitset<128> bits128("10101010");
+    bitset<256> bits256("10101010");
+    cout << bits1 << endl; // 1
+    cout << bits2 << endl; // 10
+    cout << bits4 << endl; // 1010
+    cout << bits8 << endl; // 10101010
+    cout << bits32 << endl; // 00000000000000000000000010101010
+
+    // set()设置所有位为1，reset()设置所有位为0
+    bitset<8> bits_test(170);
+    cout << bits_test << endl; // 10101010
+    bits_test.set(); // 将第0位设置为1
+    cout << bits_test << endl; // 11111111
+    bits_test.set(0,0); // 将第0位设置为0
+    cout << bits_test << endl; // 11111110
+    bits_test.reset(); // 将所有位设置为0
+    cout << bits_test << endl; // 00000000
+    bits_test.set();
+    bits_test.reset(2); // 将第0位设置为0
+    cout << bits_test << endl; // 00000000
+}
+
 int main(){
     // test_vector();
     // test_algorithm_display();
     // test_algorithm_binary_search_display();
     // test_data();
-    test_gcc();
+    // test_gcc();
 	// test_sqrt(100000000);
+    test_bitset();
     return 0;
 }

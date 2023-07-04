@@ -2,12 +2,6 @@
 using namespace std;
 #include "E:\\Desktop\\languguetest\\Cplusplustest\\algorithm_util.h"
 
-void PrintVP(vector<pair<int,int>> vec){
-    for(int i = 0;i < vec.size();i++){
-        cout << vec[i].first << " " << vec[i].second << endl;
-    }
-    cout << endl;
-}
 
 class Solution {
 public:
