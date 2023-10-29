@@ -6,10 +6,10 @@ extern "C"{
 }
 
 
-int main()
+int main(int arg,char* argv[])
 {
     std::cout << "Hello World!\n";
-    printf("%s", avcodec_configuration());
+    printf("%s\n", avcodec_configuration());
     system("pause");
 }
 

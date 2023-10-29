@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="learn_ffmpeg.cpp">
+    <ClCompile Include="1_ffmpeg_config.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
