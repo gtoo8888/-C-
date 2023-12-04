@@ -5,7 +5,8 @@ fenzhuang_test/
 0-基础练习/八股文/ref/
 Cplusplus源码/
 *.mp4
-
+3-VisualStudio2017/0-GtooPlayer/library/
+3-VisualStudio2017/0-GtooPlayer/gh_d/
 3rdparty
 *.lib
 # VisualStudio.gitignore
