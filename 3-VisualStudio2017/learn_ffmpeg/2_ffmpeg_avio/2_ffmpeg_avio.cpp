@@ -9,6 +9,8 @@ extern "C" {
 #include "libavformat/avio.h"
 }
 
+// 参考例子doc\examples\avio_list_dir.c
+
 // 原来的宏定义
 //#define av_err2str(errnum) \
 //    av_make_error_string((char[AV_ERROR_MAX_STRING_SIZE]){0}, AV_ERROR_MAX_STRING_SIZE, errnum)
