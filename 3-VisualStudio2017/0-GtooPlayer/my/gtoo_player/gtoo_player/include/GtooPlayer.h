@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_GtooPlayer.h"
+#include "ReadThread.h"
 
 class GtooPlayer : public QMainWindow
 {
@@ -9,14 +10,11 @@ class GtooPlayer : public QMainWindow
 
 public:
     GtooPlayer(QWidget *parent = nullptr);
-    void initConnect(void);
-    void initUi(void);
     ~GtooPlayer();
 
-
-    QPushButton* openSecond1;
-    QPushButton* openFileButton;
-    QPushButton* openExampleButton;
+    QPushButton* buttonOccupy;
+    QMenu* tmpExampleMenu; // TODE 临时demo
+    QAction* tmpExampleMenuOpen;  // TODE 临时demo
 
 public slots:
     void openAbout(void);
@@ -27,5 +25,13 @@ public slots:
     void startVideo(void);
 
 private:
+    void initUtils(void);
+    void initConnect(void);
+    void initUi(void);
+    void onPlayState(ReadThread::PlayState state);
+
+private:
     Ui::GtooPlayerClass* ui;
+    QString mPlayerTitile = QString("我的播放器-GtooPlay");
+    ReadThread* mReadThread = nullptr;
 };

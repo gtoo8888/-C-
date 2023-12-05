@@ -30,7 +30,7 @@ void ReadThread::open(const QString &url)
     if (!this->isRunning())
     {
         m_url = url;
-        emit this->start();
+        emit this->start(); // QThreadµÄÆô¶¯ÐÅºÅ£¿
     }
 }
 

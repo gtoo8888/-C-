@@ -126,6 +126,9 @@
   <ItemGroup>
     <ResourceCompile Include="gtoo_player.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="doc\README.md" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
     <Import Project="$(QtMsBuild)\qt.targets" />

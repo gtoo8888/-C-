@@ -3,20 +3,20 @@
 #include <QDateTime>
 #include <QTextCodec>
 
-
 #include "GtooPlayer.h"
 #include "About.h"
 #include "Example.h"
+
+
+///由于我们建立的是C++的工程
+///编译的时候使用的C++的编译器编译
+///而FFMPEG是C的库
+///因此这里需要加上extern "C"
+///否则会提示各种未定义
 extern "C"
 {
 #include "libavcodec/avcodec.h"
 }
-
-///�������ǽ�������C++�Ĺ���
-///�����ʱ��ʹ�õ�C++�ı���������
-///��FFMPEG��C�Ŀ�
-///���������Ҫ����extern "C"
-///�������ʾ����δ����
 
 void test(void) {
     printf("%s\n", avcodec_configuration());
@@ -24,72 +24,108 @@ void test(void) {
 
 
 GtooPlayer::GtooPlayer(QWidget *parent):
+    QMainWindow(parent),
     ui(new Ui::GtooPlayerClass),
-    QMainWindow(parent)
+    mReadThread(new ReadThread)
 {    
-    //QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8")); // û����
-    qDebug() << QString::fromLocal8Bit("����");
+    //QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8")); // 没有用
+    //qDebug() << QString::fromLocal8Bit("中文");
+    qDebug() << "中文";
 
     ui->setupUi(this);
+    initUtils();
     initUi();
     initConnect();
 }
 
+
+void GtooPlayer::initUtils(void) {
+
+}
+
 void GtooPlayer::initUi(void) {
-    openSecond1 = new QPushButton(QString::fromLocal8Bit("����"));
-    //openSecond1 = new QPushButton("about1");
-    ui->ToolBar->addWidget(openSecond1);
+    // 保留一下添加toolbar的方式
+    buttonOccupy = new QPushButton(QString::fromLocal8Bit("about"));
+    ui->ToolBar->addWidget(buttonOccupy);
 
-    openFileButton = new QPushButton("open file");
-    ui->ToolBar->addWidget(openFileButton);
 
-    openExampleButton = new QPushButton("example");
-    ui->ToolBar->addWidget(openExampleButton);
+    tmpExampleMenu = ui->menuBar->addMenu("example"); // 创建例子
+    tmpExampleMenuOpen = tmpExampleMenu->addAction("open");
 
+    ui->play_list->setEditable(true); // QComboBox需要开启才能编辑
 }
 
 void GtooPlayer::initConnect(void) {
-    connect(openSecond1, &QPushButton::clicked, this, &GtooPlayer::openAbout);
-    connect(openFileButton, &QPushButton::clicked, this, &GtooPlayer::openFile);
-    connect(openExampleButton, &QPushButton::clicked, this, &GtooPlayer::openExample);
+    this->setWindowTitle(mPlayerTitile);
+    connect(ui->action2_about, &QAction::triggered, this, &GtooPlayer::openAbout);
+    connect(tmpExampleMenuOpen, &QAction::triggered, this, &GtooPlayer::openExample);
 
 
-    connect(ui->pushButton_1_pause, &QPushButton::clicked, this, &GtooPlayer::pauseVideo);
+    connect(ui->action_open, &QAction::triggered, this, &GtooPlayer::openFile);
     connect(ui->pushButton_2_start, &QPushButton::clicked, this, &GtooPlayer::startVideo);
+    connect(ui->pushButton_1_pause, &QPushButton::clicked, this, &GtooPlayer::pauseVideo);
     connect(ui->pushButton_3_previous, &QPushButton::clicked, this, &GtooPlayer::startVideo);
     connect(ui->pushButton_4_next, &QPushButton::clicked, this, &GtooPlayer::startVideo);
+
+    // 它表示当信号被触发时，槽函数会立即在发射信号的线程上被调用。这意味着信号和槽之间的通信是直接的、同步的，不涉及事件循环的调度
+    // 这是不同线程中的触发
+    connect(mReadThread, &ReadThread::updateImage, ui->play_widget, &PlayImage::updateImage, Qt::DirectConnection);
+    connect(mReadThread, &ReadThread::playState, this, &GtooPlayer::onPlayState);
 }
 
 void GtooPlayer::openAbout(void) {
-    About* aboutWindow = new About(this);
+    About* aboutWindow = new About();
+    // QWidget作为单独的显示窗口，初始化时候不能使用this
+    // 如果初始化中继承了this，新建的窗口就和主窗口是同一个，拖不开了
+    //About* aboutWindow = new About(this);   
     aboutWindow->show();
 }
 
 void GtooPlayer::openExample(void) {
-    Example* exampleWindow = new Example(this);
+    Example* exampleWindow = new Example();
     exampleWindow->show();
 }
 
 
 void GtooPlayer::openFile(void) {
-    QString filePath = QFileDialog::getOpenFileName(this, "test", "E:\\Desktop\\tool\\player_test\\test_video");
-    QFileInfo info(filePath);
+    qDebug() << "openFile";
+    QString filePath = QFileDialog::getOpenFileName(this, "选择播放视频~！",
+        "E:/Desktop/languguetest/Cplusplustest/3-VisualStudio2017/0-GtooPlayer/test_video",
+        "视频 (*.mp4 *.m4v *.mov *.avi *.flv);; 其它(*)");
     qDebug() << filePath;
+    QFileInfo info(filePath);
 
-    //is = stream_open(filePath);
-    av_log(NULL, AV_LOG_INFO, "Failed to initialize VideoState!\n");
+    ui->play_list->setCurrentText(filePath);
 }
+
+void GtooPlayer::startVideo(void) {
+    qDebug() << "startVideo";
+    if (ui->pushButton_2_start->text() == "开始") {
+        mReadThread->open(ui->play_list->currentText());
+    }
+    else {
+        mReadThread->close();
+    }
+}
+
 
 void GtooPlayer::pauseVideo(void) {
     qDebug() << "pauseVideo";
 
 }
 
-void GtooPlayer::startVideo(void) {
-    qDebug() << "startVideo";
 
+void GtooPlayer::onPlayState(ReadThread::PlayState state) {
+    if (state == ReadThread::play) {
+        //this->setWindowTitle(QString("正在播放： %1").arg(mReadThread->url())); // 需要解决文件名太长的问题
+        this->setWindowTitle(QString("正在播放： %1").arg("test"));
+        ui->pushButton_2_start->setText("停止");
+    }
+    else if (state == ReadThread::end) {
+        ui->pushButton_2_start->setText("开始");
+        this->setWindowTitle(mPlayerTitile);
+    }
 }
 
-
-GtooPlayer::~GtooPlayer()
-{}
+GtooPlayer::~GtooPlayer(){
+}

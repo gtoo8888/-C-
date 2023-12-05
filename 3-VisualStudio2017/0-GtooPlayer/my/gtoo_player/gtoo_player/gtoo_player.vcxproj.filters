@@ -26,6 +26,9 @@
     <Filter Include="src\VideoPlay">
       <UniqueIdentifier>{4a0d0b25-0966-4ec2-9519-2b55d2a5fcf4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="doc">
+      <UniqueIdentifier>{dd8661fa-167d-4db6-9661-eb7b7e6e29cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="gtoo_player.qrc">
@@ -95,5 +98,10 @@
     <ResourceCompile Include="gtoo_player.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="doc\README.md">
+      <Filter>doc</Filter>
+    </None>
   </ItemGroup>
 </Project>

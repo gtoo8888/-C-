@@ -12,6 +12,8 @@ extern "C" {        // 用C规则编译指定的代码
 #include "libswscale/swscale.h"
 #include "libavutil/imgutils.h"
 
+#include "libavutil/time.h"
+
 }
 
 #define ERROR_LEN 1024  // 异常信息数组长度
@@ -93,7 +95,7 @@ bool VideoDecode::open(const QString &url)
     }
     m_totalTime = m_formatContext->duration / (AV_TIME_BASE / 1000); // 计算视频总时长（毫秒）
 #if PRINT_LOG
-    qDebug() << QString("视频总时长：%1 ms，[%2]").arg(m_totalTime).arg(QTime::fromMSecsSinceStartOfDay(int(m_totalTime)).toString("HH:mm:ss zzz"));
+    qDebug() << QString::fromLocal8Bit("视频总时长：%1 ms，[%2]").arg(m_totalTime).arg(QTime::fromMSecsSinceStartOfDay(int(m_totalTime)).toString("HH:mm:ss zzz"));
 #endif
 
     // 通过AVMediaType枚举查询视频流ID（也可以通过遍历查找），最后一个参数无用
@@ -116,8 +118,9 @@ bool VideoDecode::open(const QString &url)
     const AVCodec* codec = avcodec_find_decoder(videoStream->codecpar->codec_id);
     m_totalFrames = videoStream->nb_frames;
 
+
 #if PRINT_LOG
-    qDebug() << QString("分辨率：[w:%1,h:%2] 帧率：%3  总帧数：%4  解码器：%5")
+    qDebug() << QString::fromLocal8Bit("分辨率：[w:%1,h:%2] 帧率：%3  总帧数：%4  解码器：%5")
         .arg(m_size.width()).arg(m_size.height()).arg(m_frameRate).arg(m_totalFrames).arg(codec->name);
 #endif
 
@@ -209,14 +212,23 @@ QImage VideoDecode::read()
     {
         if (m_packet->stream_index == m_videoIndex)     // 如果是图像数据则进行解码
         {
+            AVRational time_base = m_formatContext->streams[m_videoIndex]->time_base;
             // 计算当前帧时间（毫秒）
 #if 1       // 方法一：适用于所有场景，但是存在一定误差
-            m_packet->pts = qRound64(m_packet->pts * (1000 * rationalToDouble(&m_formatContext->streams[m_videoIndex]->time_base)));
-            m_packet->dts = qRound64(m_packet->dts * (1000 * rationalToDouble(&m_formatContext->streams[m_videoIndex]->time_base)));
+            m_packet->pts = qRound64(m_packet->pts * (1000 * rationalToDouble(&time_base)));
+            m_packet->dts = qRound64(m_packet->dts * (1000 * rationalToDouble(&time_base)));
+
 #else       // 方法二：适用于播放本地视频文件，计算每一帧时间较准，但是由于网络视频流无法获取总帧数，所以无法适用
             m_obtainFrames++;
             m_packet->pts = qRound64(m_obtainFrames * (qreal(m_totalTime) / m_totalFrames));
 #endif
+            
+            
+            //int64_t timestamp = av_rescale_q(m_packet->pts, time_base, AV_TIME_BASE_Q);
+            //int64_t timestamp = av_frame_get_best_effort_timestamp(frame);
+            //av_frame_get_best_effort_timestamp()
+
+
             // 将读取到的原始数据包传入解码器
             int ret = avcodec_send_packet(m_codecContext, m_packet);
             if (ret < 0)
@@ -237,6 +249,11 @@ QImage VideoDecode::read()
         }
         return QImage();
     }
+
+    int64_t timestamp = m_frame->best_effort_timestamp;
+    int64_t timestamp_change = timestamp / (AV_TIME_BASE / 1000);
+    int64_t all_time = m_formatContext->duration / (AV_TIME_BASE / 1000);
+    qDebug() << QString("%1 %2:%3").arg(timestamp).arg(timestamp_change).arg(all_time);
 
     m_pts = m_frame->pts;
 
