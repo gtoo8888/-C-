@@ -23,6 +23,9 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>qml;cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="src\VideoPlay">
+      <UniqueIdentifier>{4a0d0b25-0966-4ec2-9519-2b55d2a5fcf4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="gtoo_player.qrc">
@@ -33,28 +36,10 @@
     <QtUic Include="ui\about.ui">
       <Filter>ui</Filter>
     </QtUic>
-    <QtUic Include="ui\ctrlbar.ui">
-      <Filter>ui</Filter>
-    </QtUic>
-    <QtUic Include="ui\form.ui">
-      <Filter>ui</Filter>
-    </QtUic>
-    <QtUic Include="ui\mainwid.ui">
-      <Filter>ui</Filter>
-    </QtUic>
-    <QtUic Include="ui\playlist.ui">
-      <Filter>ui</Filter>
-    </QtUic>
-    <QtUic Include="ui\settingwid.ui">
-      <Filter>ui</Filter>
-    </QtUic>
-    <QtUic Include="ui\show.ui">
-      <Filter>ui</Filter>
-    </QtUic>
-    <QtUic Include="ui\title.ui">
-      <Filter>ui</Filter>
-    </QtUic>
     <QtUic Include="ui\GtooPlayer.ui">
+      <Filter>ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\widget_example.ui">
       <Filter>ui</Filter>
     </QtUic>
   </ItemGroup>
@@ -68,6 +53,18 @@
     <ClCompile Include="src\GtooPlayer.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Example.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PlayImage.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VideoPlay\ReadThread.cpp">
+      <Filter>src\VideoPlay</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VideoPlay\VideoDecode.cpp">
+      <Filter>src\VideoPlay</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="include\About.h">
@@ -76,10 +73,22 @@
     <QtMoc Include="include\GtooPlayer.h">
       <Filter>include</Filter>
     </QtMoc>
+    <QtMoc Include="include\Example.h">
+      <Filter>include</Filter>
+    </QtMoc>
+    <QtMoc Include="include\PlayImage.h">
+      <Filter>include</Filter>
+    </QtMoc>
+    <QtMoc Include="src\VideoPlay\ReadThread.h">
+      <Filter>src\VideoPlay</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\resource.h">
       <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\VideoPlay\VideoDecode.h">
+      <Filter>src\VideoPlay</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

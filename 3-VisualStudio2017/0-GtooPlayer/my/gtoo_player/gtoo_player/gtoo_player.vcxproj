@@ -61,7 +61,8 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\Qt\Qt5.9.9\5.9.9\msvc2017_64\include;$(ProjectDir)include\;$(ProjectDir)3rdparty\ffmpeg\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Qt\Qt5.9.9\5.9.9\msvc2017_64\include;$(ProjectDir)include\;$(ProjectDir)3rdparty\ffmpeg\;$(ProjectDir)src\VideoPlay;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(ProjectDir)lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -97,19 +98,17 @@
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="ui\about.ui" />
-    <QtUic Include="ui\ctrlbar.ui" />
-    <QtUic Include="ui\form.ui" />
     <QtUic Include="ui\GtooPlayer.ui" />
-    <QtUic Include="ui\mainwid.ui" />
-    <QtUic Include="ui\playlist.ui" />
-    <QtUic Include="ui\settingwid.ui" />
-    <QtUic Include="ui\show.ui" />
-    <QtUic Include="ui\title.ui" />
+    <QtUic Include="ui\widget_example.ui" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\About.cpp" />
+    <ClCompile Include="src\Example.cpp" />
     <ClCompile Include="src\GtooPlayer.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\PlayImage.cpp" />
+    <ClCompile Include="src\VideoPlay\ReadThread.cpp" />
+    <ClCompile Include="src\VideoPlay\VideoDecode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="include\About.h" />
@@ -118,6 +117,10 @@
     <QtMoc Include="include\GtooPlayer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\VideoPlay\VideoDecode.h" />
+    <QtMoc Include="src\VideoPlay\ReadThread.h" />
+    <QtMoc Include="include\Example.h" />
+    <QtMoc Include="include\PlayImage.h" />
     <ClInclude Include="include\resource.h" />
   </ItemGroup>
   <ItemGroup>
