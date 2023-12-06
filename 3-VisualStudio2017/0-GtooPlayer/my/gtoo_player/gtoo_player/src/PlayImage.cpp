@@ -4,15 +4,15 @@
 
 PlayImage::PlayImage(QWidget *parent) : QWidget(parent)
 {
-    // ÊÊÓÃµ÷É«°åÉèÖÃ±³¾°É«
+    // é€‚ç”¨è°ƒè‰²æ¿è®¾ç½®èƒŒæ™¯è‰²
     QPalette palette(this->palette());
-    palette.setColor(QPalette::Background, Qt::black);   //ÉèÖÃ±³¾°ºÚÉ«
+    palette.setColor(QPalette::Background, Qt::black);   //è®¾ç½®èƒŒæ™¯é»‘è‰²
     this->setPalette(palette);
     this->setAutoFillBackground(true);
 }
 
 /**
- * @brief        ´«ÈëQimageÍ¼Æ¬ÏÔÊ¾
+ * @brief        ä¼ å…¥Qimageå›¾ç‰‡æ˜¾ç¤º
  * @param image
  */
 void PlayImage::updateImage(const QImage& image)
@@ -21,7 +21,7 @@ void PlayImage::updateImage(const QImage& image)
 }
 
 /**
- * @brief        ´«ÈëQPixmapÍ¼Æ¬
+ * @brief        ä¼ å…¥QPixmapå›¾ç‰‡
  * @param pixmap
  */
 void PlayImage::updatePixmap(const QPixmap &pixmap)
@@ -33,7 +33,7 @@ void PlayImage::updatePixmap(const QPixmap &pixmap)
 }
 
 /**
- * @brief        Ê¹ÓÃQpainterÏÔÊ¾Í¼Æ¬
+ * @brief        ä½¿ç”¨Qpainteræ˜¾ç¤ºå›¾ç‰‡
  * @param event
  */
 void PlayImage::paintEvent(QPaintEvent *event)
@@ -42,9 +42,9 @@ void PlayImage::paintEvent(QPaintEvent *event)
     {
         QPainter painter(this);
 #if 0
-        // ¾­¹ý´ÖÂÔ²âÊÔ£¬QImageÏÈËõ·Åºó×ªÎªQPixmapµÄ·½Ê½ÔÚÍ¼Ïñ±È½ÏÐ¡Ê±ºÄÊ±ÉÙ£¬Í¼Æ¬Ô½´óºÄÊ±Ô½´ó
+        // ç»è¿‡ç²—ç•¥æµ‹è¯•ï¼ŒQImageå…ˆç¼©æ”¾åŽè½¬ä¸ºQPixmapçš„æ–¹å¼åœ¨å›¾åƒæ¯”è¾ƒå°æ—¶è€—æ—¶å°‘ï¼Œå›¾ç‰‡è¶Šå¤§è€—æ—¶è¶Šå¤§
         QPixmap pixmap = QPixmap::fromImage(m_image.scaled(this->size(), Qt::KeepAspectRatio));
-        // ÏÈ½«QImage×ª»»ÎªQPixmapÔÙ½øÐÐËõ·ÅÔòºÄÊ±±È½ÏÉÙ£¬²¢ÇÒÎÈ¶¨£¬²»»áÒòÎªËõ·ÅÍ¼Æ¬´óÐ¡¶ø²úÉúÌ«´óÓ°Ïì
+        // å…ˆå°†QImageè½¬æ¢ä¸ºQPixmapå†è¿›è¡Œç¼©æ”¾åˆ™è€—æ—¶æ¯”è¾ƒå°‘ï¼Œå¹¶ä¸”ç¨³å®šï¼Œä¸ä¼šå› ä¸ºç¼©æ”¾å›¾ç‰‡å¤§å°è€Œäº§ç”Ÿå¤ªå¤§å½±å“
         QPixmap pixmap1 = QPixmap::fromImage(m_image).scaled(this->size(), Qt::KeepAspectRatio);
 #endif
         m_mutex.lock();

@@ -29,6 +29,9 @@
     <Filter Include="doc">
       <UniqueIdentifier>{dd8661fa-167d-4db6-9661-eb7b7e6e29cf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="test">
+      <UniqueIdentifier>{cb4af611-d367-499e-b569-f22b50dbea69}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="gtoo_player.qrc">
@@ -67,6 +70,9 @@
     </ClCompile>
     <ClCompile Include="src\VideoPlay\VideoDecode.cpp">
       <Filter>src\VideoPlay</Filter>
+    </ClCompile>
+    <ClCompile Include="test\test_readthread.cpp">
+      <Filter>test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
