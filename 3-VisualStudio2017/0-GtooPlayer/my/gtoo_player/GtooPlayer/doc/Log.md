@@ -17,3 +17,4 @@
 2. 语言规范
 3. QLable显示当前播放时间
 4. QPregressBar可以显示进度条
+5. 增加了播放列表PlayList，点击可以播放视频

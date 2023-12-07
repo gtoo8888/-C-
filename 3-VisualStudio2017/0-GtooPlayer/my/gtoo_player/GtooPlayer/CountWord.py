@@ -9,7 +9,7 @@ class FileInfo():
         self.file_line = 0
 
     def __str__(self):
-        return "{:4s} file: count: {}, line: {}".format(self.type, self.file_count, self.file_line)
+        return "{:5s} file: count: {:2d}, line: {:4d}".format(self.type, self.file_count, self.file_line)
 
     def __add__(self, other):
         fi = FileInfo(self.type)
@@ -23,8 +23,9 @@ class CountWord():
         self.fi_h = FileInfo("h")
         self.fi_cpp = FileInfo("cpp")
         self.fi_ui = FileInfo("ui")
+        self.fi_error = FileInfo("error")
         self.fi_sum = FileInfo("sum")
-        self.folder_names = [ "src", "include", "test", "ui"]
+        self.folder_names = ["src", "include", "test", "ui"]
 
     def count_lines_without_comments(self, file_path, blank_line=True):
         try:
@@ -34,6 +35,7 @@ class CountWord():
                     lines = [line.strip() for line in lines if not line.strip().startswith('//')]
             return len(lines)
         except:
+            self.fi_error.file_count += 1
             print("Error!:{}".format(file_path))
             return 0
 
@@ -66,7 +68,8 @@ class CountWord():
         self.fi_sum += self.fi_h + self.fi_cpp + self.fi_ui
 
     def __str__(self):
-        str_ans = "{:s}\n{:s}\n{:s}\n{:s}".format(str(self.fi_h), str(self.fi_cpp), str(self.fi_ui), str(self.fi_sum))
+        str_ans = "{:s}\n{:s}\n{:s}\n{:s} ---\n{:s}". \
+            format(str(self.fi_h), str(self.fi_cpp), str(self.fi_ui), str(self.fi_error), str(self.fi_sum))
         return str_ans
 
 

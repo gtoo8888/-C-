@@ -50,7 +50,8 @@ void GtooPlayer::initUi(void) {
 
 
     tmpExampleMenu = ui->menuBar->addMenu("example"); // 创建例子
-    tmpExampleMenuOpen = tmpExampleMenu->addAction("open");
+    tmpExampleMenu1Open = tmpExampleMenu->addAction("open");
+    tmpExampleMenu2PlayList = tmpExampleMenu->addAction("playlist");
 
     ui->play_list->setEditable(true); // QComboBox需要开启才能编辑
 
@@ -62,14 +63,18 @@ void GtooPlayer::initUi(void) {
 void GtooPlayer::initConnect(void) {
     this->setWindowTitle(mPlayerTitile);
     connect(ui->action2_about, &QAction::triggered, this, &GtooPlayer::openAbout);
-    connect(tmpExampleMenuOpen, &QAction::triggered, this, &GtooPlayer::openExample);
+    connect(tmpExampleMenu1Open, &QAction::triggered, this, &GtooPlayer::openExample1);
+    connect(tmpExampleMenu2PlayList, &QAction::triggered, this, &GtooPlayer::openExample2PlayList);
 
 
     connect(ui->action_open, &QAction::triggered, this, &GtooPlayer::openFile);
     connect(ui->pushButton_2_start, &QPushButton::clicked, this, &GtooPlayer::startVideo);
     connect(ui->pushButton_1_pause, &QPushButton::clicked, this, &GtooPlayer::pauseVideo);
-    connect(ui->pushButton_3_previous, &QPushButton::clicked, this, &GtooPlayer::startVideo);
-    connect(ui->pushButton_4_next, &QPushButton::clicked, this, &GtooPlayer::startVideo);
+    connect(ui->pushButton_3_previous, &QPushButton::clicked, this, &GtooPlayer::pauseVideo);
+    connect(ui->pushButton_4_next, &QPushButton::clicked, this, &GtooPlayer::pauseVideo);
+
+    //ui->play_list->currentText()
+    connect(ui->WidgetPlayList, &PlayList::SigPlay, this, &GtooPlayer::startVideoPlayList);
 
     // 它表示当信号被触发时，槽函数会立即在发射信号的线程上被调用。这意味着信号和槽之间的通信是直接的、同步的，不涉及事件循环的调度
     // 这是不同线程中的触发
@@ -86,8 +91,14 @@ void GtooPlayer::openAbout(void) {
     aboutWindow->show();
 }
 
-void GtooPlayer::openExample(void) {
+void GtooPlayer::openExample1(void) {
     Example* exampleWindow = new Example();
+    exampleWindow->show();
+
+}
+
+void GtooPlayer::openExample2PlayList(void) {
+    PlayList* exampleWindow = new PlayList();
     exampleWindow->show();
 }
 
@@ -106,7 +117,18 @@ void GtooPlayer::openFile(void) {
 void GtooPlayer::startVideo(void) {
     qDebug() << "startVideo";
     if (ui->pushButton_2_start->text() == "开始") {
-        mReadThread->open(ui->play_list->currentText());
+        mReadThread->open(nowPlayFilePath);
+    }
+    else {
+        mReadThread->close();
+    }
+}
+
+void GtooPlayer::startVideoPlayList(QString playFilePath) {
+    qDebug() << "startVideoPlayList";
+    nowPlayFilePath = playFilePath;
+    if (ui->pushButton_2_start->text() == "开始") {
+        mReadThread->open(nowPlayFilePath);
     }
     else {
         mReadThread->close();

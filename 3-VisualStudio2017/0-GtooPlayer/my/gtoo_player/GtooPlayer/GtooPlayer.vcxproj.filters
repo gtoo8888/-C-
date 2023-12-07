@@ -32,6 +32,12 @@
     <Filter Include="test">
       <UniqueIdentifier>{cb4af611-d367-499e-b569-f22b50dbea69}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ui\uic">
+      <UniqueIdentifier>{80b7c100-d6ca-4ef5-8251-2fa47359f03e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\moc">
+      <UniqueIdentifier>{1e9ed934-7e8f-4b19-ba4d-77402991ae4f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="ui\GtooPlayer.ui">
@@ -41,6 +47,9 @@
       <Filter>ui</Filter>
     </QtUic>
     <QtUic Include="ui\About.ui">
+      <Filter>ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\PlayList.ui">
       <Filter>ui</Filter>
     </QtUic>
   </ItemGroup>
@@ -69,6 +78,9 @@
     <ClCompile Include="src\VideoDecode.cpp">
       <Filter>src\VideoPlay</Filter>
     </ClCompile>
+    <ClCompile Include="src\PlayList.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="include\About.h">
@@ -86,6 +98,9 @@
     <QtMoc Include="src\ReadThread.h">
       <Filter>src\VideoPlay</Filter>
     </QtMoc>
+    <QtMoc Include="include\PlayList.h">
+      <Filter>include</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <None Include="doc\README.md">
@@ -101,6 +116,21 @@
   <ItemGroup>
     <ClInclude Include="src\VideoDecode.h">
       <Filter>src\VideoPlay</Filter>
+    </ClInclude>
+    <ClInclude Include="x64\Debug\uic\ui_About.h">
+      <Filter>ui\uic</Filter>
+    </ClInclude>
+    <ClInclude Include="x64\Debug\uic\ui_GtooPlayer.h">
+      <Filter>ui\uic</Filter>
+    </ClInclude>
+    <ClInclude Include="x64\Debug\uic\ui_PlayList.h">
+      <Filter>ui\uic</Filter>
+    </ClInclude>
+    <ClInclude Include="x64\Debug\uic\ui_PlayListOld.h">
+      <Filter>ui\uic</Filter>
+    </ClInclude>
+    <ClInclude Include="x64\Debug\uic\ui_WidgetExample.h">
+      <Filter>ui\uic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

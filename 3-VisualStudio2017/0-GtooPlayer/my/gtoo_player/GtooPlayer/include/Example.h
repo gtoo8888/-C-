@@ -12,6 +12,11 @@ public:
     Example(QWidget *parent = nullptr);
     ~Example();
 
+    //QMenu m_stMenu;
+
+    //QAction m_stActAdd;     //添加文件
+
+
 private slots:
     void on_but_file_clicked();
 

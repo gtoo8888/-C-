@@ -120,6 +120,16 @@
      <number>24</number>
     </property>
    </widget>
+   <widget class="PlayList" name="WidgetPlayList" native="true">
+    <property name="geometry">
+     <rect>
+      <x>920</x>
+      <y>80</y>
+      <width>311</width>
+      <height>701</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -285,6 +295,12 @@
    <class>PlayImage</class>
    <extends>QWidget</extends>
    <header>playimage.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>PlayList</class>
+   <extends>QWidget</extends>
+   <header>playlist.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
