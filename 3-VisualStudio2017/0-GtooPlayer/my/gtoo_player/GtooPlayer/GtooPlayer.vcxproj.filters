@@ -34,18 +34,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="gtoo_player.qrc">
-      <Filter>Resource Files</Filter>
-    </QtRcc>
-  </ItemGroup>
-  <ItemGroup>
-    <QtUic Include="ui\about.ui">
-      <Filter>ui</Filter>
-    </QtUic>
     <QtUic Include="ui\GtooPlayer.ui">
       <Filter>ui</Filter>
     </QtUic>
-    <QtUic Include="ui\widget_example.ui">
+    <QtUic Include="ui\WidgetExample.ui">
+      <Filter>ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\About.ui">
       <Filter>ui</Filter>
     </QtUic>
   </ItemGroup>
@@ -65,14 +60,14 @@
     <ClCompile Include="src\PlayImage.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\VideoPlay\ReadThread.cpp">
-      <Filter>src\VideoPlay</Filter>
-    </ClCompile>
-    <ClCompile Include="src\VideoPlay\VideoDecode.cpp">
-      <Filter>src\VideoPlay</Filter>
-    </ClCompile>
-    <ClCompile Include="test\test_readthread.cpp">
+    <ClCompile Include="test\TestReadThread.cpp">
       <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ReadThread.cpp">
+      <Filter>src\VideoPlay</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VideoDecode.cpp">
+      <Filter>src\VideoPlay</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -88,26 +83,31 @@
     <QtMoc Include="include\PlayImage.h">
       <Filter>include</Filter>
     </QtMoc>
-    <QtMoc Include="src\VideoPlay\ReadThread.h">
+    <QtMoc Include="src\ReadThread.h">
       <Filter>src\VideoPlay</Filter>
     </QtMoc>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="include\resource.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="src\VideoPlay\VideoDecode.h">
-      <Filter>src\VideoPlay</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="gtoo_player.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="doc\README.md">
       <Filter>doc</Filter>
     </None>
+    <None Include="doc\NameNote.md">
+      <Filter>doc</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\VideoDecode.h">
+      <Filter>src\VideoPlay</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="GtooPlayer.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GtooPlayer.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

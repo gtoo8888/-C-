@@ -61,12 +61,12 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\Qt\Qt5.9.9\5.9.9\msvc2017_64\include;$(ProjectDir)include\;$(ProjectDir)3rdparty\;$(ProjectDir)3rdparty\ffmpeg\;$(ProjectDir)src\VideoPlay;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Qt\Qt5.9.9\5.9.9\msvc2017_64\include;$(ProjectDir)include\;$(ProjectDir)3rdparty\;$(ProjectDir)3rdparty\ffmpeg\;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(ProjectDir)lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)lib\;$(ProjectDir)lib\ffmpeg;$(ProjectDir)lib\gtest;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>avcodec.lib;avformat.lib;avutil.lib;avdevice.lib;avfilter.lib;postproc.lib;swresample.lib;swscale.lib;gtest.lib;gtest_main.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -95,12 +95,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <QtRcc Include="gtoo_player.qrc" />
+    <QtRcc Include="GtooPlayer.qrc" />
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="ui\about.ui" />
+    <QtUic Include="ui\About.ui" />
     <QtUic Include="ui\GtooPlayer.ui" />
-    <QtUic Include="ui\widget_example.ui" />
+    <QtUic Include="ui\WidgetExample.ui" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\About.cpp" />
@@ -108,9 +108,9 @@
     <ClCompile Include="src\GtooPlayer.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\PlayImage.cpp" />
-    <ClCompile Include="src\VideoPlay\ReadThread.cpp" />
-    <ClCompile Include="src\VideoPlay\VideoDecode.cpp" />
-    <ClCompile Include="test\test_readthread.cpp" />
+    <ClCompile Include="src\ReadThread.cpp" />
+    <ClCompile Include="src\VideoDecode.cpp" />
+    <ClCompile Include="test\TestReadThread.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="include\About.h" />
@@ -119,17 +119,21 @@
     <QtMoc Include="include\GtooPlayer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\VideoPlay\VideoDecode.h" />
-    <QtMoc Include="src\VideoPlay\ReadThread.h" />
     <QtMoc Include="include\Example.h" />
     <QtMoc Include="include\PlayImage.h" />
-    <ClInclude Include="include\resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="gtoo_player.rc" />
+    <ResourceCompile Include="GtooPlayer.rc" />
   </ItemGroup>
   <ItemGroup>
     <None Include="doc\README.md" />
+    <None Include="doc\NameNote.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="src\ReadThread.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\VideoDecode.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

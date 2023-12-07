@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QObject>
-#include "ui_about.h"
+#include "ui_About.h"
 
 class About  : public QWidget
 {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QWidget>
-#include "ui_widget_example.h"
+#include "ui_WidgetExample.h"
 #include "ReadThread.h"
 
 class Example : public QWidget

@@ -33,6 +33,8 @@
    2. qmake在windows平台生成
 
 
+python ./CountWord.py
+
 # 如果需要加入gtest,在编译的时候需要统一生成模式，不然运行时候会报错
 ```
 $(Qt_RUNTIME_) 这是qt原来的生成模式
