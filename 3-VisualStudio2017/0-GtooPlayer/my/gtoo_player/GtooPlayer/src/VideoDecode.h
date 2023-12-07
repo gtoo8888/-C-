@@ -1,11 +1,11 @@
 /******************************************************************************
- * @ÎÄ¼şÃû     videodecode.h
- * @¹¦ÄÜ       ÊÓÆµ½âÂëÀà£¬ÔÚÕâ¸öÀàÖĞµ÷ÓÃffmpeg´ò¿ªÊÓÆµ½øĞĞ½âÂë
+ * @æ–‡ä»¶å     videodecode.h
+ * @åŠŸèƒ½       è§†é¢‘è§£ç ç±»ï¼Œåœ¨è¿™ä¸ªç±»ä¸­è°ƒç”¨ffmpegæ‰“å¼€è§†é¢‘è¿›è¡Œè§£ç 
  *
- * @¿ª·¢Õß     mhf
- * @ÓÊÏä       1603291350@qq.com
- * @Ê±¼ä       2022/09/15
- * @±¸×¢
+ * @å¼€å‘è€…     mhf
+ * @é‚®ç®±       1603291350@qq.com
+ * @æ—¶é—´       2022/09/15
+ * @å¤‡æ³¨
  *****************************************************************************/
 #ifndef VIDEODECODE_H
 #define VIDEODECODE_H
@@ -22,41 +22,67 @@ struct SwsContext;
 struct AVBufferRef;
 class QImage;
 
+
+class VideoFileInfo 
+{
+public:
+    VideoFileInfo();
+    ~VideoFileInfo();
+
+    void clear();
+    void transformTime();
+
+public:
+    int64_t mTotalTimeStamp = 0; // è§†é¢‘æ€»æ—¶é•¿
+    int64_t mTotalTimeMs = 0;
+    QString mTotalTimeStr = 0;
+    int64_t mNowTimeStamp = 0; // ç°åœ¨æ’­æ”¾çš„æ—¶é—´
+    int64_t mNowTimeMs = 0;
+    QString mNowTimeStr = 0;
+    qreal mProgressValue = 0;
+
+    qint64 mTotalFrames = 0;                    // è§†é¢‘æ€»å¸§æ•°
+    qreal  mFrameRate = 0;                    // è§†é¢‘å¸§ç‡
+    QSize  mSize;                                // è§†é¢‘åˆ†è¾¨ç‡å¤§å°
+    QString mCodecName; // è§£ç å™¨åå­—
+};
+
+
 class VideoDecode
 {
 public:
     VideoDecode();
     ~VideoDecode();
 
-    bool open(const QString& url = QString());    // ´ò¿ªÃ½ÌåÎÄ¼ş£¬»òÕßÁ÷Ã½Ìårtmp¡¢strp¡¢http
-    QImage read();                               // ¶ÁÈ¡ÊÓÆµÍ¼Ïñ
-    void close();                                 // ¹Ø±Õ
-    bool isEnd();                                 // ÊÇ·ñ¶ÁÈ¡Íê³É
-    const qint64& pts();                          // »ñÈ¡µ±Ç°Ö¡ÏÔÊ¾Ê±¼ä
+    bool open(const QString& url = QString());    // æ‰“å¼€åª’ä½“æ–‡ä»¶ï¼Œæˆ–è€…æµåª’ä½“rtmpã€strpã€http
+    QImage read();                               // è¯»å–è§†é¢‘å›¾åƒ
+    void close();                                 // å…³é—­
+    bool isEnd();                                 // æ˜¯å¦è¯»å–å®Œæˆ
+    const qint64& pts();                          // è·å–å½“å‰å¸§æ˜¾ç¤ºæ—¶é—´
+
+public:
+    VideoFileInfo* mVideoFileInfo;
+
 
 private:
-    void initFFmpeg();                            // ³õÊ¼»¯ffmpeg¿â£¨Õû¸ö³ÌĞòÖĞÖ»Ğè¼ÓÔØÒ»´Î£©
-    void showError(int err);                      // ÏÔÊ¾ffmpegÖ´ĞĞ´íÎóÊ±µÄ´íÎóĞÅÏ¢
-    qreal rationalToDouble(AVRational* rational); // ½«AVRational×ª»»Îªdouble
-    void clear();                                 // Çå¿Õ¶ÁÈ¡»º³å
-    void free();                                  // ÊÍ·Å
+    void initFFmpeg();                            // åˆå§‹åŒ–ffmpegåº“ï¼ˆæ•´ä¸ªç¨‹åºä¸­åªéœ€åŠ è½½ä¸€æ¬¡ï¼‰
+    void showError(int err);                      // æ˜¾ç¤ºffmpegæ‰§è¡Œé”™è¯¯æ—¶çš„é”™è¯¯ä¿¡æ¯
+    qreal rationalToDouble(AVRational* rational); // å°†AVRationalè½¬æ¢ä¸ºdouble
+    void clear();                                 // æ¸…ç©ºè¯»å–ç¼“å†²
+    void free();                                  // é‡Šæ”¾
 
 private:
-    AVFormatContext* m_formatContext = nullptr;   // ½â·â×°ÉÏÏÂÎÄ
-    AVCodecContext*  m_codecContext = nullptr;   // ½âÂëÆ÷ÉÏÏÂÎÄ
-    SwsContext*      m_swsContext = nullptr;   // Í¼Ïñ×ª»»ÉÏÏÂÎÄ
-    AVPacket* m_packet = nullptr;                 // Êı¾İ°ü
-    AVFrame*  m_frame = nullptr;                 // ½âÂëºóµÄÊÓÆµÖ¡
-    int    m_videoIndex = 0;                    // ÊÓÆµÁ÷Ë÷Òı
-    qint64 m_totalTime = 0;                    // ÊÓÆµ×ÜÊ±³¤
-    qint64 m_totalFrames = 0;                    // ÊÓÆµ×ÜÖ¡Êı
-    qint64 m_obtainFrames = 0;                    // ÊÓÆµµ±Ç°»ñÈ¡µ½µÄÖ¡Êı
-    qint64 m_pts = 0;                    // Í¼ÏñÖ¡µÄÏÔÊ¾Ê±¼ä
-    qreal  m_frameRate = 0;                    // ÊÓÆµÖ¡ÂÊ
-    QSize  m_size;                                // ÊÓÆµ·Ö±æÂÊ´óĞ¡
-    char*  m_error = nullptr;                     // ±£´æÒì³£ĞÅÏ¢
-    bool   m_end = false;                         // ÊÓÆµ¶ÁÈ¡Íê³É
-    uchar* m_buffer = nullptr;                    // YUVÍ¼ÏñĞèÒª×ª»»Î»RGBAÍ¼Ïñ£¬ÕâÀï±£´æ×ª»»ºóµÄÍ¼ĞÎÊı¾İ
+    AVFormatContext* m_formatContext = nullptr;   // è§£å°è£…ä¸Šä¸‹æ–‡
+    AVCodecContext*  m_codecContext = nullptr;   // è§£ç å™¨ä¸Šä¸‹æ–‡
+    SwsContext*      m_swsContext = nullptr;   // å›¾åƒè½¬æ¢ä¸Šä¸‹æ–‡
+    AVPacket* m_packet = nullptr;                 // æ•°æ®åŒ…
+    AVFrame*  m_frame = nullptr;                 // è§£ç åçš„è§†é¢‘å¸§
+    int    m_videoIndex = 0;                    // è§†é¢‘æµç´¢å¼•
+    qint64 m_obtainFrames = 0;                    // è§†é¢‘å½“å‰è·å–åˆ°çš„å¸§æ•°
+    qint64 m_pts = 0;                    // å›¾åƒå¸§çš„æ˜¾ç¤ºæ—¶é—´
+    char*  m_error = nullptr;                     // ä¿å­˜å¼‚å¸¸ä¿¡æ¯
+    bool   m_end = false;                         // è§†é¢‘è¯»å–å®Œæˆ
+    uchar* m_buffer = nullptr;                    // YUVå›¾åƒéœ€è¦è½¬æ¢ä½RGBAå›¾åƒï¼Œè¿™é‡Œä¿å­˜è½¬æ¢åçš„å›¾å½¢æ•°æ®
 };
 
 #endif // VIDEODECODE_H

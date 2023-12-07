@@ -53,6 +53,10 @@ void GtooPlayer::initUi(void) {
     tmpExampleMenuOpen = tmpExampleMenu->addAction("open");
 
     ui->play_list->setEditable(true); // QComboBox需要开启才能编辑
+
+    ui->progressBar->setMinimum(mProgressBarMin);
+    ui->progressBar->setMaximum(mProgressBarMax);
+    ui->progressBar->setValue(mProgressBarMin);
 }
 
 void GtooPlayer::initConnect(void) {
@@ -71,6 +75,7 @@ void GtooPlayer::initConnect(void) {
     // 这是不同线程中的触发
     connect(mReadThread, &ReadThread::updateImage, ui->play_widget, &PlayImage::updateImage, Qt::DirectConnection);
     connect(mReadThread, &ReadThread::playState, this, &GtooPlayer::onPlayState);
+    connect(mReadThread, &ReadThread::updateTime, this, &GtooPlayer::updateTime);
 }
 
 void GtooPlayer::openAbout(void) {
@@ -126,6 +131,17 @@ void GtooPlayer::onPlayState(ReadThread::PlayState state) {
         this->setWindowTitle(mPlayerTitile);
     }
 }
+
+
+void GtooPlayer::updateTime(QString nowTime, QString totalTime,qreal progressValue) {
+    ui->labelNowTime->setText(nowTime);
+    ui->labelTotalTime->setText(totalTime);
+
+    qreal nowProgress = progressValue * (mProgressBarMax - mProgressBarMin);
+    ui->progressBar->setValue(int(nowProgress));
+    ui->progressBar->setFormat(QString("%1%").arg(QString::number(nowProgress, 'f', 2)));
+}
+
 
 GtooPlayer::~GtooPlayer(){
 }

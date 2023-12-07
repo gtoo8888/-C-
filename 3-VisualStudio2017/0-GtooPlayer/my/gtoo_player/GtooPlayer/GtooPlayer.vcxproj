@@ -126,6 +126,7 @@
     <ResourceCompile Include="GtooPlayer.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="doc\Log.md" />
     <None Include="doc\README.md" />
     <None Include="doc\NameNote.md" />
   </ItemGroup>

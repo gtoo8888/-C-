@@ -8,21 +8,21 @@
 
 ReadThread::ReadThread(QObject *parent) : QThread(parent)
 {
-    m_videoDecode = new VideoDecode();
+    mVideoDecode = new VideoDecode();
 
-    qRegisterMetaType<PlayState>("PlayState");    // ×¢²á×Ô¶¨ÒåÃ¶¾ÙÀàĞÍ£¬·ñÔòĞÅºÅ²ÛÎŞ·¨·¢ËÍ
+    qRegisterMetaType<PlayState>("PlayState");    // æ³¨å†Œè‡ªå®šä¹‰æšä¸¾ç±»å‹ï¼Œå¦åˆ™ä¿¡å·æ§½æ— æ³•å‘é€
 }
 
 ReadThread::~ReadThread()
 {
-    if (m_videoDecode)
+    if (mVideoDecode)
     {
-        delete m_videoDecode;
+        delete mVideoDecode;
     }
 }
 
 /**
- * @brief      ´«Èë²¥·ÅµÄÊÓÆµµØÖ·²¢¿ªÆôÏß³Ì
+ * @brief      ä¼ å…¥æ’­æ”¾çš„è§†é¢‘åœ°å€å¹¶å¼€å¯çº¿ç¨‹
  * @param url
  */
 void ReadThread::open(const QString &url)
@@ -30,13 +30,13 @@ void ReadThread::open(const QString &url)
     if (!this->isRunning())
     {
         m_url = url;
-        emit this->start(); // QThreadµÄÆô¶¯ĞÅºÅ£¿
+        emit this->start(); // QThreadçš„å¯åŠ¨ä¿¡å·ï¼Ÿ
     }
 }
 
 /**
- * @brief       ¿ØÖÆÔİÍ£¡¢¼ÌĞø
- * @param flag  true£ºÔİÍ£  fasle£º¼ÌĞø
+ * @brief       æ§åˆ¶æš‚åœã€ç»§ç»­
+ * @param flag  trueï¼šæš‚åœ  fasleï¼šç»§ç»­
  */
 void ReadThread::pause(bool flag)
 {
@@ -44,7 +44,7 @@ void ReadThread::pause(bool flag)
 }
 
 /**
- * @brief ¹Ø±Õ²¥·Å
+ * @brief å…³é—­æ’­æ”¾
  */
 void ReadThread::close()
 {
@@ -53,7 +53,7 @@ void ReadThread::close()
 }
 
 /**
- * @brief    ·µ»Øµ±Ç°²¥·ÅµÄµØÖ·
+ * @brief    è¿”å›å½“å‰æ’­æ”¾çš„åœ°å€
  * @return
  */
 const QString &ReadThread::url()
@@ -62,20 +62,20 @@ const QString &ReadThread::url()
 }
 
 /**
- * @brief      ·Ç×èÈûÑÓÊ±
- * @param msec ÑÓÊ±ºÁÃë
+ * @brief      éé˜»å¡å»¶æ—¶
+ * @param msec å»¶æ—¶æ¯«ç§’
  */
 void  sleepMsec(int msec)
 {
     if (msec <= 0) return;
-    QEventLoop loop;		//¶¨ÒåÒ»¸öĞÂµÄÊÂ¼şÑ­»·
-    QTimer::singleShot(msec, &loop, SLOT(quit()));//´´½¨µ¥´Î¶¨Ê±Æ÷£¬²Ûº¯ÊıÎªÊÂ¼şÑ­»·µÄÍË³öº¯Êı
-    loop.exec();			//ÊÂ¼şÑ­»·¿ªÊ¼Ö´ĞĞ£¬³ÌĞò»á¿¨ÔÚÕâÀï£¬Ö±µ½¶¨Ê±Ê±¼äµ½£¬±¾Ñ­»·±»ÍË³ö
+    QEventLoop loop;		//å®šä¹‰ä¸€ä¸ªæ–°çš„äº‹ä»¶å¾ªç¯
+    QTimer::singleShot(msec, &loop, SLOT(quit()));//åˆ›å»ºå•æ¬¡å®šæ—¶å™¨ï¼Œæ§½å‡½æ•°ä¸ºäº‹ä»¶å¾ªç¯çš„é€€å‡ºå‡½æ•°
+    loop.exec();			//äº‹ä»¶å¾ªç¯å¼€å§‹æ‰§è¡Œï¼Œç¨‹åºä¼šå¡åœ¨è¿™é‡Œï¼Œç›´åˆ°å®šæ—¶æ—¶é—´åˆ°ï¼Œæœ¬å¾ªç¯è¢«é€€å‡º
 }
 
 void ReadThread::run()
 {
-    bool ret = m_videoDecode->open(m_url);         // ´ò¿ªÍøÂçÁ÷Ê±»á±È½ÏÂı£¬Èç¹û·Åµ½UiÏß³Ì»á¿¨
+    bool ret = mVideoDecode->open(m_url);         // æ‰“å¼€ç½‘ç»œæµæ—¶ä¼šæ¯”è¾ƒæ…¢ï¼Œå¦‚æœæ”¾åˆ°Uiçº¿ç¨‹ä¼šå¡
     if (ret)
     {
         m_play = true;
@@ -85,40 +85,43 @@ void ReadThread::run()
     }
     else
     {
-        qWarning() << "´ò¿ªÊ§°Ü£¡";
+        qWarning() << "æ‰“å¼€å¤±è´¥ï¼";
     }
-    // Ñ­»·¶ÁÈ¡ÊÓÆµÍ¼Ïñ
+    // å¾ªç¯è¯»å–è§†é¢‘å›¾åƒ
     while (m_play)
     {
-        // ÔİÍ£
+        // æš‚åœ
         while (m_pause)
         {
             sleepMsec(200);
         }
 
-        QImage image = m_videoDecode->read();  // ¶ÁÈ¡ÊÓÆµÍ¼Ïñ
+        QImage image = mVideoDecode->read();  // è¯»å–è§†é¢‘å›¾åƒ
         if (!image.isNull())
         {
-            // 1±¶ËÙ²¥·Å
+            // 1å€é€Ÿæ’­æ”¾
 #if 0
-            sleepMsec(int(m_decodeVideo->pts() - m_etime1.elapsed()));         // ²»Ö§³ÖºóÍË
+            sleepMsec(int(m_decodeVideo->pts() - m_etime1.elapsed()));         // ä¸æ”¯æŒåé€€
 #else
-            sleepMsec(int(m_videoDecode->pts() - m_etime2.elapsed()));         // Ö§³ÖºóÍË£¨Èç¹ûÄÜ¶ÁÈ¡µ½ÊÓÆµ£¬µ«Ò»Ö±²»ÏÔÊ¾¿ÉÒÔ°ÑÕâÒ»ĞĞ´úÂë×¢ÊÍÊÔÊÔ£©
+            sleepMsec(int(mVideoDecode->pts() - m_etime2.elapsed()));         // æ”¯æŒåé€€ï¼ˆå¦‚æœèƒ½è¯»å–åˆ°è§†é¢‘ï¼Œä½†ä¸€ç›´ä¸æ˜¾ç¤ºå¯ä»¥æŠŠè¿™ä¸€è¡Œä»£ç æ³¨é‡Šè¯•è¯•ï¼‰
 #endif
             emit updateImage(image);
+            emit updateTime(mVideoDecode->mVideoFileInfo->mNowTimeStr,
+                            mVideoDecode->mVideoFileInfo->mTotalTimeStr,
+                            mVideoDecode->mVideoFileInfo->mProgressValue);
         }
         else
         {
-            // µ±Ç°¶ÁÈ¡µ½ÎŞĞ§Í¼ÏñÊ±ÅĞ¶ÏÊÇ·ñ¶ÁÈ¡Íê³É
-            if (m_videoDecode->isEnd())
+            // å½“å‰è¯»å–åˆ°æ— æ•ˆå›¾åƒæ—¶åˆ¤æ–­æ˜¯å¦è¯»å–å®Œæˆ
+            if (mVideoDecode->isEnd())
             {
                 break;
             }
-            sleepMsec(1);   // ÕâÀï²»ÄÜÊ¹ÓÃQThread::msleep()ÑÓÊ±£¬·ñÔò»áºÜ²»ÎÈ¶¨
+            sleepMsec(1);   // è¿™é‡Œä¸èƒ½ä½¿ç”¨QThread::msleep()å»¶æ—¶ï¼Œå¦åˆ™ä¼šå¾ˆä¸ç¨³å®š
         }
     }
 
-    qDebug() << "²¥·Å½áÊø£¡";
-    m_videoDecode->close();
+    qDebug() << "æ’­æ”¾ç»“æŸï¼";
+    mVideoDecode->close();
     emit playState(end);
 }

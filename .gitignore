@@ -9,6 +9,7 @@ Cplusplus源码/
 3-VisualStudio2017/0-GtooPlayer/gh_d/
 3rdparty
 *.lib
+
 # VisualStudio.gitignore
 
 # Visual Studio 2015/2017 cache/options directory
@@ -38,5 +39,8 @@ bld/
 [Ll]og/
 [Ll]ogs/
 
+# Other
+*.aps
 
+# PyCharm
 .idea

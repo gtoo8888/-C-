@@ -94,6 +94,9 @@
     <None Include="doc\NameNote.md">
       <Filter>doc</Filter>
     </None>
+    <None Include="doc\Log.md">
+      <Filter>doc</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\VideoDecode.h">

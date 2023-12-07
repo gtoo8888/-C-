@@ -1,11 +1,11 @@
 /******************************************************************************
- * @ÎÄ¼şÃû     readthread.h
- * @¹¦ÄÜ       ¶ÁÈ¡ÊÓÆµÍ¼ÏñÊı¾İÏß³Ì£¬ÔÚÏß³ÌÖĞ½âÂëÊÓÆµ
+ * @æ–‡ä»¶å     readthread.h
+ * @åŠŸèƒ½       è¯»å–è§†é¢‘å›¾åƒæ•°æ®çº¿ç¨‹ï¼Œåœ¨çº¿ç¨‹ä¸­è§£ç è§†é¢‘
  *
- * @¿ª·¢Õß     mhf
- * @ÓÊÏä       1603291350@qq.com
- * @Ê±¼ä       2022/09/15
- * @±¸×¢
+ * @å¼€å‘è€…     mhf
+ * @é‚®ç®±       1603291350@qq.com
+ * @æ—¶é—´       2022/09/15
+ * @å¤‡æ³¨
  *****************************************************************************/
 #ifndef READTHREAD_H
 #define READTHREAD_H
@@ -20,7 +20,7 @@ class ReadThread : public QThread
 {
     Q_OBJECT
 public:
-    enum PlayState      // ÊÓÆµ²¥·Å×´Ì¬
+    enum PlayState      // è§†é¢‘æ’­æ”¾çŠ¶æ€
     {
         play,
         end
@@ -29,25 +29,25 @@ public:
     explicit ReadThread(QObject *parent = nullptr);
     ~ReadThread() override;
 
-    void open(const QString& url = QString());  // ´ò¿ªÊÓÆµ
-    void pause(bool flag);                      // ÔİÍ£ÊÓÆµ
-    void close();                               // ¹Ø±ÕÊÓÆµ
-    const QString& url();                       // »ñÈ¡´ò¿ªµÄÊÓÆµµØÖ·
+    void open(const QString& url = QString());  // æ‰“å¼€è§†é¢‘
+    void pause(bool flag);                      // æš‚åœè§†é¢‘
+    void close();                               // å…³é—­è§†é¢‘
+    const QString& url();                       // è·å–æ‰“å¼€çš„è§†é¢‘åœ°å€
 
 protected:
     void run() override;
 
 signals:
-    void updateImage(const QImage& image);      // ½«¶ÁÈ¡µ½µÄÊÓÆµÍ¼Ïñ·¢ËÍ³öÈ¥
-    void playState(PlayState state);            // ÊÓÆµ²¥·Å×´Ì¬·¢ËÍ¸Ä±äÊ±´¥·¢
-
+    void updateImage(const QImage& image);      // å°†è¯»å–åˆ°çš„è§†é¢‘å›¾åƒå‘é€å‡ºå»
+    void playState(PlayState state);            // è§†é¢‘æ’­æ”¾çŠ¶æ€å‘é€æ”¹å˜æ—¶è§¦å‘
+    void updateTime(const QString& nowTimeStr, const QString totalTimeStr,const qreal progressValue);
 private:
-    VideoDecode* m_videoDecode = nullptr;       // ÊÓÆµ½âÂëÀà
-    QString m_url;                              // ´ò¿ªµÄÊÓÆµµØÖ·
-    bool m_play = false;                      // ²¥·Å¿ØÖÆ
-    bool m_pause = false;                      // ÔİÍ£¿ØÖÆ
-    QElapsedTimer m_etime1;                     // ¿ØÖÆÊÓÆµ²¥·ÅËÙ¶È£¨¸ü¾«È·£¬µ«²»Ö§³ÖÊÓÆµºóÍË£©
-    QTime         m_etime2;                     // ¿ØÖÆÊÓÆµ²¥·ÅËÙ¶È£¨Ö§³ÖÊÓÆµºóÍË£©
+    VideoDecode* mVideoDecode = nullptr;       // è§†é¢‘è§£ç ç±»
+    QString m_url;                              // æ‰“å¼€çš„è§†é¢‘åœ°å€
+    bool m_play = false;                      // æ’­æ”¾æ§åˆ¶
+    bool m_pause = false;                      // æš‚åœæ§åˆ¶
+    QElapsedTimer m_etime1;                     // æ§åˆ¶è§†é¢‘æ’­æ”¾é€Ÿåº¦ï¼ˆæ›´ç²¾ç¡®ï¼Œä½†ä¸æ”¯æŒè§†é¢‘åé€€ï¼‰
+    QTime         m_etime2;                     // æ§åˆ¶è§†é¢‘æ’­æ”¾é€Ÿåº¦ï¼ˆæ”¯æŒè§†é¢‘åé€€ï¼‰
 };
 
 #endif // READTHREAD_H

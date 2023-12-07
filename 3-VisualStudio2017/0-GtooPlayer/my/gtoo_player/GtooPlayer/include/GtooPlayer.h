@@ -29,9 +29,13 @@ private:
     void initConnect(void);
     void initUi(void);
     void onPlayState(ReadThread::PlayState state);
+    void updateTime(QString nowTime, QString totalTime, qreal progressValue);
+    void updateSlider(int64_t);
 
 private:
     Ui::GtooPlayerClass* ui;
     QString mPlayerTitile = QString("我的播放器-GtooPlay");
     ReadThread* mReadThread = nullptr;
+    int64_t mProgressBarMin = 0;
+    int64_t mProgressBarMax = 100;
 };

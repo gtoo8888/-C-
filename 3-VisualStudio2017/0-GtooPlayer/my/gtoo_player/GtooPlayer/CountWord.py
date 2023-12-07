@@ -73,5 +73,5 @@ class CountWord():
 if __name__ == "__main__":
     folder_path = "."
     count_word = CountWord()
-    count_word.summary(folder_path, blank_line=False)
+    count_word.summary(folder_path, blank_line=True)
     print(count_word)

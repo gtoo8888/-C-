@@ -5,7 +5,7 @@
 #include <qdatetime.h>
 
 
-extern "C" {        // ÓÃC¹æÔò±àÒëÖ¸¶¨µÄ´úÂë
+extern "C" {        // ç”¨Cè§„åˆ™ç¼–è¯‘æŒ‡å®šçš„ä»£ç 
 #include "libavcodec/avcodec.h"
 #include "libavformat/avformat.h"
 #include "libavutil/avutil.h"
@@ -16,12 +16,56 @@ extern "C" {        // ÓÃC¹æÔò±àÒëÖ¸¶¨µÄ´úÂë
 
 }
 
-#define ERROR_LEN 1024  // Òì³£ĞÅÏ¢Êı×é³¤¶È
+
+VideoFileInfo::VideoFileInfo() : // TODO æ²¡æœ‰åˆå§‹åŒ–å®Œå…¨
+    mTotalTimeMs(0), mNowTimeMs(0), mTotalTimeStamp(0), mNowTimeStamp(0),
+    mTotalFrames(0),mFrameRate(0),mSize(0,0),mCodecName()
+{
+
+}
+
+void VideoFileInfo::clear() // TODO æ²¡æœ‰æ¸…ç†å®Œå…¨
+{
+    mTotalTimeMs = 0; mNowTimeMs = 0; mTotalTimeStamp = 0; mNowTimeStamp = 0;
+    mTotalFrames = 0;                   
+    mFrameRate = 0;                    
+    mSize = QSize(0, 0);
+    mCodecName = "";
+}  
+
+QString convertMsToQString(int64_t milliseconds) {
+    int seconds = milliseconds / 1000;
+    int minutes = seconds / 60;
+    int hours = minutes / 60;
+
+    QString timeString = QString("%1:%2:%3")
+        .arg(hours, 2, 10, QChar('0'))
+        .arg(minutes % 60, 2, 10, QChar('0'))
+        .arg(seconds % 60, 2, 10, QChar('0'));
+
+    return timeString;
+}
+
+void VideoFileInfo::transformTime() 
+{
+    mTotalTimeMs = mTotalTimeStamp / (AV_TIME_BASE / 1000);
+    mNowTimeMs = mNowTimeStamp ;
+
+    //mTotalTimeStr = QTime::fromMSecsSinceStartOfDay(int(mTotalTimeMs)).toString("HH:mm:ss.zzz");
+    //mNowTimeStr = QTime::fromMSecsSinceStartOfDay(int(mNowTimeMs)).toString("HH:mm:ss.zzz");
+    mTotalTimeStr = QTime::fromMSecsSinceStartOfDay(int(mTotalTimeMs)).toString("HH:mm:ss");
+    mNowTimeStr = QTime::fromMSecsSinceStartOfDay(int(mNowTimeMs)).toString("HH:mm:ss");
+
+    mProgressValue = (qreal)mNowTimeMs / (qreal)mTotalTimeMs;
+}
+
+#define ERROR_LEN 1024  // å¼‚å¸¸ä¿¡æ¯æ•°ç»„é•¿åº¦
 #define PRINT_LOG 1
 
-VideoDecode::VideoDecode()
+VideoDecode::VideoDecode():
+    mVideoFileInfo(new VideoFileInfo)
 {
-    //    initFFmpeg();      // 5.1.2°æ±¾²»ĞèÒªµ÷ÓÃÁË
+    //    initFFmpeg();      // 5.1.2ç‰ˆæœ¬ä¸éœ€è¦è°ƒç”¨äº†
 
     m_error = new char[ERROR_LEN];
 }
@@ -31,10 +75,11 @@ VideoDecode::~VideoDecode()
     close();
 }
 
+
 /**
- * @brief ³õÊ¼»¯ffmpeg¿â£¨Õû¸ö³ÌĞòÖĞÖ»Ğè¼ÓÔØÒ»´Î£©
- *        ¾É°æ±¾µÄffmpegĞèÒª×¢²á¸÷ÖÖÎÄ¼ş¸ñÊ½¡¢½â¸´ÓÃÆ÷¡¢¶ÔÍøÂç¿â½øĞĞÈ«¾Ö³õÊ¼»¯¡£
- *        ÔÚĞÂ°æ±¾µÄffmpegÖĞ·×·×ÆúÓÃÁË£¬²»ĞèÒª×¢²áÁË
+ * @brief åˆå§‹åŒ–ffmpegåº“ï¼ˆæ•´ä¸ªç¨‹åºä¸­åªéœ€åŠ è½½ä¸€æ¬¡ï¼‰
+ *        æ—§ç‰ˆæœ¬çš„ffmpegéœ€è¦æ³¨å†Œå„ç§æ–‡ä»¶æ ¼å¼ã€è§£å¤ç”¨å™¨ã€å¯¹ç½‘ç»œåº“è¿›è¡Œå…¨å±€åˆå§‹åŒ–ã€‚
+ *        åœ¨æ–°ç‰ˆæœ¬çš„ffmpegä¸­çº·çº·å¼ƒç”¨äº†ï¼Œä¸éœ€è¦æ³¨å†Œäº†
  */
 void VideoDecode::initFFmpeg()
 {
@@ -43,10 +88,10 @@ void VideoDecode::initFFmpeg()
     QMutexLocker locker(&mutex);
     if (isFirst)
     {
-        //        av_register_all();         // ÒÑ¾­´ÓÔ´ÂëÖĞÉ¾³ı
+        //        av_register_all();         // å·²ç»ä»æºç ä¸­åˆ é™¤
         /**
-         * ³õÊ¼»¯ÍøÂç¿â,ÓÃÓÚ´ò¿ªÍøÂçÁ÷Ã½Ìå£¬´Ëº¯Êı½öÓÃÓÚ½â¾ö¾ÉGnuTLS»òOpenSSL¿âµÄÏß³Ì°²È«ÎÊÌâ¡£
-         * Ò»µ©É¾³ı¶Ô¾ÉGnuTLSºÍOpenSSL¿âµÄÖ§³Ö£¬´Ëº¯Êı½«±»ÆúÓÃ£¬²¢ÇÒ´Ëº¯Êı²»ÔÙÓĞÈÎºÎÓÃÍ¾¡£
+         * åˆå§‹åŒ–ç½‘ç»œåº“,ç”¨äºæ‰“å¼€ç½‘ç»œæµåª’ä½“ï¼Œæ­¤å‡½æ•°ä»…ç”¨äºè§£å†³æ—§GnuTLSæˆ–OpenSSLåº“çš„çº¿ç¨‹å®‰å…¨é—®é¢˜ã€‚
+         * ä¸€æ—¦åˆ é™¤å¯¹æ—§GnuTLSå’ŒOpenSSLåº“çš„æ”¯æŒï¼Œæ­¤å‡½æ•°å°†è¢«å¼ƒç”¨ï¼Œå¹¶ä¸”æ­¤å‡½æ•°ä¸å†æœ‰ä»»ä½•ç”¨é€”ã€‚
          */
         avformat_network_init();
         isFirst = false;
@@ -54,30 +99,30 @@ void VideoDecode::initFFmpeg()
 }
 
 /**
- * @brief      ´ò¿ªÃ½ÌåÎÄ¼ş£¬»òÕßÁ÷Ã½Ìå£¬ÀıÈçrtmp¡¢strp¡¢http
- * @param url  ÊÓÆµµØÖ·
- * @return     true£º³É¹¦  false£ºÊ§°Ü
+ * @brief      æ‰“å¼€åª’ä½“æ–‡ä»¶ï¼Œæˆ–è€…æµåª’ä½“ï¼Œä¾‹å¦‚rtmpã€strpã€http
+ * @param url  è§†é¢‘åœ°å€
+ * @return     trueï¼šæˆåŠŸ  falseï¼šå¤±è´¥
  */
 bool VideoDecode::open(const QString &url)
 {
     if (url.isNull()) return false;
 
     AVDictionary* dict = nullptr;
-    av_dict_set(&dict, "rtsp_transport", "tcp", 0);      // ÉèÖÃrtspÁ÷Ê¹ÓÃtcp´ò¿ª£¬Èç¹û´ò¿ªÊ§°Ü´íÎóĞÅÏ¢Îª¡¾Error number -135 occurred¡¿¿ÉÒÔÇĞ»»£¨UDP¡¢tcp¡¢udp_multicast¡¢http£©£¬±ÈÈçvlcÍÆÁ÷¾ÍĞèÒªÊ¹ÓÃudp´ò¿ª
-    av_dict_set(&dict, "max_delay", "3", 0);             // ÉèÖÃ×î´ó¸´ÓÃ»ò½â¸´ÓÃÑÓ³Ù£¨ÒÔÎ¢ÃëÎªµ¥Î»£©¡£µ±Í¨¹ı¡¾UDP¡¿ ½ÓÊÕÊı¾İÊ±£¬½â¸´ÓÃÆ÷³¢ÊÔÖØĞÂÅÅĞò½ÓÊÕµ½µÄÊı¾İ°ü£¨ÒòÎªËüÃÇ¿ÉÄÜÎŞĞòµ½´ï£¬»òÕßÊı¾İ°ü¿ÉÄÜÍêÈ«¶ªÊ§£©¡£Õâ¿ÉÒÔÍ¨¹ı½«×î´ó½â¸´ÓÃÑÓ³ÙÉèÖÃÎªÁã£¨Í¨¹ımax_delayAVFormatContext ×Ö¶Î£©À´½ûÓÃ¡£
-    av_dict_set(&dict, "timeout", "1000000", 0);         // ÒÔÎ¢ÃëÎªµ¥Î»ÉèÖÃÌ×½Ó×Ö TCP I/O ³¬Ê±£¬Èç¹ûµÈ´ıÊ±¼ä¹ı¶Ì£¬Ò²¿ÉÄÜ»á»¹Ã»Á¬½Ó¾Í·µ»ØÁË¡£
+    av_dict_set(&dict, "rtsp_transport", "tcp", 0);      // è®¾ç½®rtspæµä½¿ç”¨tcpæ‰“å¼€ï¼Œå¦‚æœæ‰“å¼€å¤±è´¥é”™è¯¯ä¿¡æ¯ä¸ºã€Error number -135 occurredã€‘å¯ä»¥åˆ‡æ¢ï¼ˆUDPã€tcpã€udp_multicastã€httpï¼‰ï¼Œæ¯”å¦‚vlcæ¨æµå°±éœ€è¦ä½¿ç”¨udpæ‰“å¼€
+    av_dict_set(&dict, "max_delay", "3", 0);             // è®¾ç½®æœ€å¤§å¤ç”¨æˆ–è§£å¤ç”¨å»¶è¿Ÿï¼ˆä»¥å¾®ç§’ä¸ºå•ä½ï¼‰ã€‚å½“é€šè¿‡ã€UDPã€‘ æ¥æ”¶æ•°æ®æ—¶ï¼Œè§£å¤ç”¨å™¨å°è¯•é‡æ–°æ’åºæ¥æ”¶åˆ°çš„æ•°æ®åŒ…ï¼ˆå› ä¸ºå®ƒä»¬å¯èƒ½æ— åºåˆ°è¾¾ï¼Œæˆ–è€…æ•°æ®åŒ…å¯èƒ½å®Œå…¨ä¸¢å¤±ï¼‰ã€‚è¿™å¯ä»¥é€šè¿‡å°†æœ€å¤§è§£å¤ç”¨å»¶è¿Ÿè®¾ç½®ä¸ºé›¶ï¼ˆé€šè¿‡max_delayAVFormatContext å­—æ®µï¼‰æ¥ç¦ç”¨ã€‚
+    av_dict_set(&dict, "timeout", "1000000", 0);         // ä»¥å¾®ç§’ä¸ºå•ä½è®¾ç½®å¥—æ¥å­— TCP I/O è¶…æ—¶ï¼Œå¦‚æœç­‰å¾…æ—¶é—´è¿‡çŸ­ï¼Œä¹Ÿå¯èƒ½ä¼šè¿˜æ²¡è¿æ¥å°±è¿”å›äº†ã€‚
 
-    // ´ò¿ªÊäÈëÁ÷²¢·µ»Ø½â·â×°ÉÏÏÂÎÄ
-    int ret = avformat_open_input(&m_formatContext,          // ·µ»Ø½â·â×°ÉÏÏÂÎÄ
-        url.toStdString().data(),  // ´ò¿ªÊÓÆµµØÖ·
-        nullptr,                   // Èç¹û·Çnull£¬´Ë²ÎÊıÇ¿ÖÆÊ¹ÓÃÌØ¶¨µÄÊäÈë¸ñÊ½¡£×Ô¶¯Ñ¡Ôñ½â·â×°Æ÷£¨ÎÄ¼ş¸ñÊ½£©
-        &dict);                    // ²ÎÊıÉèÖÃ
-// ÊÍ·Å²ÎÊı×Öµä
+    // æ‰“å¼€è¾“å…¥æµå¹¶è¿”å›è§£å°è£…ä¸Šä¸‹æ–‡
+    int ret = avformat_open_input(&m_formatContext,          // è¿”å›è§£å°è£…ä¸Šä¸‹æ–‡
+        url.toStdString().data(),  // æ‰“å¼€è§†é¢‘åœ°å€
+        nullptr,                   // å¦‚æœénullï¼Œæ­¤å‚æ•°å¼ºåˆ¶ä½¿ç”¨ç‰¹å®šçš„è¾“å…¥æ ¼å¼ã€‚è‡ªåŠ¨é€‰æ‹©è§£å°è£…å™¨ï¼ˆæ–‡ä»¶æ ¼å¼ï¼‰
+        &dict);                    // å‚æ•°è®¾ç½®
+// é‡Šæ”¾å‚æ•°å­—å…¸
     if (dict)
     {
         av_dict_free(&dict);
     }
-    // ´ò¿ªÊÓÆµÊ§°Ü
+    // æ‰“å¼€è§†é¢‘å¤±è´¥
     if (ret < 0)
     {
         showError(ret);
@@ -85,7 +130,7 @@ bool VideoDecode::open(const QString &url)
         return false;
     }
 
-    // ¶ÁÈ¡Ã½ÌåÎÄ¼şµÄÊı¾İ°üÒÔ»ñÈ¡Á÷ĞÅÏ¢¡£
+    // è¯»å–åª’ä½“æ–‡ä»¶çš„æ•°æ®åŒ…ä»¥è·å–æµä¿¡æ¯ã€‚
     ret = avformat_find_stream_info(m_formatContext, nullptr);
     if (ret < 0)
     {
@@ -93,12 +138,14 @@ bool VideoDecode::open(const QString &url)
         free();
         return false;
     }
-    m_totalTime = m_formatContext->duration / (AV_TIME_BASE / 1000); // ¼ÆËãÊÓÆµ×ÜÊ±³¤£¨ºÁÃë£©
+    qint64 totalTime = m_formatContext->duration / (AV_TIME_BASE / 1000);// è®¡ç®—è§†é¢‘æ€»æ—¶é•¿ï¼ˆæ¯«ç§’ï¼‰
+    mVideoFileInfo->mTotalTimeStamp = m_formatContext->duration;
 #if PRINT_LOG
-    qDebug() << QString::fromLocal8Bit("ÊÓÆµ×ÜÊ±³¤£º%1 ms£¬[%2]").arg(m_totalTime).arg(QTime::fromMSecsSinceStartOfDay(int(m_totalTime)).toString("HH:mm:ss zzz"));
+    qDebug() << QString("è§†é¢‘æ€»æ—¶é•¿ï¼š%1 msï¼Œ[%2]").arg(totalTime).
+        arg(QTime::fromMSecsSinceStartOfDay(int(totalTime)).toString("HH:mm:ss zzz"));
 #endif
 
-    // Í¨¹ıAVMediaTypeÃ¶¾Ù²éÑ¯ÊÓÆµÁ÷ID£¨Ò²¿ÉÒÔÍ¨¹ı±éÀú²éÕÒ£©£¬×îºóÒ»¸ö²ÎÊıÎŞÓÃ
+    // é€šè¿‡AVMediaTypeæšä¸¾æŸ¥è¯¢è§†é¢‘æµIDï¼ˆä¹Ÿå¯ä»¥é€šè¿‡éå†æŸ¥æ‰¾ï¼‰ï¼Œæœ€åä¸€ä¸ªå‚æ•°æ— ç”¨
     m_videoIndex = av_find_best_stream(m_formatContext, AVMEDIA_TYPE_VIDEO, -1, -1, nullptr, 0);
     if (m_videoIndex < 0)
     {
@@ -107,35 +154,42 @@ bool VideoDecode::open(const QString &url)
         return false;
     }
 
-    AVStream* videoStream = m_formatContext->streams[m_videoIndex];  // Í¨¹ı²éÑ¯µ½µÄË÷Òı»ñÈ¡ÊÓÆµÁ÷
+    AVStream* videoStream = m_formatContext->streams[m_videoIndex];  // é€šè¿‡æŸ¥è¯¢åˆ°çš„ç´¢å¼•è·å–è§†é¢‘æµ
 
-    // »ñÈ¡ÊÓÆµÍ¼Ïñ·Ö±æÂÊ£¨AVStreamÖĞµÄAVCodecContextÔÚĞÂ°æ±¾ÖĞÆúÓÃ£¬¸ÄÎªÊ¹ÓÃAVCodecParameters£©
-    m_size.setWidth(videoStream->codecpar->width);
-    m_size.setHeight(videoStream->codecpar->height);
-    m_frameRate = rationalToDouble(&videoStream->avg_frame_rate);  // ÊÓÆµÖ¡ÂÊ
+    // è·å–è§†é¢‘å›¾åƒåˆ†è¾¨ç‡ï¼ˆAVStreamä¸­çš„AVCodecContextåœ¨æ–°ç‰ˆæœ¬ä¸­å¼ƒç”¨ï¼Œæ”¹ä¸ºä½¿ç”¨AVCodecParametersï¼‰
+    QSize mSize;
+    mSize.setWidth(videoStream->codecpar->width);
+    mSize.setHeight(videoStream->codecpar->height);
+    qreal  mFrameRate;
+    mFrameRate = rationalToDouble(&videoStream->avg_frame_rate);  // è§†é¢‘å¸§ç‡
 
-    // Í¨¹ı½âÂëÆ÷ID»ñÈ¡ÊÓÆµ½âÂëÆ÷£¨ĞÂ°æ±¾·µ»ØÖµ±ØĞëÊ¹ÓÃconst£©
+    // é€šè¿‡è§£ç å™¨IDè·å–è§†é¢‘è§£ç å™¨ï¼ˆæ–°ç‰ˆæœ¬è¿”å›å€¼å¿…é¡»ä½¿ç”¨constï¼‰
     const AVCodec* codec = avcodec_find_decoder(videoStream->codecpar->codec_id);
-    m_totalFrames = videoStream->nb_frames;
+    int64_t mTotalFrames;
+    mTotalFrames = videoStream->nb_frames;
 
+    mVideoFileInfo->mSize = mSize;
+    mVideoFileInfo->mFrameRate = mFrameRate;
+    mVideoFileInfo->mTotalFrames = mTotalFrames;
+    mVideoFileInfo->mCodecName = QString(codec->name);
 
 #if PRINT_LOG
-    qDebug() << QString::fromLocal8Bit("·Ö±æÂÊ£º[w:%1,h:%2] Ö¡ÂÊ£º%3  ×ÜÖ¡Êı£º%4  ½âÂëÆ÷£º%5")
-        .arg(m_size.width()).arg(m_size.height()).arg(m_frameRate).arg(m_totalFrames).arg(codec->name);
+    qDebug() << QString("åˆ†è¾¨ç‡ï¼š[w:%1,h:%2] å¸§ç‡ï¼š%3  æ€»å¸§æ•°ï¼š%4  è§£ç å™¨ï¼š%5")
+        .arg(mSize.width()).arg(mSize.height()).arg(mFrameRate).arg(mTotalFrames).arg(codec->name);
 #endif
 
-    // ·ÖÅäAVCodecContext²¢½«Æä×Ö¶ÎÉèÖÃÎªÄ¬ÈÏÖµ¡£
+    // åˆ†é…AVCodecContextå¹¶å°†å…¶å­—æ®µè®¾ç½®ä¸ºé»˜è®¤å€¼ã€‚
     m_codecContext = avcodec_alloc_context3(codec);
     if (!m_codecContext)
     {
 #if PRINT_LOG
-        qWarning() << "´´½¨ÊÓÆµ½âÂëÆ÷ÉÏÏÂÎÄÊ§°Ü£¡";
+        qWarning() << "åˆ›å»ºè§†é¢‘è§£ç å™¨ä¸Šä¸‹æ–‡å¤±è´¥ï¼";
 #endif
         free();
         return false;
     }
 
-    // Ê¹ÓÃÊÓÆµÁ÷µÄcodecparÎª½âÂëÆ÷ÉÏÏÂÎÄ¸³Öµ
+    // ä½¿ç”¨è§†é¢‘æµçš„codecparä¸ºè§£ç å™¨ä¸Šä¸‹æ–‡èµ‹å€¼
     ret = avcodec_parameters_to_context(m_codecContext, videoStream->codecpar);
     if (ret < 0)
     {
@@ -144,10 +198,10 @@ bool VideoDecode::open(const QString &url)
         return false;
     }
 
-    m_codecContext->flags2 |= AV_CODEC_FLAG2_FAST;    // ÔÊĞí²»·ûºÏ¹æ·¶µÄ¼ÓËÙ¼¼ÇÉ¡£
-    m_codecContext->thread_count = 8;                 // Ê¹ÓÃ8Ïß³Ì½âÂë
+    m_codecContext->flags2 |= AV_CODEC_FLAG2_FAST;    // å…è®¸ä¸ç¬¦åˆè§„èŒƒçš„åŠ é€ŸæŠ€å·§ã€‚
+    m_codecContext->thread_count = 8;                 // ä½¿ç”¨8çº¿ç¨‹è§£ç 
 
-    // ³õÊ¼»¯½âÂëÆ÷ÉÏÏÂÎÄ£¬Èç¹ûÖ®Ç°avcodec_alloc_context3´«ÈëÁË½âÂëÆ÷£¬ÕâÀïÉèÖÃNULL¾Í¿ÉÒÔ
+    // åˆå§‹åŒ–è§£ç å™¨ä¸Šä¸‹æ–‡ï¼Œå¦‚æœä¹‹å‰avcodec_alloc_context3ä¼ å…¥äº†è§£ç å™¨ï¼Œè¿™é‡Œè®¾ç½®NULLå°±å¯ä»¥
     ret = avcodec_open2(m_codecContext, nullptr, nullptr);
     if (ret < 0)
     {
@@ -156,36 +210,36 @@ bool VideoDecode::open(const QString &url)
         return false;
     }
 
-    // ·ÖÅäAVPacket²¢½«Æä×Ö¶ÎÉèÖÃÎªÄ¬ÈÏÖµ¡£
+    // åˆ†é…AVPacketå¹¶å°†å…¶å­—æ®µè®¾ç½®ä¸ºé»˜è®¤å€¼ã€‚
     m_packet = av_packet_alloc();
     if (!m_packet)
     {
 #if PRINT_LOG
-        qWarning() << "av_packet_alloc() Error£¡";
+        qWarning() << "av_packet_alloc() Errorï¼";
 #endif
         free();
         return false;
     }
-    // ·ÖÅäAVFrame²¢½«Æä×Ö¶ÎÉèÖÃÎªÄ¬ÈÏÖµ¡£
+    // åˆ†é…AVFrameå¹¶å°†å…¶å­—æ®µè®¾ç½®ä¸ºé»˜è®¤å€¼ã€‚
     m_frame = av_frame_alloc();
     if (!m_frame)
     {
 #if PRINT_LOG
-        qWarning() << "av_frame_alloc() Error£¡";
+        qWarning() << "av_frame_alloc() Errorï¼";
 #endif
         free();
         return false;
     }
 
-    // ·ÖÅäÍ¼Ïñ¿Õ¼ä
-    int size = av_image_get_buffer_size(AV_PIX_FMT_RGBA, m_size.width(), m_size.height(), 4);
+    // åˆ†é…å›¾åƒç©ºé—´
+    int size = av_image_get_buffer_size(AV_PIX_FMT_RGBA, mSize.width(), mSize.height(), 4);
     /**
-     * ¡¾×¢Òâ£º¡¿ÕâÀï¿ÉÒÔ¶à·ÖÅäÒ»Ğ©£¬·ñÔòÈç¹ûÖ»ÊÇ°²×°size·ÖÅä£¬´ó²¿·ÖÊÓÆµÍ¼ÏñÊı¾İ¿½±´Ã»ÓĞÎÊÌâ£¬
-     *         µ«ÊÇÉÙ²¿·ÖÊÓÆµÍ¼ÏñÔÚÊ¹ÓÃsws_scale()¿½±´Ê±»á³¬³öÊı×é³¤¶È£¬ÔÚÊ¹ÓÃÊ¹ÓÃmsvc debugÄ£Ê½Ê±delete[] m_buffer»á±¨´í£¨HEAP CORRUPTION DETECTED: after Normal block(#32215) at 0x000001AC442830370.CRT delected that the application wrote to memory after end of heap buffer£©
-     *         ÌØ±ğÊÇÕâ¸öÊÓÆµÁ÷http://vfx.mtime.cn/Video/2019/02/04/mp4/190204084208765161.mp4
+     * ã€æ³¨æ„ï¼šã€‘è¿™é‡Œå¯ä»¥å¤šåˆ†é…ä¸€äº›ï¼Œå¦åˆ™å¦‚æœåªæ˜¯å®‰è£…sizeåˆ†é…ï¼Œå¤§éƒ¨åˆ†è§†é¢‘å›¾åƒæ•°æ®æ‹·è´æ²¡æœ‰é—®é¢˜ï¼Œ
+     *         ä½†æ˜¯å°‘éƒ¨åˆ†è§†é¢‘å›¾åƒåœ¨ä½¿ç”¨sws_scale()æ‹·è´æ—¶ä¼šè¶…å‡ºæ•°ç»„é•¿åº¦ï¼Œåœ¨ä½¿ç”¨ä½¿ç”¨msvc debugæ¨¡å¼æ—¶delete[] m_bufferä¼šæŠ¥é”™ï¼ˆHEAP CORRUPTION DETECTED: after Normal block(#32215) at 0x000001AC442830370.CRT delected that the application wrote to memory after end of heap bufferï¼‰
+     *         ç‰¹åˆ«æ˜¯è¿™ä¸ªè§†é¢‘æµhttp://vfx.mtime.cn/Video/2019/02/04/mp4/190204084208765161.mp4
      */
-    m_buffer = new uchar[size + 1000];    // ÕâÀï¶à·ÖÅä1000¸ö×Ö½Ú¾Í»ù±¾²»»á³öÏÖ¿½±´³¬³öµÄÇé¿öÁË£¬·´Õı²»È±ÕâµãÄÚ´æ
-//    m_image = new QImage(m_buffer, m_size.width(), m_size.height(), QImage::Format_RGBA8888);  // ÕâÖÖ·½Ê½·ÖÅäÄÚ´æ´ó²¿·ÖÇé¿öÏÂÒ²¿ÉÒÔ£¬µ«ÊÇÒòÎª´æÔÚ¿½±´³¬³öÊı×éµÄÇé¿ö£¬deleteÊ±Ò²»á±¨´í
+    m_buffer = new uchar[size + 1000];    // è¿™é‡Œå¤šåˆ†é…1000ä¸ªå­—èŠ‚å°±åŸºæœ¬ä¸ä¼šå‡ºç°æ‹·è´è¶…å‡ºçš„æƒ…å†µäº†ï¼Œåæ­£ä¸ç¼ºè¿™ç‚¹å†…å­˜
+//    m_image = new QImage(m_buffer, m_size.width(), m_size.height(), QImage::Format_RGBA8888);  // è¿™ç§æ–¹å¼åˆ†é…å†…å­˜å¤§éƒ¨åˆ†æƒ…å†µä¸‹ä¹Ÿå¯ä»¥ï¼Œä½†æ˜¯å› ä¸ºå­˜åœ¨æ‹·è´è¶…å‡ºæ•°ç»„çš„æƒ…å†µï¼Œdeleteæ—¶ä¹Ÿä¼šæŠ¥é”™
     m_end = false;
     return true;
 }
@@ -196,40 +250,33 @@ bool VideoDecode::open(const QString &url)
  */
 QImage VideoDecode::read()
 {
-    // Èç¹ûÃ»ÓĞ´ò¿ªÔò·µ»Ø
+    // å¦‚æœæ²¡æœ‰æ‰“å¼€åˆ™è¿”å›
     if (!m_formatContext)
     {
         return QImage();
     }
 
-    // ¶ÁÈ¡ÏÂÒ»Ö¡Êı¾İ
+    // è¯»å–ä¸‹ä¸€å¸§æ•°æ®
     int readRet = av_read_frame(m_formatContext, m_packet);
     if (readRet < 0)
     {
-        avcodec_send_packet(m_codecContext, m_packet); // ¶ÁÈ¡Íê³ÉºóÏò½âÂëÆ÷ÖĞ´«Èç¿ÕAVPacket£¬·ñÔòÎŞ·¨¶ÁÈ¡³ö×îºó¼¸Ö¡
+        avcodec_send_packet(m_codecContext, m_packet); // è¯»å–å®Œæˆåå‘è§£ç å™¨ä¸­ä¼ å¦‚ç©ºAVPacketï¼Œå¦åˆ™æ— æ³•è¯»å–å‡ºæœ€åå‡ å¸§
     }
     else
     {
-        if (m_packet->stream_index == m_videoIndex)     // Èç¹ûÊÇÍ¼ÏñÊı¾İÔò½øĞĞ½âÂë
+        if (m_packet->stream_index == m_videoIndex)     // å¦‚æœæ˜¯å›¾åƒæ•°æ®åˆ™è¿›è¡Œè§£ç 
         {
             AVRational time_base = m_formatContext->streams[m_videoIndex]->time_base;
-            // ¼ÆËãµ±Ç°Ö¡Ê±¼ä£¨ºÁÃë£©
-#if 1       // ·½·¨Ò»£ºÊÊÓÃÓÚËùÓĞ³¡¾°£¬µ«ÊÇ´æÔÚÒ»¶¨Îó²î
+            // è®¡ç®—å½“å‰å¸§æ—¶é—´ï¼ˆæ¯«ç§’ï¼‰
+#if 1       // æ–¹æ³•ä¸€ï¼šé€‚ç”¨äºæ‰€æœ‰åœºæ™¯ï¼Œä½†æ˜¯å­˜åœ¨ä¸€å®šè¯¯å·®
             m_packet->pts = qRound64(m_packet->pts * (1000 * rationalToDouble(&time_base)));
             m_packet->dts = qRound64(m_packet->dts * (1000 * rationalToDouble(&time_base)));
 
-#else       // ·½·¨¶ş£ºÊÊÓÃÓÚ²¥·Å±¾µØÊÓÆµÎÄ¼ş£¬¼ÆËãÃ¿Ò»Ö¡Ê±¼ä½Ï×¼£¬µ«ÊÇÓÉÓÚÍøÂçÊÓÆµÁ÷ÎŞ·¨»ñÈ¡×ÜÖ¡Êı£¬ËùÒÔÎŞ·¨ÊÊÓÃ
+#else       // æ–¹æ³•äºŒï¼šé€‚ç”¨äºæ’­æ”¾æœ¬åœ°è§†é¢‘æ–‡ä»¶ï¼Œè®¡ç®—æ¯ä¸€å¸§æ—¶é—´è¾ƒå‡†ï¼Œä½†æ˜¯ç”±äºç½‘ç»œè§†é¢‘æµæ— æ³•è·å–æ€»å¸§æ•°ï¼Œæ‰€ä»¥æ— æ³•é€‚ç”¨
             m_obtainFrames++;
             m_packet->pts = qRound64(m_obtainFrames * (qreal(m_totalTime) / m_totalFrames));
 #endif
-            
-            
-            //int64_t timestamp = av_rescale_q(m_packet->pts, time_base, AV_TIME_BASE_Q);
-            //int64_t timestamp = av_frame_get_best_effort_timestamp(frame);
-            //av_frame_get_best_effort_timestamp()
-
-
-            // ½«¶ÁÈ¡µ½µÄÔ­Ê¼Êı¾İ°ü´«Èë½âÂëÆ÷
+            // å°†è¯»å–åˆ°çš„åŸå§‹æ•°æ®åŒ…ä¼ å…¥è§£ç å™¨
             int ret = avcodec_send_packet(m_codecContext, m_packet);
             if (ret < 0)
             {
@@ -237,7 +284,7 @@ QImage VideoDecode::read()
             }
         }
     }
-    av_packet_unref(m_packet);  // ÊÍ·ÅÊı¾İ°ü£¬ÒıÓÃ¼ÆÊı-1£¬Îª0Ê±ÊÍ·Å¿Õ¼ä
+    av_packet_unref(m_packet);  // é‡Šæ”¾æ•°æ®åŒ…ï¼Œå¼•ç”¨è®¡æ•°-1ï¼Œä¸º0æ—¶é‡Šæ”¾ç©ºé—´
 
     int ret = avcodec_receive_frame(m_codecContext, m_frame);
     if (ret < 0)
@@ -245,54 +292,57 @@ QImage VideoDecode::read()
         av_frame_unref(m_frame);
         if (readRet < 0)
         {
-            m_end = true;     // µ±ÎŞ·¨¶ÁÈ¡µ½AVPacket²¢ÇÒ½âÂëÆ÷ÖĞÒ²Ã»ÓĞÊı¾İÊ±±íÊ¾¶ÁÈ¡Íê³É
+            m_end = true;     // å½“æ— æ³•è¯»å–åˆ°AVPacketå¹¶ä¸”è§£ç å™¨ä¸­ä¹Ÿæ²¡æœ‰æ•°æ®æ—¶è¡¨ç¤ºè¯»å–å®Œæˆ
         }
         return QImage();
     }
 
-    int64_t timestamp = m_frame->best_effort_timestamp;
-    int64_t timestamp_change = timestamp / (AV_TIME_BASE / 1000);
-    int64_t all_time = m_formatContext->duration / (AV_TIME_BASE / 1000);
-    qDebug() << QString("%1 %2:%3").arg(timestamp).arg(timestamp_change).arg(all_time);
+
+    mVideoFileInfo->mNowTimeStamp = m_frame->best_effort_timestamp;
+    mVideoFileInfo->transformTime();
+    qDebug() << QString("Ms-%1:%2 Stamp-%3:%4 Str-%5/%6 Progress:%7").
+        arg(mVideoFileInfo->mNowTimeMs).arg(mVideoFileInfo->mTotalTimeMs).
+        arg(mVideoFileInfo->mNowTimeStamp).arg(mVideoFileInfo->mTotalTimeStamp).
+        arg(mVideoFileInfo->mNowTimeStr).arg(mVideoFileInfo->mTotalTimeStr).arg(mVideoFileInfo->mProgressValue);
 
     m_pts = m_frame->pts;
 
-    // ÎªÊ²Ã´Í¼Ïñ×ª»»ÉÏÏÂÎÄÒª·ÅÔÚÕâÀï³õÊ¼»¯ÄØ£¬ÊÇÒòÎªm_frame->format£¬Èç¹ûÊ¹ÓÃÓ²¼ş½âÂë£¬½âÂë³öÀ´µÄÍ¼Ïñ¸ñÊ½ºÍm_codecContext->pix_fmtµÄÍ¼Ïñ¸ñÊ½²»Ò»Ñù£¬¾Í»áµ¼ÖÂÎŞ·¨×ª»»ÎªQImage
+    // ä¸ºä»€ä¹ˆå›¾åƒè½¬æ¢ä¸Šä¸‹æ–‡è¦æ”¾åœ¨è¿™é‡Œåˆå§‹åŒ–å‘¢ï¼Œæ˜¯å› ä¸ºm_frame->formatï¼Œå¦‚æœä½¿ç”¨ç¡¬ä»¶è§£ç ï¼Œè§£ç å‡ºæ¥çš„å›¾åƒæ ¼å¼å’Œm_codecContext->pix_fmtçš„å›¾åƒæ ¼å¼ä¸ä¸€æ ·ï¼Œå°±ä¼šå¯¼è‡´æ— æ³•è½¬æ¢ä¸ºQImage
     if (!m_swsContext)
     {
-        // »ñÈ¡»º´æµÄÍ¼Ïñ×ª»»ÉÏÏÂÎÄ¡£Ê×ÏÈĞ£Ñé²ÎÊıÊÇ·ñÒ»ÖÂ£¬Èç¹ûĞ£Ñé²»Í¨¹ı¾ÍÊÍ·Å×ÊÔ´£»È»ºóÅĞ¶ÏÉÏÏÂÎÄÊÇ·ñ´æÔÚ£¬Èç¹û´æÔÚÖ±½Ó¸´ÓÃ£¬Èç²»´æÔÚ½øĞĞ·ÖÅä¡¢³õÊ¼»¯²Ù×÷
+        // è·å–ç¼“å­˜çš„å›¾åƒè½¬æ¢ä¸Šä¸‹æ–‡ã€‚é¦–å…ˆæ ¡éªŒå‚æ•°æ˜¯å¦ä¸€è‡´ï¼Œå¦‚æœæ ¡éªŒä¸é€šè¿‡å°±é‡Šæ”¾èµ„æºï¼›ç„¶ååˆ¤æ–­ä¸Šä¸‹æ–‡æ˜¯å¦å­˜åœ¨ï¼Œå¦‚æœå­˜åœ¨ç›´æ¥å¤ç”¨ï¼Œå¦‚ä¸å­˜åœ¨è¿›è¡Œåˆ†é…ã€åˆå§‹åŒ–æ“ä½œ
         m_swsContext = sws_getCachedContext(m_swsContext,
-            m_frame->width,                     // ÊäÈëÍ¼ÏñµÄ¿í¶È
-            m_frame->height,                    // ÊäÈëÍ¼ÏñµÄ¸ß¶È
-            (AVPixelFormat)m_frame->format,     // ÊäÈëÍ¼ÏñµÄÏñËØ¸ñÊ½
-            m_size.width(),                     // Êä³öÍ¼ÏñµÄ¿í¶È
-            m_size.height(),                    // Êä³öÍ¼ÏñµÄ¸ß¶È
-            AV_PIX_FMT_RGBA,                    // Êä³öÍ¼ÏñµÄÏñËØ¸ñÊ½
-            SWS_BILINEAR,                       // Ñ¡ÔñËõ·ÅËã·¨(Ö»ÓĞµ±ÊäÈëÊä³öÍ¼Ïñ´óĞ¡²»Í¬Ê±ÓĞĞ§),Ò»°ãÑ¡ÔñSWS_FAST_BILINEAR
-            nullptr,                            // ÊäÈëÍ¼ÏñµÄÂË²¨Æ÷ĞÅÏ¢, Èô²»ĞèÒª´«NULL
-            nullptr,                            // Êä³öÍ¼ÏñµÄÂË²¨Æ÷ĞÅÏ¢, Èô²»ĞèÒª´«NULL
-            nullptr);                          // ÌØ¶¨Ëõ·ÅËã·¨ĞèÒªµÄ²ÎÊı(?)£¬Ä¬ÈÏÎªNULL
+            m_frame->width,                     // è¾“å…¥å›¾åƒçš„å®½åº¦
+            m_frame->height,                    // è¾“å…¥å›¾åƒçš„é«˜åº¦
+            (AVPixelFormat)m_frame->format,     // è¾“å…¥å›¾åƒçš„åƒç´ æ ¼å¼
+            mVideoFileInfo->mSize.width(),                     // è¾“å‡ºå›¾åƒçš„å®½åº¦
+            mVideoFileInfo->mSize.height(),                    // è¾“å‡ºå›¾åƒçš„é«˜åº¦
+            AV_PIX_FMT_RGBA,                    // è¾“å‡ºå›¾åƒçš„åƒç´ æ ¼å¼
+            SWS_BILINEAR,                       // é€‰æ‹©ç¼©æ”¾ç®—æ³•(åªæœ‰å½“è¾“å…¥è¾“å‡ºå›¾åƒå¤§å°ä¸åŒæ—¶æœ‰æ•ˆ),ä¸€èˆ¬é€‰æ‹©SWS_FAST_BILINEAR
+            nullptr,                            // è¾“å…¥å›¾åƒçš„æ»¤æ³¢å™¨ä¿¡æ¯, è‹¥ä¸éœ€è¦ä¼ NULL
+            nullptr,                            // è¾“å‡ºå›¾åƒçš„æ»¤æ³¢å™¨ä¿¡æ¯, è‹¥ä¸éœ€è¦ä¼ NULL
+            nullptr);                          // ç‰¹å®šç¼©æ”¾ç®—æ³•éœ€è¦çš„å‚æ•°(?)ï¼Œé»˜è®¤ä¸ºNULL
         if (!m_swsContext)
         {
 #if PRINT_LOG
-            qWarning() << "sws_getCachedContext() Error£¡";
+            qWarning() << "sws_getCachedContext() Errorï¼";
 #endif
             free();
             return QImage();
         }
     }
 
-    // AVFrame×ªQImage
+    // AVFrameè½¬QImage
     uchar* data[] = { m_buffer };
     int    lines[4];
-    av_image_fill_linesizes(lines, AV_PIX_FMT_RGBA, m_frame->width);  // Ê¹ÓÃÏñËØ¸ñÊ½pix_fmtºÍ¿í¶ÈÌî³äÍ¼ÏñµÄÆ½ÃæÏßÌõ´óĞ¡¡£
-    ret = sws_scale(m_swsContext,             // Ëõ·ÅÉÏÏÂÎÄ
-        m_frame->data,            // Ô­Í¼ÏñÊı×é
-        m_frame->linesize,        // °üº¬Ô´Í¼ÏñÃ¿¸öÆ½Ãæ²½·ùµÄÊı×é
-        0,                        // ¿ªÊ¼Î»ÖÃ
-        m_frame->height,          // ĞĞÊı
-        data,                     // Ä¿±êÍ¼ÏñÊı×é
-        lines);                   // °üº¬Ä¿±êÍ¼ÏñÃ¿¸öÆ½ÃæµÄ²½·ùµÄÊı×é
+    av_image_fill_linesizes(lines, AV_PIX_FMT_RGBA, m_frame->width);  // ä½¿ç”¨åƒç´ æ ¼å¼pix_fmtå’Œå®½åº¦å¡«å……å›¾åƒçš„å¹³é¢çº¿æ¡å¤§å°ã€‚
+    ret = sws_scale(m_swsContext,             // ç¼©æ”¾ä¸Šä¸‹æ–‡
+        m_frame->data,            // åŸå›¾åƒæ•°ç»„
+        m_frame->linesize,        // åŒ…å«æºå›¾åƒæ¯ä¸ªå¹³é¢æ­¥å¹…çš„æ•°ç»„
+        0,                        // å¼€å§‹ä½ç½®
+        m_frame->height,          // è¡Œæ•°
+        data,                     // ç›®æ ‡å›¾åƒæ•°ç»„
+        lines);                   // åŒ…å«ç›®æ ‡å›¾åƒæ¯ä¸ªå¹³é¢çš„æ­¥å¹…çš„æ•°ç»„
     QImage image(m_buffer, m_frame->width, m_frame->height, QImage::Format_RGBA8888);
     av_frame_unref(m_frame);
 
@@ -300,24 +350,20 @@ QImage VideoDecode::read()
 }
 
 /**
- * @brief ¹Ø±ÕÊÓÆµ²¥·Å²¢ÊÍ·ÅÄÚ´æ
+ * @brief å…³é—­è§†é¢‘æ’­æ”¾å¹¶é‡Šæ”¾å†…å­˜
  */
 void VideoDecode::close()
 {
     clear();
     free();
 
-    m_totalTime = 0;
-    m_videoIndex = 0;
-    m_totalFrames = 0;
+    mVideoFileInfo->clear();
     m_obtainFrames = 0;
     m_pts = 0;
-    m_frameRate = 0;
-    m_size = QSize(0, 0);
 }
 
 /**
- * @brief  ÊÓÆµÊÇ·ñ¶ÁÈ¡Íê³É
+ * @brief  è§†é¢‘æ˜¯å¦è¯»å–å®Œæˆ
  * @return
  */
 bool VideoDecode::isEnd()
@@ -326,7 +372,7 @@ bool VideoDecode::isEnd()
 }
 
 /**
- * @brief    ·µ»Øµ±Ç°Ö¡Í¼Ïñ²¥·ÅÊ±¼ä
+ * @brief    è¿”å›å½“å‰å¸§å›¾åƒæ’­æ”¾æ—¶é—´
  * @return
  */
 const qint64 &VideoDecode::pts()
@@ -335,22 +381,22 @@ const qint64 &VideoDecode::pts()
 }
 
 /**
- * @brief        ÏÔÊ¾ffmpegº¯Êıµ÷ÓÃÒì³£ĞÅÏ¢
+ * @brief        æ˜¾ç¤ºffmpegå‡½æ•°è°ƒç”¨å¼‚å¸¸ä¿¡æ¯
  * @param err
  */
 void VideoDecode::showError(int err)
 {
 #if PRINT_LOG
-    memset(m_error, 0, ERROR_LEN);        // ½«Êı×éÖÃÁã
+    memset(m_error, 0, ERROR_LEN);        // å°†æ•°ç»„ç½®é›¶
     av_strerror(err, m_error, ERROR_LEN);
-    qWarning() << "DecodeVideo Error£º" << m_error;
+    qWarning() << "DecodeVideo Errorï¼š" << m_error;
 #else
     Q_UNUSED(err)
 #endif
 }
 
 /**
- * @brief          ½«AVRational×ª»»Îªdouble£¬ÓÃÓÚ¼ÆËãÖ¡ÂÊ
+ * @brief          å°†AVRationalè½¬æ¢ä¸ºdoubleï¼Œç”¨äºè®¡ç®—å¸§ç‡
  * @param rational
  * @return
  */
@@ -361,35 +407,35 @@ qreal VideoDecode::rationalToDouble(AVRational* rational)
 }
 
 /**
- * @brief Çå¿Õ¶ÁÈ¡»º³å
+ * @brief æ¸…ç©ºè¯»å–ç¼“å†²
  */
 void VideoDecode::clear()
 {
-    // ÒòÎªavformat_flush²»»áË¢ĞÂAVIOContext (s->pb)¡£Èç¹ûÓĞ±ØÒª£¬ÔÚµ÷ÓÃ´Ëº¯ÊıÖ®Ç°µ÷ÓÃavio_flush(s->pb)¡£
+    // å› ä¸ºavformat_flushä¸ä¼šåˆ·æ–°AVIOContext (s->pb)ã€‚å¦‚æœæœ‰å¿…è¦ï¼Œåœ¨è°ƒç”¨æ­¤å‡½æ•°ä¹‹å‰è°ƒç”¨avio_flush(s->pb)ã€‚
     if (m_formatContext && m_formatContext->pb)
     {
         avio_flush(m_formatContext->pb);
     }
     if (m_formatContext)
     {
-        avformat_flush(m_formatContext);   // ÇåÀí¶ÁÈ¡»º³å
+        avformat_flush(m_formatContext);   // æ¸…ç†è¯»å–ç¼“å†²
     }
 }
 
 void VideoDecode::free()
 {
-    // ÊÍ·ÅÉÏÏÂÎÄswsContext¡£
+    // é‡Šæ”¾ä¸Šä¸‹æ–‡swsContextã€‚
     if (m_swsContext)
     {
         sws_freeContext(m_swsContext);
-        m_swsContext = nullptr;             // sws_freeContext²»»á°ÑÉÏÏÂÎÄÖÃNULL
+        m_swsContext = nullptr;             // sws_freeContextä¸ä¼šæŠŠä¸Šä¸‹æ–‡ç½®NULL
     }
-    // ÊÍ·Å±à½âÂëÆ÷ÉÏÏÂÎÄºÍÓëÖ®Ïà¹ØµÄËùÓĞÄÚÈİ£¬²¢½«NULLĞ´ÈëÌá¹©µÄÖ¸Õë
+    // é‡Šæ”¾ç¼–è§£ç å™¨ä¸Šä¸‹æ–‡å’Œä¸ä¹‹ç›¸å…³çš„æ‰€æœ‰å†…å®¹ï¼Œå¹¶å°†NULLå†™å…¥æä¾›çš„æŒ‡é’ˆ
     if (m_codecContext)
     {
         avcodec_free_context(&m_codecContext);
     }
-    // ¹Ø±Õ²¢Ê§°Üm_formatContext£¬²¢½«Ö¸ÕëÖÃÎªnull
+    // å…³é—­å¹¶å¤±è´¥m_formatContextï¼Œå¹¶å°†æŒ‡é’ˆç½®ä¸ºnull
     if (m_formatContext)
     {
         avformat_close_input(&m_formatContext);
