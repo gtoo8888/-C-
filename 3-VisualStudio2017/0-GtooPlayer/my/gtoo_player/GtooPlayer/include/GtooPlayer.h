@@ -14,9 +14,8 @@ public:
     GtooPlayer(QWidget *parent = nullptr);
     ~GtooPlayer();
 
-    QPushButton* buttonOccupy;
+    QPushButton* buttonOccupy; // TODE 临时demo
     QMenu* tmpExampleMenu; // TODE 临时demo
-    QAction* tmpExampleMenu1Open;  // TODE 临时demo
     QAction* tmpExampleMenu2PlayList;  // TODE 临时demo
 
     QMenu m_stMenu;
@@ -28,8 +27,8 @@ public:
 public slots:
     void openAbout(void);
     void openFile(void);
-    void openExample1(void);
     void openExample2PlayList(void);
+    void showVideoCtrl(void);
 
     void pauseVideo(void);
     void startVideo(void);
@@ -44,7 +43,7 @@ private:
     void updateSlider(int64_t);
 
 private:
-    Ui::GtooPlayerClass* ui;
+    Ui::GtooPlayer* ui;
     QString mPlayerTitile = QString("我的播放器-GtooPlay");
     ReadThread* mReadThread = nullptr;
     int64_t mProgressBarMin = 0;

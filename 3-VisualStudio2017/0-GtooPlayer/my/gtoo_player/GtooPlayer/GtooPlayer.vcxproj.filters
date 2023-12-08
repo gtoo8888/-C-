@@ -43,13 +43,13 @@
     <QtUic Include="ui\GtooPlayer.ui">
       <Filter>ui</Filter>
     </QtUic>
-    <QtUic Include="ui\WidgetExample.ui">
-      <Filter>ui</Filter>
-    </QtUic>
     <QtUic Include="ui\About.ui">
       <Filter>ui</Filter>
     </QtUic>
     <QtUic Include="ui\PlayList.ui">
+      <Filter>ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\VideoCtrl.ui">
       <Filter>ui</Filter>
     </QtUic>
   </ItemGroup>
@@ -58,9 +58,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\main.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Example.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\PlayImage.cpp">
@@ -84,15 +81,15 @@
     <ClCompile Include="src\GtooLogger.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\VideoCtrl.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="include\About.h">
       <Filter>include</Filter>
     </QtMoc>
     <QtMoc Include="include\GtooPlayer.h">
-      <Filter>include</Filter>
-    </QtMoc>
-    <QtMoc Include="include\Example.h">
       <Filter>include</Filter>
     </QtMoc>
     <QtMoc Include="include\PlayImage.h">
@@ -102,6 +99,9 @@
       <Filter>src\VideoPlay</Filter>
     </QtMoc>
     <QtMoc Include="include\PlayList.h">
+      <Filter>include</Filter>
+    </QtMoc>
+    <QtMoc Include="include\VideoCtrl.h">
       <Filter>include</Filter>
     </QtMoc>
   </ItemGroup>

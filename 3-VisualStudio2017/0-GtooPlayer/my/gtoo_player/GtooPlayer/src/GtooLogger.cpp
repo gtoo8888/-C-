@@ -6,8 +6,19 @@
 
 GtooLogger* GtooLogger::instanceLogger = nullptr;
 
+
+LogConfig::LogConfig() {
+    level = spdlog::level::debug; // 日志等级
+    path = "log/gtoo_log.log";
+    size = 5 * 1024 * 1024;
+    count = 10;
+    bTruncate = false; // 不追加，每次都用新的
+}
+
 GtooLogger::GtooLogger() 
 {
+    nowConfig = new LogConfig();
+
     //testLogger();
     logInitialize();
 }
@@ -15,12 +26,15 @@ GtooLogger::GtooLogger()
 void GtooLogger::logInitialize(void)
 {
     spdlog::cfg::load_env_levels();
-    file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>("log.txt", false); // 创建文件日志器
+    file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(nowConfig->path, !nowConfig->bTruncate); // 创建文件日志器
+    //file_sink->set_level(nowLevel);
     console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();// 创建颜色控制台日志器
-    console_sink->set_level(spdlog::level::info);
+    //console_sink->set_level(nowLevel);
     logger = std::make_shared<spdlog::logger>("logger", spdlog::sinks_init_list{ file_sink, console_sink });
-    logger->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [thread %t] [%^%L%$] %v");
+    logger->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [thread %t] [%^%l%$] [%s:%# %!] %v");
+    logger->set_level(nowConfig->level); // 只有最终这个才控制输出等级
 }
+
 
 void GtooLogger::testLogger(void)
 {
@@ -30,13 +44,16 @@ void GtooLogger::testLogger(void)
     auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();// 创建颜色控制台日志器
     //auto console_sink = std::make_shared<spdlog::sinks::stdout_sink_mt>();// 创建控制台日志器
     console_sink->set_level(spdlog::level::info);
-    auto logger = std::make_shared<spdlog::logger>("combined_logger", spdlog::sinks_init_list{ file_sink, console_sink });
+    auto logger = std::make_shared<spdlog::logger>("logger", spdlog::sinks_init_list{ file_sink, console_sink });
     // %z表示时区
     // %l表示长日志级别，%L表示短日志级别
     // %v表示具体输出内容
     // %t线程号，%P进程号
+    // [%s] 文件
+    // [%#] 行号
+    // [%!] 函数
     //logger->set_pattern("[%Y-%m-%d %H:%M:%S.%e %z] [thread %t] [process %P] [%^%l%$] %v");// 显示信息最全的
-    logger->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [thread %t] [%^%L%$] %v");
+    logger->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [thread %t] [%^%L%$] [%s:%# %!] v");
 
     logger->set_pattern("%+"); // 不知道什么作用
 
@@ -49,6 +66,9 @@ void GtooLogger::testLogger(void)
     logger->info("Support for floats {:03.2f}", 1.23456);
     logger->info("Positional args are {1} {0}..", "too", "supported");
     logger->info("{:>8} aligned, {:<8} aligned", "right", "left");
+
+
+    logger->log(spdlog::source_loc{ __FILE__, __LINE__, __func__ }, spdlog::level::info, "test");
 
     // 运行时候日志等级调整
     logger->set_level(spdlog::level::info);// Set global log level to info

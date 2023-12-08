@@ -1,6 +1,7 @@
 #include "GtooPlayer.h"
 #include <QtWidgets/QApplication>
 #include "gtest/gtest.h"
+//#include <QTest>
 
 int main(int argc, char *argv[])
 {

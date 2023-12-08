@@ -1,5 +1,6 @@
 # 未来需要做的
 1. 完善视频信息的结构体，参考potplay播放过程，查看视频播放过程还有什么信息
+    AVFormatContext， bit_rate 比特率
 2. 可以拖动进度条
 3. 可以播放声音
 5. 播放过程打印信息，显示日志
@@ -119,3 +120,6 @@ genhtml coverage.info --output-directory coverage_report
 
 # 参考资料
 [解决gcov不能生成.gcda文件，以及其他错误](https://blog.csdn.net/rheostat/article/details/5983726)
+https://blog.csdn.net/qaaaaaaz/article/details/131879088
+https://zhuanlan.zhihu.com/p/612782041
+https://www.cnblogs.com/linuxAndMcu/p/14603442.html

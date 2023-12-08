@@ -33,7 +33,7 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>msvc2017_64</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;gui;multimedia;widgets;multimediawidgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
@@ -101,17 +101,17 @@
     <QtUic Include="ui\About.ui" />
     <QtUic Include="ui\GtooPlayer.ui" />
     <QtUic Include="ui\PlayList.ui" />
-    <QtUic Include="ui\WidgetExample.ui" />
+    <QtUic Include="ui\VideoCtrl.ui" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\About.cpp" />
-    <ClCompile Include="src\Example.cpp" />
     <ClCompile Include="src\GtooLogger.cpp" />
     <ClCompile Include="src\GtooPlayer.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\PlayImage.cpp" />
     <ClCompile Include="src\PlayList.cpp" />
     <ClCompile Include="src\ReadThread.cpp" />
+    <ClCompile Include="src\VideoCtrl.cpp" />
     <ClCompile Include="src\VideoDecode.cpp" />
     <ClCompile Include="test\TestReadThread.cpp" />
   </ItemGroup>
@@ -122,7 +122,6 @@
     <QtMoc Include="include\GtooPlayer.h" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="include\Example.h" />
     <QtMoc Include="include\PlayImage.h" />
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\GtooLogger.h" />
+    <QtMoc Include="include\VideoCtrl.h" />
     <ClInclude Include="x64\Debug\uic\ui_About.h" />
     <ClInclude Include="x64\Debug\uic\ui_GtooPlayer.h" />
     <ClInclude Include="x64\Debug\uic\ui_PlayList.h" />

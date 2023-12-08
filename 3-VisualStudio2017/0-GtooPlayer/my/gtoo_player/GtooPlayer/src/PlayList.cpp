@@ -27,6 +27,15 @@ PlayList::~PlayList()
 void PlayList::InitUi()
 {
     ui->listWidget->clear();
+    QListWidgetItem *pItem = new QListWidgetItem(ui->listWidget);
+
+    //-----------TODEBUG-----------------
+    QFileInfo fileInfo("E:/Desktop/languguetest/Cplusplustest/3-VisualStudio2017/0-GtooPlayer/test_video/1_1_autoconf自动生成Makefile_第9课 autoconf自动生成Makefile.mp4");
+    pItem->setData(Qt::UserRole, QVariant(fileInfo.filePath()));  // 用户数据 TODO 用户数存到了哪？
+    pItem->setText(fileInfo.fileName());  // 显示文本
+    pItem->setToolTip(fileInfo.filePath()); // 工具提示（鼠标悬停时显示的文本）为文件的完整路径。
+    ui->listWidget->addItem(pItem);
+    //-----------TODEBUG-----------------
 }
 
 void PlayList::InitConnect()

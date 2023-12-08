@@ -3,7 +3,10 @@
 #include <QImage>
 #include <QMutex>
 #include <qdatetime.h>
-
+#include <QMediaPlayer>
+#include <QAudioFormat>
+#include <QAudioBuffer>
+#include "GtooLogger.h"
 
 extern "C" {        // 用C规则编译指定的代码
 #include "libavcodec/avcodec.h"
@@ -88,7 +91,9 @@ void VideoDecode::initFFmpeg()
     QMutexLocker locker(&mutex);
     if (isFirst)
     {
-        //        av_register_all();         // 已经从源码中删除
+        // 注册 FFmpeg 的所有组件。
+        // 在 4.0 版本以后已经被弃用，所以实际不加也可以正常编解码音视频。
+        //av_register_all();  // 已经从源码中删除
         /**
          * 初始化网络库,用于打开网络流媒体，此函数仅用于解决旧GnuTLS或OpenSSL库的线程安全问题。
          * 一旦删除对旧GnuTLS和OpenSSL库的支持，此函数将被弃用，并且此函数不再有任何用途。
@@ -141,7 +146,7 @@ bool VideoDecode::open(const QString &url)
     qint64 totalTime = m_formatContext->duration / (AV_TIME_BASE / 1000);// 计算视频总时长（毫秒）
     mVideoFileInfo->mTotalTimeStamp = m_formatContext->duration;
 #if PRINT_LOG
-    qDebug() << QString("视频总时长：%1 ms，[%2]").arg(totalTime).
+    qDebug() << QString("video total time：%1 ms，[%2]").arg(totalTime).
         arg(QTime::fromMSecsSinceStartOfDay(int(totalTime)).toString("HH:mm:ss zzz"));
 #endif
 
@@ -155,6 +160,37 @@ bool VideoDecode::open(const QString &url)
     }
 
     AVStream* videoStream = m_formatContext->streams[m_videoIndex];  // 通过查询到的索引获取视频流
+
+
+    m_audioIndex = av_find_best_stream(m_formatContext, AVMEDIA_TYPE_AUDIO, -1, -1, nullptr, 0);
+    if (m_formatContext->streams[m_audioIndex]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO)
+    {
+        // 查找音频解码器
+        const AVCodec* audioCodec = avcodec_find_decoder(m_formatContext->streams[m_audioIndex]->codecpar->codec_id);
+        if (!audioCodec)
+        {
+            LOG_ERROR("找不到音频解码器");
+        }
+
+        AVCodecContext* m_audioCodecContext = avcodec_alloc_context3(audioCodec);
+        if (!m_audioCodecContext)
+        {
+            LOG_ERROR("无法分配音频解码器上下文");
+        }
+
+        // 将参数复制到音频解码器上下文
+        if (avcodec_parameters_to_context(m_audioCodecContext, m_formatContext->streams[m_audioIndex]->codecpar) < 0)
+        {
+            LOG_ERROR("无法复制音频解码器参数");
+        }
+
+        // 打开音频解码器
+        if (avcodec_open2(m_audioCodecContext, audioCodec, NULL) < 0)
+        {
+            LOG_ERROR("无法打开音频解码器");
+        }
+    }
+
 
     // 获取视频图像分辨率（AVStream中的AVCodecContext在新版本中弃用，改为使用AVCodecParameters）
     QSize mSize;
@@ -172,19 +208,19 @@ bool VideoDecode::open(const QString &url)
     mVideoFileInfo->mFrameRate = mFrameRate;
     mVideoFileInfo->mTotalFrames = mTotalFrames;
     mVideoFileInfo->mCodecName = QString(codec->name);
-
-#if PRINT_LOG
-    qDebug() << QString("分辨率：[w:%1,h:%2] 帧率：%3  总帧数：%4  解码器：%5")
-        .arg(mSize.width()).arg(mSize.height()).arg(mFrameRate).arg(mTotalFrames).arg(codec->name);
-#endif
+    
+    LOG_DEBUG("resolution ：[w:{},h:{}] framse：{}  ", mSize.width(), mSize.height(), mFrameRate);
+    LOG_DEBUG("total framse： {}  codec： {}", mTotalFrames, codec->name);
+//#if PRINT_LOG
+//    qDebug() << QString("分辨率：[w:%1,h:%2] 帧率：%3  总帧数：%4  解码器：%5")
+//        .arg(mSize.width()).arg(mSize.height()).arg(mFrameRate).arg(mTotalFrames).arg(codec->name);
+//#endif
 
     // 分配AVCodecContext并将其字段设置为默认值。
     m_codecContext = avcodec_alloc_context3(codec);
     if (!m_codecContext)
     {
-#if PRINT_LOG
-        qWarning() << "创建视频解码器上下文失败！";
-#endif
+        LOG_ERROR("创建视频解码器上下文失败！");
         free();
         return false;
     }
@@ -224,9 +260,15 @@ bool VideoDecode::open(const QString &url)
     m_frame = av_frame_alloc();
     if (!m_frame)
     {
-#if PRINT_LOG
-        qWarning() << "av_frame_alloc() Error！";
-#endif
+        LOG_WARN("av_frame_alloc() Error！");
+        free();
+        return false;
+    }
+
+    m_audioFrame = av_frame_alloc();
+    if (!m_audioFrame)
+    {
+        LOG_WARN("av_frame_alloc() Error！");
         free();
         return false;
     }
@@ -244,10 +286,7 @@ bool VideoDecode::open(const QString &url)
     return true;
 }
 
-/**
- * @brief
- * @return
- */
+
 QImage VideoDecode::read()
 {
     // 如果没有打开则返回
@@ -283,6 +322,48 @@ QImage VideoDecode::read()
                 showError(ret);
             }
         }
+        //if (m_packet->stream_index == m_audioIndex) {
+        //    if (avcodec_send_packet(m_audioCodecContext, m_packet) < 0)
+        //    {
+        //        LOG_ERROR("无法发送音频包到解码器");
+        //    }
+
+        //    int ret = avcodec_receive_frame(m_audioCodecContext, m_audioFrame);
+        //    if (ret < 0)
+        //    {
+        //        av_frame_unref(m_frame);
+        //        if (readRet < 0)
+        //        {
+        //            m_end = true;     // 当无法读取到AVPacket并且解码器中也没有数据时表示读取完成
+        //        }
+        //        return QImage();
+        //    }
+
+        //    QMediaPlayer* m_audioPlayer;
+        //    if (!m_audioPlayer)
+        //    {
+        //        m_audioPlayer = new QMediaPlayer;
+        //        m_audioPlayer->setMedia(QMediaContent());
+        //        //m_audioPlayer->setAudioOutput(QAudioOutput::defaultAudioOutput());
+        //        m_audioPlayer->setVolume(50); // 根据需要调整音量
+        //    }
+
+        //    QAudioFormat format;
+        //    format.setSampleRate(m_audioCodecContext->sample_rate);
+        //    format.setChannelCount(m_audioCodecContext->channels);
+        //    format.setSampleSize(16); // 根据需要调整采样大小
+        //    format.setCodec("audio/pcm");
+        //    format.setByteOrder(QAudioFormat::LittleEndian);
+        //    format.setSampleType(QAudioFormat::SignedInt);
+
+        //    //QAudioBuffer buffer(m_audioFrame->data[0], m_audioFrame->linesize[0], format);
+
+        //    if (m_audioPlayer->state() == QMediaPlayer::StoppedState)
+        //    {
+        //        //m_audioPlayer->setMedia(QMediaContent(), &buffer);
+        //        m_audioPlayer->play();
+        //    }
+        //}
     }
     av_packet_unref(m_packet);  // 释放数据包，引用计数-1，为0时释放空间
 
@@ -300,10 +381,13 @@ QImage VideoDecode::read()
 
     mVideoFileInfo->mNowTimeStamp = m_frame->best_effort_timestamp;
     mVideoFileInfo->transformTime();
-    qDebug() << QString("Ms-%1:%2 Stamp-%3:%4 Str-%5/%6 Progress:%7").
-        arg(mVideoFileInfo->mNowTimeMs).arg(mVideoFileInfo->mTotalTimeMs).
-        arg(mVideoFileInfo->mNowTimeStamp).arg(mVideoFileInfo->mTotalTimeStamp).
-        arg(mVideoFileInfo->mNowTimeStr).arg(mVideoFileInfo->mTotalTimeStr).arg(mVideoFileInfo->mProgressValue);
+
+    LOG_DEBUG("Ms-{}:{} Stamp-{}:{} ", mVideoFileInfo->mNowTimeMs, mVideoFileInfo->mTotalTimeMs, mVideoFileInfo->mNowTimeStamp, mVideoFileInfo->mTotalTimeStamp);
+    LOG_DEBUG("Str-{}/{} Progress:{} ", mVideoFileInfo->mNowTimeStr.toStdString(), mVideoFileInfo->mTotalTimeStr.toStdString(), mVideoFileInfo->mProgressValue);
+    //qDebug() << QString("Ms-%1:%2 Stamp-%3:%4 Str-%5/%6 Progress:%7").
+    //    arg(mVideoFileInfo->mNowTimeMs).arg(mVideoFileInfo->mTotalTimeMs).
+    //    arg(mVideoFileInfo->mNowTimeStamp).arg(mVideoFileInfo->mTotalTimeStamp).
+    //    arg(mVideoFileInfo->mNowTimeStr).arg(mVideoFileInfo->mTotalTimeStr).arg(mVideoFileInfo->mProgressValue);
 
     m_pts = m_frame->pts;
 
