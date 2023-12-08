@@ -60,9 +60,6 @@
     <ClCompile Include="src\main.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\GtooPlayer.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\Example.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -79,6 +76,12 @@
       <Filter>src\VideoPlay</Filter>
     </ClCompile>
     <ClCompile Include="src\PlayList.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GtooPlayer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GtooLogger.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -131,6 +134,9 @@
     </ClInclude>
     <ClInclude Include="x64\Debug\uic\ui_WidgetExample.h">
       <Filter>ui\uic</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GtooLogger.h">
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

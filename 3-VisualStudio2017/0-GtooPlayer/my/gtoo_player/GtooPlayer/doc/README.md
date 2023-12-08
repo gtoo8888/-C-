@@ -6,6 +6,7 @@
 6. 播放过程显示统计信息
 
 7. 结束时候有异常，有资源没有释放？
+8. 添加了spdlog，难道不需要添加lib?
 
 # 各个区域的功能
 ## 1.播放列表
@@ -111,6 +112,10 @@ genhtml coverage.info --output-directory coverage_report
 ```
 现在，你可以在 coverage_report 目录中找到一个名为 index.html 的文件。打开它，你将看到一个可视化的代码覆盖率报告，其中包含每个源文件的详细信息，覆盖率百分比等。
 
+
+# spdlog
+
+实际使用下来确实比较舒服。首先spdlog不需要编译，引入头文件就行，用起来非常简单。其次它的循环日志文件和异步打印日志这两个功能也非常好用，让整个日志功能变得非常的优雅。
 
 # 参考资料
 [解决gcov不能生成.gcda文件，以及其他错误](https://blog.csdn.net/rheostat/article/details/5983726)

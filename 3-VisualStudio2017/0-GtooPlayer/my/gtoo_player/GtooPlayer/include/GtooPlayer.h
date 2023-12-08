@@ -4,6 +4,7 @@
 #include "ui_GtooPlayer.h"
 #include "ReadThread.h"
 #include "PlayList.h"
+#include "GtooLogger.h"
 
 class GtooPlayer : public QMainWindow
 {

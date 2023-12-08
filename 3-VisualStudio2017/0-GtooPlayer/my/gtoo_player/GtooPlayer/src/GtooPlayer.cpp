@@ -40,7 +40,9 @@ GtooPlayer::GtooPlayer(QWidget *parent):
 
 
 void GtooPlayer::initUtils(void) {
-
+    GtooLogger::getInstance()->logInfo("void GtooPlayer::initUtils(void)");
+    GtooLogger::getInstance()->logWarn("void GtooPlayer::initUtils(void)");
+    GtooLogger::getInstance()->logCritical("void GtooPlayer::initUtils(void)");
 }
 
 void GtooPlayer::initUi(void) {

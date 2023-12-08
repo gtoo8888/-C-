@@ -9,6 +9,7 @@ Cplusplus源码/
 3-VisualStudio2017/0-GtooPlayer/gh_d/
 3rdparty
 *.lib
+gtoolog*.txt
 
 # VisualStudio.gitignore
 
