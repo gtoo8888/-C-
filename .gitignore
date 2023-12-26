@@ -7,12 +7,13 @@ Cplusplus源码/
 *.mp4
 3-VisualStudio2017/0-GtooPlayer/library/
 3-VisualStudio2017/0-GtooPlayer/gh_d/
+build-*
 3rdparty
 *.lib
 gtoolog*.txt
 *.mp3
 *.pcm
-# VisualStudio.gitignore
+##################  Visual Studio 2017 ################## 
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -46,3 +47,80 @@ bld/
 
 # PyCharm
 .idea
+
+
+################## Qt Creator ##################
+
+# This file is used to ignore files which are generated
+# ----------------------------------------------------------------------------
+
+*~
+*.autosave
+*.a
+*.core
+*.moc
+*.o
+*.obj
+*.orig
+*.rej
+*.so
+*.so.*
+*_pch.h.cpp
+*_resource.rc
+*.qm
+.#*
+*.*#
+core
+!core/
+tags
+.DS_Store
+.directory
+*.debug
+Makefile*
+*.prl
+*.app
+moc_*.cpp
+ui_*.h
+qrc_*.cpp
+Thumbs.db
+*.res
+*.rc
+/.qmake.cache
+/.qmake.stash
+
+# qtcreator generated files
+*.pro.user*
+
+# xemacs temporary files
+*.flc
+
+# Vim temporary files
+.*.swp
+
+# Visual Studio generated files
+*.ib_pdb_index
+*.idb
+*.ilk
+*.pdb
+*.sln
+*.suo
+*.vcproj
+*vcproj.*.*.user
+*.ncb
+*.sdf
+*.opensdf
+*.vcxproj
+*vcxproj.*
+
+# MinGW generated files
+*.Debug
+*.Release
+
+# Python byte code
+*.pyc
+
+# Binaries
+# --------
+*.dll
+*.exe
+

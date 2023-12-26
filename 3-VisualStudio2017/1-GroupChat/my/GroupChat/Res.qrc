@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/qq.png</file>
+        <file>images/Font/bold.png</file>
+        <file>images/Font/clear.png</file>
+        <file>images/Font/color.png</file>
+        <file>images/Font/italic.png</file>
+        <file>images/Font/save.png</file>
+        <file>images/Font/under.png</file>
+        <file>images/Avatar/Cherry.png</file>
+        <file>images/Avatar/dr.png</file>
+        <file>images/Avatar/jj.png</file>
+        <file>images/Avatar/lswh.png</file>
+        <file>images/Avatar/qmnn.png</file>
+        <file>images/Avatar/spqy.png</file>
+        <file>images/Avatar/ymrl.png</file>
+        <file>images/Avatar/qq.png</file>
+    </qresource>
+</RCC>
