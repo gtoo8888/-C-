@@ -68,7 +68,7 @@ void Login::openChatWnd(){
         mbShowChatWnd[idx] = true;
         chatWnd->show();
 
-        connect(chatWnd,&ChatWindows::closeChatWnd,this,[=](){
+        connect(chatWnd,&ChatWindows::sigCloseChatWnd,this,[=](){
             mbShowChatWnd[idx] = false;
         });
 

@@ -61,3 +61,21 @@ list<double> mlFrameTimes;
 list<bool> mlbLost;
 list<cv::Mat> mlRelativeFramePoses;
 list<KeyFrame*> mlpReferences;
+
+6. 信号与槽的命名方式
+小驼峰
+```c++
+// 定义信号
+signal:
+void sigSendMessage(void){}
+// 实现函数
+void GtooPlayer::sigSendMessage(void) {}
+
+
+// 定义槽函数
+public slots:
+void slotForwardPlay (void){}
+// 实现槽函数
+void GtooPlayer::slotForwardPlay(void) {}
+
+```

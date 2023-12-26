@@ -58,6 +58,9 @@
              <height>16777215</height>
             </size>
            </property>
+           <property name="currentIndex">
+            <number>5</number>
+           </property>
            <item>
             <property name="text">
              <string>5</string>
@@ -86,6 +89,31 @@
            <item>
             <property name="text">
              <string>10</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>11</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>12</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>15</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>20</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>25</string>
             </property>
            </item>
           </widget>
@@ -161,6 +189,20 @@
            </property>
            <property name="toolButtonStyle">
             <enum>Qt::ToolButtonIconOnly</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="btnSave">
+           <property name="toolTip">
+            <string>保存</string>
+           </property>
+           <property name="text">
+            <string>...</string>
+           </property>
+           <property name="icon">
+            <iconset resource="Res.qrc">
+             <normaloff>:/images/Font/save.png</normaloff>:/images/Font/save.png</iconset>
            </property>
           </widget>
          </item>
@@ -286,19 +328,9 @@
        <height>16777215</height>
       </size>
      </property>
-     <row>
-      <property name="text">
-       <string>test</string>
-      </property>
-     </row>
      <column>
       <property name="text">
        <string>用户名</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>123</string>
       </property>
      </column>
     </widget>
