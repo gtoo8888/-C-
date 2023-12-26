@@ -84,6 +84,9 @@
     <ClCompile Include="src\VideoCtrl.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\VoiceDecode.cpp">
+      <Filter>src\VideoPlay</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="include\About.h">
@@ -137,6 +140,9 @@
     </ClInclude>
     <ClInclude Include="include\GtooLogger.h">
       <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\VoiceDecode.h">
+      <Filter>src\VideoPlay</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

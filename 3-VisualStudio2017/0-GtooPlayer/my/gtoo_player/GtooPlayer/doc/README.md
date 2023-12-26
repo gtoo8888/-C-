@@ -37,6 +37,12 @@
    2. gtest
 2. lib的内容
 
+
+SDL2.lib
+SDL2main.lib
+SDL2test.lib
+
+
 # 优先级较低的
 1. 统计代码行数工具-大致完成，只能统计两级目录
 2. 测试工具
@@ -123,3 +129,4 @@ genhtml coverage.info --output-directory coverage_report
 https://blog.csdn.net/qaaaaaaz/article/details/131879088
 https://zhuanlan.zhihu.com/p/612782041
 https://www.cnblogs.com/linuxAndMcu/p/14603442.html
+https://david1840.github.io/2019/04/19/SDL2%E9%9F%B3%E9%A2%91%E6%92%AD%E6%94%BE/

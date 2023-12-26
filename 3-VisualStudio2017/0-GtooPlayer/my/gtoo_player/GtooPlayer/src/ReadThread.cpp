@@ -1,5 +1,6 @@
-#include "readthread.h"
-#include "videodecode.h"
+#include "ReadThread.h"
+#include "VideoDecode.h"
+#include "VoiceDecode.h"
 
 #include <QEventLoop>
 #include <QTimer>
@@ -9,6 +10,7 @@
 ReadThread::ReadThread(QObject *parent) : QThread(parent)
 {
     mVideoDecode = new VideoDecode();
+    mVoiceDecode = new VoiceDecode();
 
     qRegisterMetaType<PlayState>("PlayState");    // 注册自定义枚举类型，否则信号槽无法发送
 }
@@ -76,6 +78,7 @@ void  sleepMsec(int msec)
 void ReadThread::run()
 {
     bool ret = mVideoDecode->open(m_url);         // 打开网络流时会比较慢，如果放到Ui线程会卡
+    ret = mVoiceDecode->open(m_url);
     if (ret)
     {
         m_play = true;

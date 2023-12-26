@@ -15,6 +15,7 @@
 #include <QTime>
 
 class VideoDecode;
+class VoiceDecode;
 
 class ReadThread : public QThread
 {
@@ -42,6 +43,7 @@ signals:
     void playState(PlayState state);            // 视频播放状态发送改变时触发
     void updateTime(const QString& nowTimeStr, const QString totalTimeStr,const qreal progressValue);
 private:
+    VoiceDecode* mVoiceDecode = nullptr;
     VideoDecode* mVideoDecode = nullptr;       // 视频解码类
     QString m_url;                              // 打开的视频地址
     bool m_play = false;                      // 播放控制

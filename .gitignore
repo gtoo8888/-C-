@@ -10,7 +10,8 @@ Cplusplus源码/
 3rdparty
 *.lib
 gtoolog*.txt
-
+*.mp3
+*.pcm
 # VisualStudio.gitignore
 
 # Visual Studio 2015/2017 cache/options directory
