@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>butterfly.png</file>
+        <file>mario.gif</file>
+    </qresource>
+</RCC>

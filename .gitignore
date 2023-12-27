@@ -6,13 +6,15 @@ fenzhuang_test/
 Cplusplus源码/
 *.mp4
 3-VisualStudio2017/0-GtooPlayer/library/
-3-VisualStudio2017/0-GtooPlayer/gh_d/
+*gh_d*
 build-*
 3rdparty
 *.lib
 gtoolog*.txt
 *.mp3
 *.pcm
+*.zip
+
 ##################  Visual Studio 2017 ################## 
 
 # Visual Studio 2015/2017 cache/options directory
