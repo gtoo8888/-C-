@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/StudentManage.svg</file>
+        <file>StuManage.qss</file>
+    </qresource>
+    <qresource prefix="/data">
+        <file>StuInfo.db</file>
+    </qresource>
+</RCC>
