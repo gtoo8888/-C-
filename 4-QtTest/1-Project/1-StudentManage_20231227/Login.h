@@ -3,6 +3,9 @@
 
 #include <QWidget>
 #include <QAction>
+#include "StuSql.h"
+#include "StuManage.h"
+
 namespace Ui {
 class Login;
 }
@@ -19,11 +22,18 @@ public slots:
     void slotOpenStuManage(void);
     void slotExitLogin(void);
 
+
+    bool eventFilter(QObject *watched, QEvent *event);
+
 private:
     void initUi(void);
     void initConnect(void);
+    void slotlabelAddUser(void);
+    void slotForgetPwd(void);
     QAction *enterAction = new QAction(this);
     Ui::Login *ui;
+    StuSql* mpSql;
+    StuManage* mpStuManage = nullptr;
 };
 
 #endif // LOGIN_H

@@ -1,14 +1,19 @@
 
 ```sql
-CREATE TABLE "student" (
+CREATE TABLE "student2" (
   "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
   "name" TEXT,
+  "sex" TEXT CHECK(sex IN ('男', '女')),
   "age" integer,
-  "grade" integer,
   "class" integer,
+  "score" integer,
   "studentid" integer,
-  "phone" TEXT,
+  "birthday" DATE,
+  "phone" TEXT
 );
+
+
+CREATE INDEX idx_student3_id ON student3 (id);
 ```
 
 ```sql
@@ -16,9 +21,11 @@ CREATE TABLE "username" (
   "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
   "username" TEXT,
   "password" TEXT,
-  "auth" TEXT
+  "auth" TEXT CHECK(auth IN ('admin', 'teacher', 'student')),
+  "rememberpassword" integer
 );
 
+CREATE INDEX idx_username_id ON username (id);
 ```
 
 select count(id) from student;
@@ -34,13 +41,33 @@ delete from student;
 
 update student set name = 'asd' where id=25;
 
+# 用户组表
+```sql
+CREATE TABLE "username" (
+  "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "username" TEXT,
+  "password" TEXT,
+  "auth" TEXT CHECK(auth IN ('admin', 'teacher', 'student')),
+  "rememberpassword" integer
+);
+
+CREATE INDEX idx_username_id ON username (id);
+
 select * from username
 
 update username set auth='user';
 
-INSERT INTO "username" VALUES ('admin', 111, 'admin');
+INSERT INTO "username" VALUES (NULL,'stu1', 111, 'student', 0);
 
-delete from username where username='admin';
+delete from username where id=1;
+```
+
+
+
+
+
+
+
 
 
 https://yujiang.blog.csdn.net/article/details/122516188

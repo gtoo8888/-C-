@@ -1,7 +1,6 @@
 #include "StuSql.h"
+#include "Utils.h"
 
-
-#include <QDebug>
 #include <QSqlQuery>
 
 StuSql* StuSql::mpStuSql = nullptr;
@@ -9,50 +8,21 @@ StuSql* StuSql::mpStuSql = nullptr;
 StuSql::StuSql(QObject *parent) : QObject(parent)
 {
     initDatabase();
-//    StuInfo stuInfo;
-//    stuInfo.age = 10;
-//    stuInfo.name = QString("测试");
-//    stuInfo.grade = 2;
-//    stuInfo.classNum = 3;
-//    stuInfo.studentId = 4;
-//    stuInfo.phone = QString("11366667777");
-//    addStu(stuInfo);
-//    qDebug() << getStuCnt();
-//    QList<StuInfo> infoList = getPageStu(2,3);
-////    delStu(3);
-//    StuInfo stuInfo2;
-//    stuInfo2.id = 8;
-//    stuInfo2.name = QString("麻了麻了2");
-//    updateStuInfo(stuInfo2);
-
-    UserInfo userInfo;
-    userInfo.userName = QString("abc");
-    userInfo.passWord = QString("123");
-    userInfo.aut = QString("admin");
-//    for(int i = 0;i < 10;i++){
-//        addUser(userInfo);
-//    }
-//    userInfo.userName = QString("abc");
-//    userInfo.passWord = QString("5555");
-//    updateUserInfo(userInfo);
-    auto l = getAllUser();
-    qDebug() << isExit(QString("我的"));
-    delUser("abc123");
 }
 
 
 void StuSql::initDatabase()
 {
     if(QSqlDatabase::drivers().isEmpty()){
-        qDebug() << "no drivers found!";
+        myDebug() << "no drivers found!";
     }
     // 改成选择文件
     sqliteDB = QSqlDatabase::addDatabase("QSQLITE");
     sqliteDB.setDatabaseName("E:\\Desktop\\languguetest\\Cplusplustest\\4-QtTest\\1-Project\\1-StudentManage_20231227\\StuInfo.db");
     if(!sqliteDB.open()){
-        qDebug() << "open database success";
+        myDebug() << "open database success";
     }else{
-        qDebug() << "open database error";
+        myDebug() << "open database error";
     }
 }
 
@@ -74,7 +44,7 @@ QList<StuInfo> StuSql::getPageStu(quint32 page, quint32 cnt)
 {
     QSqlQuery query(sqliteDB);
     QString strSQL = QString("select * from student order by id limit %1 offset %2;").
-            arg(page).arg(page*cnt);
+            arg(cnt).arg(page*cnt);
     query.exec(strSQL);
     handleSQLError(query.lastError());
 
@@ -84,7 +54,7 @@ QList<StuInfo> StuSql::getPageStu(quint32 page, quint32 cnt)
         info.id = query.value(0).toInt();
         info.name = query.value(1).toString();
         info.age = query.value(2).toUInt();
-        info.grade = query.value(3).toUInt();
+//        info.grade = query.value(3).toUInt();
         info.classNum = query.value(4).toUInt();
         info.studentId = query.value(5).toUInt();
         info.phone = query.value(6).toString();
@@ -97,7 +67,7 @@ bool StuSql::addStu(StuInfo stuInfo)
 {
     QSqlQuery query(sqliteDB);
     QString strSQL = QString("INSERT INTO 'student' VALUES (NULL, '%1', %2, %3, %4, %5, '%6', '-1');").
-            arg(stuInfo.name).arg(stuInfo.age).arg(stuInfo.grade).arg(stuInfo.classNum).
+            arg(stuInfo.name).arg(stuInfo.age).arg(stuInfo.score).arg(stuInfo.classNum).
             arg(stuInfo.studentId).arg(stuInfo.phone);
     query.exec(strSQL);
     return handleSQLError(query.lastError());
@@ -117,8 +87,10 @@ bool StuSql::clearStuTable()
     QSqlQuery query(sqliteDB);
     QString strSQL = QString("delete from student;");
     query.exec(strSQL);
+    handleSQLError(query.lastError());
+    strSQL = QString("DELETE FROM sqlite_sequence WHERE name = 'student';");
+    query.exec(strSQL);
     return handleSQLError(query.lastError());
-
 }
 
 bool StuSql::updateStuInfo(StuInfo info)
@@ -126,13 +98,13 @@ bool StuSql::updateStuInfo(StuInfo info)
     QSqlQuery query(sqliteDB);
     QString strSQL = QString("update student set name='%1',age=%2,grade=%3,class=%4,studentid=%5,"
                              "phone='%6' where id=%8;").
-            arg(info.name).arg(info.age).arg(info.grade).arg(info.classNum).
+            arg(info.name).arg(info.age).arg(info.score).arg(info.classNum).
             arg(info.studentId).arg(info.phone).arg(info.id);
     query.exec(strSQL);
     return handleSQLError(query.lastError());
 }
 
-QList<UserInfo> StuSql::getAllUser()
+QList<UserInfo> StuSql::getAllUserInfo()
 {
     QSqlQuery query(sqliteDB);
     QString strSQL = QString("select * from username;");
@@ -141,13 +113,35 @@ QList<UserInfo> StuSql::getAllUser()
 
     UserInfo info;
     QList<UserInfo> infoList;
-    while(query.next()){
-        info.userName = query.value(0).toString();
-        info.passWord = query.value(1).toString();
-        info.aut = query.value(2).toString();
+    while(query.next()){        
+        info.id = query.value(0).toUInt();
+        info.userName = query.value(1).toString();
+        info.password = query.value(2).toString();
+        QString authStr = query.value(3).toString();
+        info.auth = authQStrtoEnum(authStr);
+        info.isRememberPassword = query.value(4).toBool();
         infoList.push_back(info);
     }
     return infoList;
+}
+
+UserInfo StuSql::getUserInfofromName(QString userName)
+{
+    QSqlQuery query(sqliteDB);
+    QString strSQL = QString("select * from username where username = '%1';").arg(userName);
+    query.exec(strSQL);
+    handleSQLError(query.lastError());
+
+    UserInfo info;
+    while(query.next()){
+        info.id = query.value(0).toUInt();
+        info.userName = query.value(1).toString();
+        info.password = query.value(2).toString();
+        QString authStr = query.value(3).toString();
+        info.auth = authQStrtoEnum(authStr);
+        info.isRememberPassword = query.value(4).toBool();
+    }
+    return info;
 }
 
 bool StuSql::isExit(QString strUser)
@@ -159,11 +153,11 @@ bool StuSql::isExit(QString strUser)
     return query.next();
 }
 
-bool StuSql::updateUserInfo(UserInfo info)
+bool StuSql::updateUserPwd(UserInfo info)
 {
     QSqlQuery query(sqliteDB);
-    QString strSQL = QString("update username set password='%1',auth='%2' where username='%3';").
-            arg(info.passWord).arg(info.aut).arg(info.userName);
+    QString strSQL = QString("update username set password='%1' where id=%3;").
+            arg(info.password).arg(info.id);
     query.exec(strSQL);
     return handleSQLError(query.lastError());
 }
@@ -171,8 +165,9 @@ bool StuSql::updateUserInfo(UserInfo info)
 bool StuSql::addUser(UserInfo info)
 {
     QSqlQuery query(sqliteDB);
-    QString strSQL = QString("INSERT INTO 'username' VALUES ('%1', '%2', '%3');").
-            arg(info.userName).arg(info.passWord).arg(info.aut);
+    QString strAuth = authEnumtoQStr(info.auth);
+    QString strSQL = QString("INSERT INTO 'username' VALUES (NULL, '%1', '%2', '%3', %4);").
+            arg(info.userName).arg(info.password).arg(strAuth).arg(info.isRememberPassword);
     query.exec(strSQL);
     return handleSQLError(query.lastError());
 }
@@ -185,32 +180,52 @@ bool StuSql::delUser(QString strUserName)
     return handleSQLError(query.lastError());
 }
 
+int StuSql::authQStrtoEnum(QString str)
+{
+    if(QString("admin") ==  str)
+        return UserInfo::AuthType::Admin;
+    else if(QString("teacher") ==  str)
+        return UserInfo::AuthType::Teacher;
+    else if(QString("student") ==  str)
+        return UserInfo::AuthType::Student;
+}
+
+QString StuSql::authEnumtoQStr(int iEnum)
+{
+    if(UserInfo::AuthType::Admin ==  iEnum)
+        return QString("admin");
+    else if(UserInfo::AuthType::Teacher ==  iEnum)
+        return QString("teacher");
+    else if(UserInfo::AuthType::Student ==  iEnum)
+        return QString("student");
+}
+
 
 bool StuSql::handleSQLError(QSqlError err){
     if(err.isValid()){
         QSqlError::ErrorType errType = err.type();
         switch (errType) {
         case QSqlError::ErrorType::NoError:
-            qDebug() << "No Error";
+            myDebug() << "[No Error]";
             return true;
         case QSqlError::ErrorType::ConnectionError:
-            qDebug() << "[Connection Error]:" << err.text();
+            myDebug() << "[Connection Error]:" << err.text();
             return false;
         case QSqlError::ErrorType::StatementError:
-            qDebug() << "[Statement Error]:" << err.text();
+            myDebug() << "[Statement Error]:" << err.text();
             return false;
         case QSqlError::ErrorType::TransactionError:
-            qDebug() << "[Transaction Error]:" << err.text();
+            myDebug() << "[Transaction Error]:" << err.text();
             return false;
         case QSqlError::ErrorType::UnknownError:
-            qDebug() << "[Unknown Error]:" << err.text();
+            myDebug() << "[Unknown Error]:" << err.text();
             return false;
         default:
-            qDebug() << "Unknown";
+            myDebug() << "Unknown";
             return false;
         }
     }else{
-        qDebug() << "Sql Success!";
+//        myDebug() << "Sql Success!";
         return true;
     }
 }
