@@ -69,12 +69,9 @@ void Login::slotOpenStuManage(){
     }else{
         if(userInfo.password == password){
             myDebug() << "密码正确";
-            mpStuManage = new StuManage(userInfo,this);
+            mpStuManage = new StuManage(userInfo);
             mpStuManage->show();
-            connect(mpStuManage,&StuManage::signalsCloseWnd,this,[this]() {
-                this->show();
-                mpStuManage->deleteLater(); // 释放 WindowB 的资源
-            });
+            connect(mpStuManage,&StuManage::signalsCloseWnd,this,&Login::slotReShowLogin);
             this->hide();
             return;
         }else{
@@ -87,6 +84,12 @@ void Login::slotOpenStuManage(){
 void Login::slotExitLogin()
 {
     close();
+}
+
+void Login::slotReShowLogin(void)
+{
+    this->show();
+    mpStuManage->deleteLater();
 }
 
 void Login::slotlabelAddUser()

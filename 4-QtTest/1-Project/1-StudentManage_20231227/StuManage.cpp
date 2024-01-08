@@ -53,7 +53,7 @@ void StuManage::initConnect()
     connect(ui->btnStuAdd,&QPushButton::clicked,this,&StuManage::slotbtnAddStu);
     connect(ui->btnStuUpdate,&QPushButton::clicked,this,&StuManage::slotbtnUpdateStu);
     connect(ui->btnStuDel,&QPushButton::clicked,this,&StuManage::slotbtnDelStu);
-    connect(ui->btnExit,&QPushButton::clicked,this,&StuManage::close);
+    connect(ui->btnExit,&QPushButton::clicked,this,&StuManage::slotbtnExit);
 }
 
 void StuManage::updateTable()
@@ -187,10 +187,9 @@ void StuManage::slotbtnSearchStu()
 void StuManage::slotbtnExit()
 {
     emit signalsCloseWnd();
-    QTimer::singleShot(100, this, [this]() {
+    QTimer::singleShot(100, this, [this]() { // 不延时也没关系
         this->hide();
     });
-
 }
 
 

@@ -21,6 +21,7 @@ public:
 public slots:
     void slotOpenStuManage(void);
     void slotExitLogin(void);
+    void slotReShowLogin(void);
 
 
     bool eventFilter(QObject *watched, QEvent *event);

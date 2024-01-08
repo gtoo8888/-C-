@@ -79,3 +79,8 @@ void slotForwardPlay (void){}
 void GtooPlayer::slotForwardPlay(void) {}
 
 ```
+
+7. 变量名最好是缩写，每个单词最好不超过5个
+sendMsgMultiple
+
+sendMsgMulti

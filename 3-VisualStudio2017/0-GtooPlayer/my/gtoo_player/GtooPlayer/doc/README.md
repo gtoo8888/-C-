@@ -130,3 +130,4 @@ https://blog.csdn.net/qaaaaaaz/article/details/131879088
 https://zhuanlan.zhihu.com/p/612782041
 https://www.cnblogs.com/linuxAndMcu/p/14603442.html
 https://david1840.github.io/2019/04/19/SDL2%E9%9F%B3%E9%A2%91%E6%92%AD%E6%94%BE/
+[M了个J【秒懂音视频开发】](https://www.cnblogs.com/mjios/p/?page=2)
