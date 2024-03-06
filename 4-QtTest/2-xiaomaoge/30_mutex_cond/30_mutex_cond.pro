@@ -16,51 +16,32 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    CondMutex.cpp \
-    VideoPlayer.cpp \
-    VideoPlayerAudio.cpp \
-    VideoPlayerVideo.cpp \
-    VideoSlider.cpp \
-    VideoWdg.cpp \
+    Form1.cpp \
+    Form2.cpp \
     main.cpp \
     Widget.cpp
 
 HEADERS += \
-    CondMutex.h \
+    Form1.h \
+    Form2.h \
     Utils.h \
-    VideoPlayer.h \
-    VideoSlider.h \
-    VideoWdg.h \
     Widget.h
 
 FORMS += \
+    Form1.ui \
+    Form2.ui \
     Widget.ui
 
-# Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
 
-win32{
-#    FFMPEG_HOME = E:/Desktop/languguetest/Cplusplustest/4-QtTest/2-xiaomaoge/lib/ffmpeg
-    FFMPEG_HOME = ../lib/ffmpeg
-}
-
-mac{
-}
-
-ubuntu{
-}
 
 INCLUDEPATH += ../3rdparty/ffmpeg
-INCLUDEPATH += ../3rdparty/
+INCLUDEPATH += ../3rdparty
 
 LIBS += -L ../lib/QMakeAll \
         -lavcodec \
         -lavformat \
         -lavutil \
-        -lSDL2 \
-        -lswresample
+        -lSDL2
 
-DISTFILES += \
-    README.md
+
+

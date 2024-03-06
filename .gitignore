@@ -17,6 +17,7 @@ gtoolog*.txt
 *.pcm
 *.zip
 00-ReceivingOrders
+*.la
 
 ##################  Visual Studio 2017 ################## 
 

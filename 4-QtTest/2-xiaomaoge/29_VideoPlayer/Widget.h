@@ -19,15 +19,18 @@ public:
 private slots:
     void on_btnOpenFile_clicked();
     void slotPlayerStateUpdate(VideoPlayer* player);
+    void slotPlayerInitFinish(VideoPlayer* player);
+    void slotPlayerFailed(VideoPlayer* player);
 
     void on_btnPlayer_clicked();
-
     void on_btnStop_clicked();
-
     void on_sliderVoice_valueChanged(int value);
+    void on_sliderTime_valueChanged(int value);
 
 private:
     Ui::Widget *ui;
     VideoPlayer* mVideoPlayer = nullptr;
+
+    QString getDiratonText(int64_t millisecond);
 };
 #endif // WIDGET_H

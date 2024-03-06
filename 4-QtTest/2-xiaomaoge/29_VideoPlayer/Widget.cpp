@@ -1,7 +1,9 @@
 #include "Widget.h"
 #include "ui_Widget.h"
 #include <QFileDialog>
-#include <QDebug>
+#include <QTime>
+
+#include "Utils.h"
 
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
@@ -9,9 +11,13 @@ Widget::Widget(QWidget *parent)
 {
     ui->setupUi(this);
 
+    qDebug("version: %d", avcodec_version());
+
     ui->stackedWidget->setCurrentIndex(0);
     mVideoPlayer = new VideoPlayer();
-    connect(mVideoPlayer,&VideoPlayer::stateUpdate,this,&Widget::slotPlayerStateUpdate);
+    connect(mVideoPlayer,&VideoPlayer::signalStateUpdate,this,&Widget::slotPlayerStateUpdate);
+    connect(mVideoPlayer,&VideoPlayer::signalInitFinished,this,&Widget::slotPlayerInitFinish);
+    connect(mVideoPlayer,&VideoPlayer::signalPlayFailed,this,&Widget::slotPlayerFailed);
 }
 
 Widget::~Widget()
@@ -31,7 +37,7 @@ void Widget::on_btnOpenFile_clicked()
         return;
     }
     qDebug() << fileName;
-    mVideoPlayer->setVideoFileName(fileName.toUtf8().data());
+    mVideoPlayer->setVideoFileName(fileName.toStdString().data());
     mVideoPlayer->play();
 }
 
@@ -52,8 +58,8 @@ void Widget::slotPlayerStateUpdate(VideoPlayer *player){
 
         ui->sliderTime->setValue(0);
         ui->sliderTime->setValue(ui->sliderTime->minimum());
-        ui->labelCurrentTime->setText(QString("00:00:00"));
-        ui->lableDurationTime->setText(QString("00:00:00"));
+        ui->labelCurrentTime->setText(getDiratonText(0));
+        ui->lableDurationTime->setText(getDiratonText(0));
         ui->stackedWidget->setCurrentWidget(ui->pageOpenFile);
     }else{
         ui->btnPlayer->setEnabled(true);
@@ -62,6 +68,20 @@ void Widget::slotPlayerStateUpdate(VideoPlayer *player){
         ui->sliderTime->setEnabled(true);
         ui->stackedWidget->setCurrentWidget(ui->pagePlayWdg);
     }
+}
+
+void Widget::slotPlayerInitFinish(VideoPlayer *player)
+{
+    int64_t duration = player->getDuration()/1000000; // 微秒
+    // 设置进度条范围
+    ui->sliderTime->setRange(0,duration);
+    // 设置播放时间
+    ui->lableDurationTime->setText(getDiratonText(duration));
+}
+
+void Widget::slotPlayerFailed(VideoPlayer *player)
+{
+    QMessageBox::critical(nullptr, "警告", "播放失败");
 }
 
 void Widget::on_btnPlayer_clicked()
@@ -79,7 +99,38 @@ void Widget::on_btnStop_clicked()
     mVideoPlayer->stop();
 }
 
+void Widget::on_sliderTime_valueChanged(int value)
+{
+    ui->labelCurrentTime->setText(getDiratonText(value));
+}
+
 void Widget::on_sliderVoice_valueChanged(int value)
 {
     ui->labelVoice->setText(QString("%1").arg(value));
 }
+
+QString Widget::getDiratonText(int64_t millisecond)
+{
+    // 方法1：
+    int64_t seconds = millisecond;
+    QString hour = QString("0%1").arg(seconds/3600).right(2);
+    QString minute = QString("0%1").arg((seconds/60)%60).right(2);
+    QString second = QString("0%1").arg(seconds%60).right(2);
+    QString durationTime = QString("%1:%2:%3").arg(hour).arg(minute).arg(second);
+//    myDebug() << microsecond ;
+//    myDebug() << seconds ;
+//    myDebug() << hour << " " << minute << " " << second ;
+
+    // 方法2：
+//    int64_t seconds = millisecond;
+//    QString durationTime = QString("%1:%2:%3")
+//            .arg(seconds/3600,2,10,QLatin1Char('0'))
+//            .arg((seconds/60)%60,2,10,QLatin1Char('0'))
+//            .arg(seconds%60,2,10,QLatin1Char('0'));
+    // 方法3：
+//    int64_t millisecond = microsecond/1000;
+//    QString durationTime = QTime::fromMSecsSinceStartOfDay(int(millisecond)).toString("HH:mm:ss");
+    return durationTime;
+}
+
+
