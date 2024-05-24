@@ -60,7 +60,8 @@ LIBS += -L ../lib/QMakeAll \
         -lavformat \
         -lavutil \
         -lSDL2 \
-        -lswresample
+        -lswresample \
+        -lswscale
 
 DISTFILES += \
     README.md

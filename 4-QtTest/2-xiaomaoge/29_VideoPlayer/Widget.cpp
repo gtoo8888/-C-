@@ -13,11 +13,15 @@ Widget::Widget(QWidget *parent)
 
     qDebug("version: %d", avcodec_version());
 
+    // 注册信号的参数类型，保证能够发出信号
+    qRegisterMetaType<VideoPlayer::VideoSwsSpec>("VideoSwsSpec");
+
     ui->stackedWidget->setCurrentIndex(0);
     mVideoPlayer = new VideoPlayer();
     connect(mVideoPlayer,&VideoPlayer::signalStateUpdate,this,&Widget::slotPlayerStateUpdate);
     connect(mVideoPlayer,&VideoPlayer::signalInitFinished,this,&Widget::slotPlayerInitFinish);
     connect(mVideoPlayer,&VideoPlayer::signalPlayFailed,this,&Widget::slotPlayerFailed);
+    connect(mVideoPlayer,&VideoPlayer::signalFrameDecoded,ui->videoWidget,&VideoWdg::slotPlayerFrameDecoded);
 }
 
 Widget::~Widget()
@@ -31,7 +35,7 @@ void Widget::on_btnOpenFile_clicked()
     QString fileName = QFileDialog::getOpenFileName(nullptr,
                                                     "选择多媒体文件",
                                                     "E:/Desktop/languguetest/Cplusplustest/3-VisualStudio2017/0-GtooPlayer/test_video",
-                                                    "视频文件(*.mp4 *.avi *.mkv);;音频文件(*.mp3 *.acc)");
+                                                    "多媒体文件(*.mp4 *.avi *.mkv *.mp3 *.acc)");
     if(fileName.isEmpty()){
         qDebug() << "没有打开文件";
         return;

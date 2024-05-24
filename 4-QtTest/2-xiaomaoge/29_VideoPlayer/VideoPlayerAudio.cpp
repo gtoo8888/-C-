@@ -82,7 +82,7 @@ int VideoPlayer::initSwr()
 uint64_t count = 0;
 void VideoPlayer::sdlAudioCallbackFunc(void *userdata, Uint8 *stream, int len)
 {
-    qDebug() << "count" << count++ << "len" << len;
+//    qDebug() << "count" << count++ << "len" << len;
     VideoPlayer* player = (VideoPlayer*)userdata;
     player->sdlAudioCallback(stream,len);
 }
@@ -125,6 +125,9 @@ void VideoPlayer::sdlAudioCallback(Uint8 *stream, int len)
     SDL_memset(stream, 0, len);
     // len:SDL音频缓冲区剩余的大小(还未填充的大小)
     while(len > 0){
+        if(mState == Stopped)
+            break;
+
         if(maSwrOutIdx >= maSwrOutSize){
             maSwrOutSize = decodeAudio(); // 音频解码
 //            qDebug() << maSwrOutSize;
@@ -135,8 +138,8 @@ void VideoPlayer::sdlAudioCallback(Uint8 *stream, int len)
         }
         int srcLen = maSwrOutSize - maSwrOutIdx;
         srcLen = std::min(srcLen, len);
-        qDebug() << srcLen;
-
+//        qDebug() << srcLen;
+//        memset(maSwrOutFrame->data[0],50,1024);
         //将一个pkt包解码后的pcm数据填充到SDL的音频缓冲区
         // 以前只需要填写一次就行了，现在需要解码pkt，根据pkt大小来填充
         SDL_MixAudio(stream,maSwrOutFrame->data[0] + maSwrOutIdx ,srcLen,SDL_MIX_MAXVOLUME);
@@ -154,13 +157,13 @@ int VideoPlayer::decodeAudio()
 //    while(maPktList->empty()){
 //        maMutex->wait(); // 可能会被操作系统假唤醒，比较复杂，之后再写
 //    }
-    if(maPktList->empty()){
+    if(maPktList->empty() || mState == Stopped){
         maMutex->unlock(); // 如果没东西，直接不等了，解锁退出
         return 0;
     }
 
     //取出头部的数据包
-    AVPacket pkt = maPktList->front();
+    AVPacket pkt = maPktList->front(); // 不能使用引用，因为后面还会被用到
     //从头部中删除
     maPktList->pop_front();
     // 使用完队列，需要解锁
@@ -169,12 +172,12 @@ int VideoPlayer::decodeAudio()
 
     //发送压缩数据到解码器
     int ret = avcodec_send_packet(maDecodeCtx, &pkt);
+    //释放pkt
+    av_packet_unref(&pkt);
     RET(avcodec_send_packet);
 
     //获取解码后的数据
     ret = avcodec_receive_frame(maDecodeCtx, maSwrInFrame);
-    // 释放pkt
-//    av_packet_unref(&pkt);
     if(ret == AVERROR(EAGAIN) || ret == AVERROR_EOF){
         return 0;
     }else RET(avcodec_receive_frame);
@@ -203,6 +206,9 @@ int VideoPlayer::decodeAudio()
     return ret * maSwrOutSpec.bytesPerSampleFrame;
 }
 
+
+
+// AVPacket &pkt增加引用是为了防止再次产生拷贝构造函数的
 void VideoPlayer::addAudioPkt(AVPacket &pkt)
 {
     maMutex->lock();
@@ -219,5 +225,23 @@ void VideoPlayer::clearAudioPktList()
     }
     maPktList->clear();
     maMutex->unlock();
+}
+
+void VideoPlayer::freeAudio()
+{
+    maSwrOutIdx = 0;
+    maSwrOutSize = 0;
+
+    clearAudioPktList();
+    avcodec_free_context(&maDecodeCtx); // 只要传地址，都会自动成为空指针，ffmpeg控制的
+    swr_free(&maSwrCtx);
+    av_frame_free(&maSwrInFrame);
+    if(maSwrOutFrame){
+        av_freep(&maSwrOutFrame->data[0]);
+        av_frame_free(&maSwrOutFrame);
+    }
+
+    SDL_PauseAudio(1);
+    SDL_CloseAudio();
 }
 

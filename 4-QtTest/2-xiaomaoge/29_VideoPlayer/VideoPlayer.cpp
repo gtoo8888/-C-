@@ -39,9 +39,12 @@ void VideoPlayer::play(){
     // 解码后的格式不一定是我们播放器想要的?
     //PCM格式不是SDL支持的 S16 44100/ YUV -> RGB
 
-    std::thread([this](){
-        readFile();
-    }).detach();
+    if(mState == Stopped){
+        std::thread([this](){
+            readFile();
+        }).detach();
+    }
+
     setState(Playing);
 }
 
@@ -55,6 +58,8 @@ void VideoPlayer::stop(){
     if(mState == Stopped)
         return;
     setState(Stopped);
+
+    freeAll();
 }
 
 bool VideoPlayer::isPlaying(){
@@ -136,27 +141,34 @@ void VideoPlayer::readFile()
     fflush(stderr);
 
     // 初始化音频信息
-    if(initAudioInfo() < 0){
-        goto end;
-    }
-
+//    bool hasAudio = false;
+    bool hasAudio = initAudioInfo() >= 0;
     // 初始化视频信息
-    if(initVideoInfo() < 0){
-        goto end;
+    bool hasVideo = initVideoInfo() >= 0;
+    // 音频和视频都没有，严重错误
+    if(!hasAudio && !hasVideo){
+        fateError();
+        return;
     }
 
     emit signalInitFinished(this);
     // 从输入文件中读取数据
-    while(true){
-        AVPacket pkt;
+    while(mState != Stopped){ // 暂停了也可以继续读取
+
+        AVPacket pkt;// 这个放在循环外也可以，因为addAudioPkt里面是拷贝构造函数，会将值复制新一份存起来
         ret = av_read_frame(mFmtCtx, &pkt);
         if(ret == 0){
             if(pkt.stream_index == maStream->index){ // 读取到的是音频数据
-                addAudioPkt(pkt);
+//                addAudioPkt(pkt);
             }else if(pkt.stream_index == mvStream->index){ // 读取到的是视频数据
                 addVideoPkt(pkt);
             }
+        }else if(ret == AVERROR_EOF){ // 读取到文件尾部，停止了
+            qDebug() << "已经读取到文件尾部了";
+            break;
         }else{
+            ERROR_BUF;
+            qDebug() << "av_read_frame error" << errbuf;
             continue; // 如果读取失败，跳过这次读取
         }
     }
@@ -173,3 +185,19 @@ int64_t VideoPlayer::getDuration()
         return 0;
     return mFmtCtx->duration;
 }
+
+void VideoPlayer::freeAll()
+{
+    avformat_close_input(&mFmtCtx);
+
+    freeAudio();
+    freeVideo();
+}
+
+void VideoPlayer::fateError()
+{
+    setState(Stopped);
+    emit signalPlayFailed(this);
+    freeAll();
+}
+

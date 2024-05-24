@@ -17,3 +17,7 @@ Qt Creator中添加ffmpeg，注意win32和win64区分，qt只提供了mingw32编
 https://www.cnblogs.com/mjios/category/1938094.html?page=2
 
 如果需要加载SDL，需要使用i686-w64-mingw32中的内容，将lib复制到静态库中，lib复制到生成的可执行文件夹中
+
+# 现在的问题
+可以加载文件，可以音频解码，但是无法播放声音
+但是测试后，SDL播放正常的声音是额可以的

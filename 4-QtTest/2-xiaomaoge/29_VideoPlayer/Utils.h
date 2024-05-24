@@ -13,21 +13,18 @@
     char errbuf[1024]; \
     av_strerror(ret, errbuf, sizeof(errbuf));
 
-#define END(func)\
-    if(ret < 0){ \
-       ERROR_BUF; \
-       emit signalPlayFailed(this); \
-       setState(Stopped); \
-       myDebug() << #func << "error" << errbuf; \
-       goto end; \
-    } \
 
-#define RET(func)\
+#define CODE(func, code)\
     if(ret < 0){ \
        ERROR_BUF; \
        myDebug() << #func << "error" << errbuf; \
-       return ret; \
-    } \
+       code; \
+    }
+
+#define END(func) CODE(func, fateError(); return;)
+#define RET(func) CODE(func, return ret;)
+#define CONTINUE(func) CODE(func, continue;)
+#define BREAK(func) CODE(func, break;)
 
 extern "C"{
     #include <libavcodec/avcodec.h> //avcodec:编解码(最重要的库)
