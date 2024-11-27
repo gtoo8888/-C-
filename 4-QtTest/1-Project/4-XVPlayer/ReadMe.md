@@ -21,3 +21,16 @@ https://www.cnblogs.com/mjios/category/1938094.html?page=2
 # 现在的问题
 可以加载文件，可以音频解码，但是无法播放声音
 但是测试后，SDL播放正常的声音是额可以的
+
+
+
+# 计时器
+1. 开始启动改为状态机
+2. 新窗体显示
+3. 使用clang-format格式化
+
+
+# 参考资料
+[QT开发（五）—— 项目实战：秒表，QTime,Qtimer的使用](https://blog.csdn.net/qq_26787115/article/details/79960628)
+
+

@@ -16,6 +16,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Clock/ClockWdg.cpp \
+    Clock/StopwatchWdg.cpp \
     VXPlayer/CondMutex.cpp \
     VXPlayer/XVPlayer.cpp \
     VXPlayer/VideoPlayerAudio.cpp \
@@ -27,6 +29,8 @@ SOURCES += \
     main.cpp
 
 HEADERS += \
+    Clock/ClockWdg.h \
+    Clock/StopwatchWdg.h \
     CondMutex.h \
     Utils.h \
     XVPlayer.h \
@@ -36,6 +40,8 @@ HEADERS += \
     MainWindow.h
 
 FORMS += \
+    Clock/ClockWdg.ui \
+    Clock/StopwatchWdg.ui \
     MainWindow.ui \
     XVPlayerWidget.ui
 

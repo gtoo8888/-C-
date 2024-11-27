@@ -2,10 +2,9 @@
 #include <QApplication>
 #include <SDL2/SDL.h>
 #include <QDebug>
+#include "Clock/StopwatchWdg.h"
 
 #undef main
-
-
 void testSDL(void){
     SDL_version version;
     SDL_VERSION(&version);
@@ -13,10 +12,10 @@ void testSDL(void){
 
 
     if(SDL_Init(SDL_INIT_VIDEO)) {
-        qDebug() << "can not int SDL error！！！";
+        qDebug() << "can not int SDL error!!!";
     }
     else {
-        qDebug() << "success！！！" ;
+        qDebug() << "success!!!" ;
     }
     SDL_Quit();
 }
@@ -24,10 +23,12 @@ void testSDL(void){
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
-
 //    testSDL();
 
+//    MainWindow w;
+//    w.show();
+
+    StopwatchWdg w;
     w.show();
     return a.exec();
 }
