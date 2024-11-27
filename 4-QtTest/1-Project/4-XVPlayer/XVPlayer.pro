@@ -16,29 +16,29 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    CondMutex.cpp \
+    VXPlayer/CondMutex.cpp \
+    VXPlayer/XVPlayer.cpp \
+    VXPlayer/VideoPlayerAudio.cpp \
+    VXPlayer/VideoPlayerVideo.cpp \
+    VXPlayer/VideoSlider.cpp \
+    VXPlayer/VideoWdg.cpp \
+    VXPlayer/XVPlayerWidget.cpp \
     MainWindow.cpp \
-    XVPlayer.cpp \
-    VideoPlayerAudio.cpp \
-    VideoPlayerVideo.cpp \
-    VideoSlider.cpp \
-    VideoWdg.cpp \
-    main.cpp \
-    XVPlayerWidget.cpp
+    main.cpp
 
 HEADERS += \
     CondMutex.h \
-    MainWindow.h \
     Utils.h \
     XVPlayer.h \
     VideoSlider.h \
     VideoWdg.h \
-    XVPlayerWidget.h
+    XVPlayerWidget.h \
+    MainWindow.h
 
 FORMS += \
     MainWindow.ui \
-    XVPlayerWidget.ui \
     XVPlayerWidget.ui
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
