@@ -1,5 +1,6 @@
 #include "StopwatchWdg.h"
 #include "ui_StopwatchWdg.h"
+#include "StopwatchClockWdg.h"
 #include <QDebug>
 
 StopwatchWdg::StopwatchWdg(QWidget *parent) :
@@ -8,6 +9,9 @@ StopwatchWdg::StopwatchWdg(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->labShowTime->setText(initTimeStr);
+    vlayout = new QVBoxLayout(this);
+    ui->clockShowWdg->setLayout(vlayout);
+
 
     this->nowTime = new QTimer;
 
@@ -43,6 +47,12 @@ void StopwatchWdg::on_btnClockStart_clicked()
         this->baseTime = this->baseTime.currentTime();
         this->nowTime->start(1);
         ui->btnClockStart->setText("停止");
+
+
+        StopwatchClockWdg* stopwatchClockWdg = new StopwatchClockWdg(ui->clockShowWdg);
+        vlayout->addWidget(stopwatchClockWdg);
+        stopwatchClockWdg->show();
+
     }else if(ui->btnClockStart->text() == "停止"){
         ui->btnClockStart->setText("开始");
         this->nowTime->stop();

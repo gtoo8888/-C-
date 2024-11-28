@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     Clock/ClockWdg.cpp \
+    Clock/StopwatchClockWdg.cpp \
     Clock/StopwatchWdg.cpp \
     VXPlayer/CondMutex.cpp \
     VXPlayer/XVPlayer.cpp \
@@ -30,6 +31,7 @@ SOURCES += \
 
 HEADERS += \
     Clock/ClockWdg.h \
+    Clock/StopwatchClockWdg.h \
     Clock/StopwatchWdg.h \
     CondMutex.h \
     Utils.h \
@@ -41,6 +43,7 @@ HEADERS += \
 
 FORMS += \
     Clock/ClockWdg.ui \
+    Clock/StopwatchClockWdg.ui \
     Clock/StopwatchWdg.ui \
     MainWindow.ui \
     XVPlayerWidget.ui

@@ -25,9 +25,21 @@ https://www.cnblogs.com/mjios/category/1938094.html?page=2
 
 
 # 计时器
+# 优先级高
 1. 开始启动改为状态机
-2. 新窗体显示
-3. 使用clang-format格式化
+2. 添加滚动条
+3. StopwatchClockWdg.ui代码实现布局
+
+# 优先级中
+1. 添加图标  
+   1. 主界面图标
+   2. clock自己的图标
+2. 隐藏到托盘，使用托盘显示
+
+# 优先级低
+
+1. 使用clang-format格式化
+2. 使用.pro子模块的形式添加代码
 
 
 # 参考资料

@@ -5,6 +5,8 @@
 #include <QTimer>
 #include <QTime>
 #include <QString>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 
 namespace Ui {
 class StopwatchWdg;
@@ -24,6 +26,8 @@ private slots:
 
 private:
     Ui::StopwatchWdg *ui;
+
+    QVBoxLayout *vlayout;
 
     QTimer* nowTime;
     QTime baseTime;
