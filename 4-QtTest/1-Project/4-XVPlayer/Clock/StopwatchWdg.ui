@@ -45,7 +45,7 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="labIcon">
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -76,7 +76,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btnClockStart">
+       <widget class="QPushButton" name="btnNewClock">
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -95,12 +95,12 @@
          </font>
         </property>
         <property name="text">
-         <string>开始</string>
+         <string>新建</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btnClockStart_2">
+       <widget class="QPushButton" name="btnCleanClock">
         <property name="minimumSize">
          <size>
           <width>0</width>

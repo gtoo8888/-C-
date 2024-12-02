@@ -5,8 +5,10 @@
 #include <QTimer>
 #include <QTime>
 #include <QString>
+#include <QVector>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include "StopwatchClockWdg.h"
 
 namespace Ui {
 class StopwatchWdg;
@@ -21,19 +23,16 @@ public:
     ~StopwatchWdg();
 
 private slots:
-    void updateDisplay(void);
-    void on_btnClockStart_clicked();
+
+    void slotBtnNewClock(void);
 
 private:
     Ui::StopwatchWdg *ui;
 
     QVBoxLayout *vlayout;
 
-    QTimer* nowTime;
-    QTime baseTime;
 
-    QString timeStr;
-    QString initTimeStr = QString("00:00:00.000");
+    QVector<StopwatchClockWdg*>  clockWdgVec;
 
 
 };

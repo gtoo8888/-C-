@@ -1,21 +1,18 @@
 #include "StopwatchWdg.h"
 #include "ui_StopwatchWdg.h"
-#include "StopwatchClockWdg.h"
 #include <QDebug>
+#include <QPushButton>
+#include <QMessageBox>
 
 StopwatchWdg::StopwatchWdg(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::StopwatchWdg)
 {
     ui->setupUi(this);
-    ui->labShowTime->setText(initTimeStr);
     vlayout = new QVBoxLayout(this);
     ui->clockShowWdg->setLayout(vlayout);
 
-
-    this->nowTime = new QTimer;
-
-    connect(this->nowTime,&QTimer::timeout,this,&StopwatchWdg::updateDisplay);
+    connect(ui->btnNewClock,&QPushButton::clicked,this,&StopwatchWdg::slotBtnNewClock);
 }
 
 StopwatchWdg::~StopwatchWdg()
@@ -23,38 +20,19 @@ StopwatchWdg::~StopwatchWdg()
     delete ui;
 }
 
-void StopwatchWdg::updateDisplay()
+void StopwatchWdg::slotBtnNewClock(void)
 {
-    /*
-     * 1.点击开始后获取到当前的时间并且赋值给baseTime
-     * 2.启动定时器,间隔1s
-     * 3.槽函数中再次获取当前的时间currTime
-     * 4.计算两个时间的差值t
-     * 5.声明一个showTime对象给他加上t的差值
-     * 6.格式化后设置显示
-     */
-    QTime currTime = QTime::currentTime();
-    int t = this->baseTime.msecsTo(currTime);
-    QTime showTime(0,0,0,0);
-    showTime = showTime.addMSecs(t);
-    this->timeStr = showTime.toString("hh:mm:ss:zzz");
-    ui->labShowTime->setText(timeStr);
-}
-
-void StopwatchWdg::on_btnClockStart_clicked()
-{
-    if(ui->btnClockStart->text() == "开始"){
-        this->baseTime = this->baseTime.currentTime();
-        this->nowTime->start(1);
-        ui->btnClockStart->setText("停止");
-
-
+    int nowClockNum = clockWdgVec.size();
+    if (nowClockNum < 3){
         StopwatchClockWdg* stopwatchClockWdg = new StopwatchClockWdg(ui->clockShowWdg);
+        clockWdgVec.push_back(stopwatchClockWdg);
         vlayout->addWidget(stopwatchClockWdg);
+        stopwatchClockWdg->setClockIndex(clockWdgVec.size());
         stopwatchClockWdg->show();
-
-    }else if(ui->btnClockStart->text() == "停止"){
-        ui->btnClockStart->setText("开始");
-        this->nowTime->stop();
+    }else{
+        QMessageBox box(QMessageBox::Warning, QString("警告"),QString("当前秒表达到最大%1个").arg(nowClockNum));
+        box.exec();
     }
 }
+
+
