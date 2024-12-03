@@ -29,40 +29,58 @@ https://www.cnblogs.com/mjios/category/1938094.html?page=2
 
 # 计时器
 ## 优先级高
-1. 需要实现的按钮
-   1. 清除
-   2. 删除当前秒表
-2. 对于大量秒表情况下，添加滚动条
-3. 双击删除记录条数
-4. StopwatchClockWdg.ui代码实现布局
-5. QTimer是否是新开线程实现？
-6. 添加spdlog日志
-
-## bug
-1. 暂停
-   1. 暂停后计时器还是会计时
-2. 复位
-   1. 复位后计时器还是会计时
-3. 计次
-   1. 暂停状态不能计次
+1. 按钮
+   1. 批量下载
+   2. 当前时间
+   3. 双击图标
+      1. 弹出快捷键说明
+      2. 并可以修改快捷键
+2. 计次
+   1. 添加最快、最慢显示
+   2. 添加备注信息
+3. 添加快捷键
+   1. 需要考虑光标焦点问题
+4. 最新的时间会动态显示
+5. 对于大量秒表情况下，添加滚动条
+6. 双击删除记录条数
+7. 使用spdlog日志
+   1. 添加日志类
+   2. 程序中改装使用spdlog
 
 ## 优先级中
 1. 添加图标  
    1. 主界面图标
    2. clock自己的图标
 2. 隐藏到托盘，使用托盘显示
+3. 界面相关
+   1. StopwatchClockWdg.ui代码实现布局
+   2. 主界面随着新秒表的添加扩展长度
+   3. 点击秒表界面后，会高亮显示当前选择的秒表
+   4. 计次和复位按钮合并？
 
 ## 优先级低
-
 1. 使用clang-format格式化
 2. 使用.pro子模块的形式添加代码
+3. QTimer是否是新开线程实现？
+4. 检测内存占用情况
+
+## 测试点
+1. 添加测试按钮
+2. 运行时间超过一小时，是否会有问题
+3. 计次数量达到上限
+
+## bug
 
 
+
+./getCodeNum.sh 4-QtTest/1-Project/4-XVPlayer/
 
 # 参考资料
 [QT开发（五）—— 项目实战：秒表，QTime,Qtimer的使用](https://blog.csdn.net/qq_26787115/article/details/79960628)
-
 # StopClock参考项目
 [在线秒表计时器](https://www.lddgo.net/common/stopwatch)
+[时钟网](https://clockcn.com/miaobiao/#enabled=0&msec=13768&laps=1436.5120.6459)
+[天气网万年历](https://m.wannianli.tianqi.com/jisuanqi/miaobiao/)
+[在线秒表 - Online Alarm Kur](https://onlinealarmkur.com/stopwatch/zh-cn/)
 微软秒表
 

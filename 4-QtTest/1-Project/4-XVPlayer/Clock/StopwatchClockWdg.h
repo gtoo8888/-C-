@@ -12,7 +12,10 @@ class StopwatchClockWdg;
 
 typedef struct{
     uint8_t index;
-    QString nowTime;
+    QString intervalTimeStr;
+    QString totalTimeStr;
+    uint8_t slowIdx;
+    uint8_t fastIdx;
 }TimeCountInfo;
 
 
@@ -35,12 +38,17 @@ public:
     ~StopwatchClockWdg();
     void setClockIndex(uint8_t idx);
 
+signals:
+    void sigClockCloseWnd(int clockIndex);
+
+
 private slots:
     void slotBtnStart(void);
     void slotBtnReset(void);
     void slotBtnDownload(void);
     void slotBtnTimeCount(void);
     void slotBtnNameModify(void);
+    void slotBtnClockClse(void);
     void slotUpdateDisplay(void);
 
 
@@ -53,8 +61,8 @@ private:
     Ui::StopwatchClockWdg *ui;
     ClockStatus clockNowStatus;
     NameModifyStatus nameModifyStatus;
-    QTimer* nowTime;
-    QTime baseTime;
+    QTimer* updateTimer;
+    QTime startTime;
     uint8_t clockIndex;
     uint8_t nowClockCount;
 

@@ -19,7 +19,7 @@
      <widget class="QWidget" name="widget" native="true">
       <property name="maximumSize">
        <size>
-        <width>120</width>
+        <width>160</width>
         <height>16777215</height>
        </size>
       </property>
@@ -52,9 +52,16 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_3">
+        <widget class="QPushButton" name="btnPasswordBox">
          <property name="text">
-          <string>PushButton</string>
+          <string>PasswordBox</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnTaskManger">
+         <property name="text">
+          <string>taskManager</string>
          </property>
         </widget>
        </item>
@@ -85,7 +92,7 @@
      <x>0</x>
      <y>0</y>
      <width>776</width>
-     <height>29</height>
+     <height>28</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu12">
