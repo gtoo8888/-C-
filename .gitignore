@@ -18,6 +18,7 @@ gtoolog*.txt
 *.zip
 00-ReceivingOrders
 *.la
+cmake-build-*
 
 ##################  Visual Studio 2017 ################## 
 
