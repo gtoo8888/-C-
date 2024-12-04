@@ -5,15 +5,16 @@
 #include "XVPlayer.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class XVPlayerWidget; }
+namespace Ui {
+class XVPlayerWidget;
+}
 QT_END_NAMESPACE
 
-class XVPlayerWidget : public QWidget
-{
+class XVPlayerWidget : public QWidget {
     Q_OBJECT
 
 public:
-    XVPlayerWidget(QWidget *parent = nullptr);
+    XVPlayerWidget(QWidget* parent = nullptr);
     ~XVPlayerWidget();
 
 private slots:
@@ -28,9 +29,9 @@ private slots:
     void on_sliderTime_valueChanged(int value);
 
 private:
-    Ui::XVPlayerWidget *ui;
+    Ui::XVPlayerWidget* ui;
     XVPlayer* mVideoPlayer = nullptr;
 
     QString getDiratonText(int64_t millisecond);
 };
-#endif // WIDGET_H
+#endif  // WIDGET_H

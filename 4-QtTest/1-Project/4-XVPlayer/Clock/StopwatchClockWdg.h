@@ -1,34 +1,33 @@
 #ifndef STOPWATCHCLOCKWDG_H
 #define STOPWATCHCLOCKWDG_H
 
-#include <QWidget>
 #include <QTime>
 #include <QTimer>
 #include <QVector>
+#include <QWidget>
 
 namespace Ui {
 class StopwatchClockWdg;
 }
 
-typedef struct{
+typedef struct {
     uint8_t index;
     QString intervalTimeStr;
     QString totalTimeStr;
     uint8_t slowIdx;
     uint8_t fastIdx;
-}TimeCountInfo;
+} TimeCountInfo;
 
-
-class StopwatchClockWdg : public QWidget
-{
+class StopwatchClockWdg : public QWidget {
     Q_OBJECT
 public:
-    enum ClockStatus{
+    enum ClockStatus {
         stop = 0,
         pause,
         run
     };
-    enum NameModifyStatus{
+
+    enum NameModifyStatus {
         modify = 0,
         lock,
     };
@@ -41,7 +40,6 @@ public:
 signals:
     void sigClockCloseWnd(int clockIndex);
 
-
 private slots:
     void slotBtnStart(void);
     void slotBtnReset(void);
@@ -51,8 +49,6 @@ private slots:
     void slotBtnClockClse(void);
     void slotUpdateDisplay(void);
 
-
-
 private:
     void initUi(void);
     void initConnect(void);
@@ -61,7 +57,7 @@ private:
     Ui::StopwatchClockWdg *ui;
     ClockStatus clockNowStatus;
     NameModifyStatus nameModifyStatus;
-    QTimer* updateTimer;
+    QTimer *updateTimer;
     QTime startTime;
     uint8_t clockIndex;
     uint8_t nowClockCount;
@@ -72,4 +68,4 @@ private:
     QVector<TimeCountInfo> vTimeCount;
 };
 
-#endif // STOPWATCHCLOCKWDG_H
+#endif  // STOPWATCHCLOCKWDG_H

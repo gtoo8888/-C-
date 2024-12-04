@@ -2,8 +2,7 @@
 #define CONDMUTEX_H
 #include <SDL2/SDL.h>
 
-class CondMutex
-{
+class CondMutex {
 public:
     CondMutex();
     ~CondMutex();
@@ -19,4 +18,4 @@ private:
     SDL_cond *mCond = nullptr;
 };
 
-#endif // CONDMUTEX_H
+#endif  // CONDMUTEX_H

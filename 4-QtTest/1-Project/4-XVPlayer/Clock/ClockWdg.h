@@ -7,8 +7,7 @@ namespace Ui {
 class ClockWdg;
 }
 
-class ClockWdg : public QWidget
-{
+class ClockWdg : public QWidget {
     Q_OBJECT
 
 public:
@@ -22,4 +21,4 @@ private:
     Ui::ClockWdg *ui;
 };
 
-#endif // CLOCKWDG_H
+#endif  // CLOCKWDG_H
