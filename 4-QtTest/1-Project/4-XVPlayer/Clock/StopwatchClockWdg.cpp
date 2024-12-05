@@ -10,12 +10,12 @@ StopwatchClockWdg::StopwatchClockWdg(QWidget *parent)
       ui(new Ui::StopwatchClockWdg),
       clockNowStatus(stop),
       nameModifyStatus(lock),
+      updateTimer(new QTimer),
       clockIndex(-1),
       nowClockCount(0),
       initTimeStr(QString("00:00:00.000")),
       stopwatchClockName(QString("Stopwatch")) {
     ui->setupUi(this);
-    this->updateTimer = new QTimer;
 
     initUi();
     initConnect();
@@ -170,8 +170,10 @@ void StopwatchClockWdg::slotBtnTimeCount() {
         intervalTimeStr = showTime.addMSecs(msecs).toString("hh:mm:ss.zzz");
     }
 
-    qDebug()
-        << QString("idx:%1,interval time:%2,total time:%3").arg(nowClockCount).arg(intervalTimeStr).arg(totalTimeStr);
+    LOG_INF("idx:{:d},interval time:{},total time:{}", nowClockCount, intervalTimeStr.toStdString(),
+            totalTimeStr.toStdString());
+    //    qDebug()<< QString("idx:%1,interval time:%2,total time:%3").arg(nowClockCount)
+    //               .arg(intervalTimeStr).arg(totalTimeStr);
 
     nowClockCount += 1;
     TimeCountInfo nowInfo{

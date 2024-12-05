@@ -32,28 +32,31 @@ https://www.cnblogs.com/mjios/category/1938094.html?page=2
 但是测试后，SDL播放正常的声音是额可以的
 
 
-
+上传前都需要格式化
 
 # 时钟集合——Clock
 ## 秒表
 ## 优先级高
 1. 按钮
    1. 批量下载
-   2. 当前时间
-   3. 双击图标
-      1. 弹出快捷键说明
-      2. 并可以修改快捷键
-2. 计次
+2. 设置界面
+   1. 修改为点击退出可以确认
+   2. 设置
+      1. 修改为QQ的滑动确认模式
+   3. 添加快捷键
+      1. 并可以修改快捷键
+      2. 需要考虑光标焦点问题
+   4. 关于界面
+3. 计次
    1. 添加最快、最慢显示
    2. 添加备注信息
-3. 添加快捷键
-   1. 需要考虑光标焦点问题
 4. 最新的时间会动态显示
 5. 对于大量秒表情况下，添加滚动条
 6. 双击删除记录条数
-7. 使用spdlog日志
-   1. 添加日志类
-   2. 程序中改装使用spdlog
+7. 自动清理
+   1. 如果超过一分钟没有操作秒表，自动删除不活跃的秒表
+8. 配置统一的头文件
+
 
 ## 优先级中
 1. 添加图标  
@@ -88,8 +91,33 @@ https://www.cnblogs.com/mjios/category/1938094.html?page=2
 ## bug
 
 
+单独运行程序需要的库
+D:\Qt\Qt5.9.9\5.9.9\mingw53_32\bin
+
+libstdc++-6.dll
+libwinpthread-1.dll
+Qt5Cored.dll
+Qt5Guid.dll
+Qt5Widgetsd.dll
+
+# CLion的尝试
+
+
+1. 不要在windows下尝试使用CLion+Qt!!!!!特别是转化已有的工程
+2. 将qmake转化为cmake
+3. 修改编译器，不然会使用CLion自带的mingw，和qt的mingw有区别
+
+
+CMakeFiles\VXPlayer.dir/objects.a(ClockWdg.cpp.obj):ClockWdg.cpp:(.text+0x263): undefined reference to `_imp___ZN7QWidgetC2EPS_6QFlagsIN2Qt10WindowTypeEE'
+CMakeFiles\VXPlayer.dir/objects.a(ClockWdg.cpp.obj):ClockWdg.cpp:(.text+0x2b5): undefined reference to `_imp___ZN7QWidgetD2Ev'
+CMakeFiles\VXPlayer.dir/objects.a(ClockWdg.cpp.obj):ClockWdg.cpp:(.text+0x2fe): undefined reference to `_imp___ZN7QWidgetD2Ev'
+
+
+
 
 ./getCodeNum.sh 4-QtTest/1-Project/4-XVPlayer/
+./auto_format.sh .
+
 
 # 参考资料
 [QT开发（五）—— 项目实战：秒表，QTime,Qtimer的使用](https://blog.csdn.net/qq_26787115/article/details/79960628)

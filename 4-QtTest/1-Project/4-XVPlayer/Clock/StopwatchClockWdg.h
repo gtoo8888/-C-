@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <QVector>
 #include <QWidget>
+#include "GLogger.h"
 
 namespace Ui {
 class StopwatchClockWdg;
