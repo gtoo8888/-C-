@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Clock/ClockConfig.cpp \
     Clock/ClockWdg.cpp \
     Clock/GLogger.cpp \
     Clock/StopwatchClockWdg.cpp \
@@ -32,6 +33,7 @@ SOURCES += \
     main.cpp
 
 HEADERS += \
+    Clock/ClockConfig.h \
     Clock/ClockWdg.h \
     Clock/GLogger.h \
     Clock/StopwatchClockWdg.h \
@@ -82,4 +84,5 @@ LIBS += -L ../lib/QMakeAll \
         -lswscale
 
 DISTFILES += \
+    Clock/ClockCfg.json \
     README.md

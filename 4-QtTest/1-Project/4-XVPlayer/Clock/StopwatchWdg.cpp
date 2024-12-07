@@ -24,6 +24,10 @@ StopwatchWdg::StopwatchWdg(QWidget* parent)
 
     updateTimer->start();
 
+    // TOTEXT
+    StopwatchSetWdg* stopwatchSetWdg = StopwatchSetWdg::getInstance();
+    stopwatchSetWdg->show();
+
     LOG_INF("  ");
     LOG_INF("init StopwatchWdg");
 }
@@ -103,6 +107,6 @@ void StopwatchWdg::keyPressEvent(QKeyEvent* event) {
 }
 
 void StopwatchWdg::slotEventLabSettingClock() {
-    StopwatchSetWdg* stopwatchSetWdg = new StopwatchSetWdg();
+    StopwatchSetWdg* stopwatchSetWdg = StopwatchSetWdg::getInstance();
     stopwatchSetWdg->show();
 }

@@ -1,0 +1,20 @@
+{
+    "config": {
+      "setting": {
+        "StopwatchCount": 1,
+        "DisplayUnit": "sec",
+        "bDrag": false,
+        "bSlowFastDisplay": false,
+        "bAutoClean": true,
+        "autoCleanTime": 600, // 假设这是以秒为单位的时间
+        "Language": "Chinese"
+      },
+      "keyshot": {
+        "StopwatchCount": 1
+      },
+      "about": {
+        // 如果有特定于 'About' 的配置项，请在此处添加。
+        // 否则，这里可以为空对象。
+      }
+    }
+}

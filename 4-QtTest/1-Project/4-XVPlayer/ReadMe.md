@@ -49,8 +49,8 @@ https://www.cnblogs.com/mjios/category/1938094.html?page=2
       3. 空格，启动计时，停止计时
       4. crtl+d，下载当前计次信息
       5. 需要考虑光标焦点问题
-   4. 关于界面
-   5. 秒表显示位数
+   4. 秒表显示位数
+   5. 关闭主界面，设置界面也关闭
 3. 计次
    1. 添加最快、最慢显示
    2. 添加备注信息
@@ -60,6 +60,7 @@ https://www.cnblogs.com/mjios/category/1938094.html?page=2
 7. 自动清理
    1. 如果超过一分钟没有操作秒表，自动删除不活跃的秒表
 8. 配置统一的头文件
+9. qjson替换为cJson
 
 
 ## 优先级中
@@ -93,6 +94,8 @@ https://www.cnblogs.com/mjios/category/1938094.html?page=2
 4. 大规模生成秒表1000个，是否正常运行
 
 ## bug
+
+1. 无法正确读取json文件
 
 
 单独运行程序需要的库
@@ -131,4 +134,4 @@ CMakeFiles\VXPlayer.dir/objects.a(ClockWdg.cpp.obj):ClockWdg.cpp:(.text+0x2fe): 
 [天气网万年历](https://m.wannianli.tianqi.com/jisuanqi/miaobiao/)
 [在线秒表 - Online Alarm Kur](https://onlinealarmkur.com/stopwatch/zh-cn/)
 微软秒表
-
+https://blog.csdn.net/cpp_learner/article/details/118421096
