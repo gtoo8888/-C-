@@ -2,6 +2,9 @@
 #include <QDebug>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QEvent>
+#include <QKeyEvent>
+#include <QMouseEvent>
 #include <QPushButton>
 #include "ui_StopwatchClockWdg.h"
 
@@ -36,6 +39,8 @@ void StopwatchClockWdg::initUi() {
     ui->leClockName->setText(stopwatchClockName);
 
     ui->btnTimeCount->setDisabled(true);
+    ui->widgetAll->installEventFilter(this);
+//    ui->labIcon->installEventFilter(this);
 }
 
 void StopwatchClockWdg::initConnect() {
@@ -75,6 +80,25 @@ void StopwatchClockWdg::slotUpdateDisplay() {
     QTime showTime(0, 0, 0, 0);
     timeStr = showTime.addMSecs(startTime.msecsTo(QTime::currentTime())).toString("hh:mm:ss.zzz");
     ui->labShowTime->setText(timeStr);
+}
+
+bool StopwatchClockWdg::eventFilter(QObject *watched, QEvent *event)
+{
+    if (watched == ui->widgetAll) {
+        if (QEvent::MouseButtonRelease == event->type()) {
+            QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
+            if (mouseEvent->button() == Qt::LeftButton) {
+                ui->widgetAll->setStyleSheet("#widgetAll{border:3px solid blue}");
+                LOG_INF("widgetAll LeftButton");
+                return true;
+            } else if (mouseEvent->button() == Qt::RightButton) {
+                ui->widgetAll->setStyleSheet("");
+                LOG_INF("widgetAll RightDbButton");
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 void StopwatchClockWdg::slotBtnStart() {

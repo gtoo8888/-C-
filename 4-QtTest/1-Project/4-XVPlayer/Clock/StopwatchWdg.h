@@ -29,6 +29,7 @@ public slots:
     void slotupdateNowTime(void);
 
     bool eventFilter(QObject *watched, QEvent *event);
+    void keyPressEvent(QKeyEvent *event);
 
 private:
     void slotEventLabSettingClock(void);  // 事件过滤器伪装的槽实现

@@ -41,7 +41,7 @@ public:
 signals:
     void sigClockCloseWnd(int clockIndex);
 
-private slots:
+public slots:
     void slotBtnStart(void);
     void slotBtnReset(void);
     void slotBtnDownload(void);
@@ -49,6 +49,8 @@ private slots:
     void slotBtnNameModify(void);
     void slotBtnClockClse(void);
     void slotUpdateDisplay(void);
+
+    bool eventFilter(QObject *watched, QEvent *event);
 
 private:
     void initUi(void);

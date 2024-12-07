@@ -2,6 +2,7 @@
 #define STOPWATCHSETWDG_H
 
 #include <QWidget>
+#include <QVBoxLayout>
 
 namespace Ui {
 class StopwatchSetWdg;
@@ -16,6 +17,8 @@ public:
 
 private:
     Ui::StopwatchSetWdg *ui;
+
+    void initUi(void);
 };
 
 #endif  // STOPWATCHSETWDG_H

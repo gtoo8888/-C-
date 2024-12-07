@@ -86,6 +86,22 @@ bool StopwatchWdg::eventFilter(QObject* watched, QEvent* event) {
     return false;
 }
 
+void StopwatchWdg::keyPressEvent(QKeyEvent* event) {
+    int keyType = event->key();
+    switch (keyType) {
+        case Qt::Key_Enter:
+        case Qt::Key_Return:
+            LOG_INF("Key_Enter");
+            break;
+        case Qt::Key::Key_Escape:
+            LOG_INF("Key_Escape");
+            break;
+        case Qt::Key::Key_Space:
+            LOG_INF("Key_Space");
+            break;
+    }
+}
+
 void StopwatchWdg::slotEventLabSettingClock() {
     StopwatchSetWdg* stopwatchSetWdg = new StopwatchSetWdg();
     stopwatchSetWdg->show();
