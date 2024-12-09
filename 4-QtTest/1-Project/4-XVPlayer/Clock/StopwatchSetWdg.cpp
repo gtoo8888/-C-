@@ -9,7 +9,7 @@ StopwatchSetWdg::StopwatchSetWdg(QWidget *parent)
       ui(new Ui::StopwatchSetWdg) {
     ui->setupUi(this);
 
-    QString configPath = QString("ClockCfg.json");
+    QString configPath = QString("E:\\Desktop\\languguetest\\Cplusplustest\\4-QtTest\\1-Project\\4-XVPlayer\\Clock\\ClockCfg.json");
     ClockConfig* clockConfig = new ClockConfig(configPath);
 
     initUi();

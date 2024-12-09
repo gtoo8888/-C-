@@ -5,6 +5,8 @@
 3. 密码保存box——PasswordBox
 4. 四象限优先级安排——taskManage
 5. 电子书管理——bookManage
+6. 串口助手
+7. 背单词
 
 
 # 视频播放器——VXPlayer

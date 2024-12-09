@@ -2,21 +2,21 @@
 #define CLOCKCONFIG_H
 
 #include <QWidget>
+#include "cJSON.h"
 
 class Config {
+public:
     Config() = default;
     virtual ~Config() = default;
 
-private:
     virtual void loadConfig(void);
 };
 
 class Setting : public Config {
 public:
     Setting();
-    ~Setting();
+    virtual ~Setting();
 
-private:
     enum DisplayUnit {
         sec,
         msec
@@ -27,7 +27,7 @@ private:
         English
     };
 
-    uint8_t StopwatchCount;
+    int StopwatchCount;
     DisplayUnit displayUnit;
     bool bDrag;
     bool bSlowFastDisplay;
@@ -39,22 +39,22 @@ private:
 class KeyShot : public Config {
 public:
     KeyShot();
-    ~KeyShot();
+    virtual ~KeyShot();
 
-private:
     uint8_t StopwatchCount;
 };
 
 class About : public Config {
 public:
     About();
-    ~About();
+    virtual ~About();
 };
 
 // 未来可以使用ConfigInface替代ClockConfig，作为通用的配置接口类
 class ConfigInface{
     ConfigInface();
     ~ConfigInface();
+
 public:
     Setting* settingConfig;
     KeyShot* keyshotConfig;
@@ -69,6 +69,11 @@ public:
     ~ClockConfig();
 
 private:
+    void parseSettingConfig(cJSON* root);
+    void parseKeyshotConfig(cJSON* root);
+    void parseAboutConfig(cJSON* root);
+
+
     Setting* settingConfig;
     KeyShot* keyshotConfig;
     About* aboutConfig;

@@ -22,6 +22,7 @@ SOURCES += \
     Clock/StopwatchClockWdg.cpp \
     Clock/StopwatchSetWdg.cpp \
     Clock/StopwatchWdg.cpp \
+    Clock/cJSON.c \
     VXPlayer/CondMutex.cpp \
     VXPlayer/XVPlayer.cpp \
     VXPlayer/VideoPlayerAudio.cpp \
@@ -39,6 +40,7 @@ HEADERS += \
     Clock/StopwatchClockWdg.h \
     Clock/StopwatchSetWdg.h \
     Clock/StopwatchWdg.h \
+    Clock/cJSON.h \
     CondMutex.h \
     Utils.h \
     XVPlayer.h \
