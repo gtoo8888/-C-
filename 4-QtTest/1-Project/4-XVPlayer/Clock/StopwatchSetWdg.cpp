@@ -3,13 +3,13 @@
 
 StopwatchSetWdg* StopwatchSetWdg::instanceSetWdg = nullptr;
 
-
-StopwatchSetWdg::StopwatchSetWdg(QWidget *parent)
+StopwatchSetWdg::StopwatchSetWdg(QWidget* parent)
     : QWidget(parent),
       ui(new Ui::StopwatchSetWdg) {
     ui->setupUi(this);
 
-    QString configPath = QString("E:\\Desktop\\languguetest\\Cplusplustest\\4-QtTest\\1-Project\\4-XVPlayer\\Clock\\ClockCfg.json");
+    QString configPath =
+        QString("E:\\Desktop\\languguetest\\Cplusplustest\\4-QtTest\\1-Project\\4-XVPlayer\\Clock\\ClockCfg.json");
     ClockConfig* clockConfig = new ClockConfig(configPath);
 
     initUi();
@@ -19,12 +19,10 @@ StopwatchSetWdg::~StopwatchSetWdg() {
     delete ui;
 }
 
-void StopwatchSetWdg::initUi()
-{
+void StopwatchSetWdg::initUi() {
     this->resize(600, 400);
     this->setMinimumSize(QSize(600, 400));
     this->setMaximumSize(QSize(600, 400));
-
 
     ui->tabWidget->setTabText(0, QString("设置"));
     ui->tabWidget->setTabText(1, QString("快捷键"));
@@ -32,7 +30,7 @@ void StopwatchSetWdg::initUi()
     ui->tabWidget->setCurrentIndex(0);
 
     // 设置界面
-    ui->leStopwatchCount->setText(QString("6")); // TOFIX
+    ui->leStopwatchCount->setText(QString("6"));  // TOFIX
     ui->cobDisplayUnit->addItems(QStringList() << "秒" << "毫秒");
     ui->cobDisplayUnit->setCurrentIndex(0);
     ui->chbDrag->setChecked(false);
@@ -47,7 +45,6 @@ void StopwatchSetWdg::initUi()
     ui->leKeyStop->setEnabled(false);
     ui->btnKeyStop->setText("修改");
 
-
     ui->leKeyCout->setText(QString("Ctrl+D"));
     ui->leKeyClose->setText(QString("Esc"));
     ui->leKeyNew->setText(QString("N"));
@@ -57,5 +54,4 @@ void StopwatchSetWdg::initUi()
 
     // 关于界面
     ui->labAppVersion->setText("版本号：v0.1");
-
 }

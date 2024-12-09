@@ -2,20 +2,27 @@
 #define CLOCKCONFIG_H
 
 #include <QWidget>
+#include <vector>
 #include "cJSON.h"
+
+bool parseJsonBool(cJSON* root, const char* jsonName);
 
 class Config {
 public:
     Config() = default;
     virtual ~Config() = default;
 
-    virtual void loadConfig(void);
+    // 父类没有实现，需要定义为纯虚函数
+    virtual void loadConfig(cJSON* root) = 0;
+    virtual void printConfig() = 0;
 };
 
 class Setting : public Config {
 public:
     Setting();
-    virtual ~Setting();
+    virtual ~Setting() override {};
+    virtual void loadConfig(cJSON* root) override;
+    virtual void printConfig() override;
 
     enum DisplayUnit {
         sec,
@@ -27,7 +34,7 @@ public:
         English
     };
 
-    int StopwatchCount;
+    uint8_t StopwatchCount;
     DisplayUnit displayUnit;
     bool bDrag;
     bool bSlowFastDisplay;
@@ -36,22 +43,51 @@ public:
     Languague languague;
 };
 
+//"keyshot": {
+//  "Pause": "Space",
+//  "CoutTime": "ctrl+D",
+//  "Close": "Esc",
+//  "NewClock": "N"
+//},
+
 class KeyShot : public Config {
 public:
-    KeyShot();
-    virtual ~KeyShot();
+    enum Key {
+        none,
+        space,
+        ctrl,
+        alt,
+        esc,
+        d,
+        n,
+    };
 
-    uint8_t StopwatchCount;
+    KeyShot();
+    virtual ~KeyShot() override {};
+    virtual void loadConfig(cJSON* root) override;
+    virtual void printConfig() override;
+    Key keyshortCharToEnum(char* keyshort);
+    std::string keyshortEnumToString(Key keyshort);
+
+    std::vector<Key> ePause;
+    std::vector<Key> eCoutTime;
+    std::vector<Key> eClose;
+    std::vector<Key> eNewClock;
 };
 
 class About : public Config {
 public:
     About();
-    virtual ~About();
+    virtual ~About() override {};
+    virtual void loadConfig(cJSON* root) override;
+    virtual void printConfig() override;
+
+    std::string appName;
+    std::string appVersion;
 };
 
 // 未来可以使用ConfigInface替代ClockConfig，作为通用的配置接口类
-class ConfigInface{
+class ConfigInface {
     ConfigInface();
     ~ConfigInface();
 
@@ -61,22 +97,16 @@ public:
     About* aboutConfig;
 };
 
-class ClockConfig
-{
+class ClockConfig {
 public:
     ClockConfig();
     ClockConfig(QString configPath);
     ~ClockConfig();
 
 private:
-    void parseSettingConfig(cJSON* root);
-    void parseKeyshotConfig(cJSON* root);
-    void parseAboutConfig(cJSON* root);
-
-
     Setting* settingConfig;
     KeyShot* keyshotConfig;
     About* aboutConfig;
 };
 
-#endif // CLOCKCONFIG_H
+#endif  // CLOCKCONFIG_H

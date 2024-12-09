@@ -9,7 +9,6 @@ namespace Ui {
 class StopwatchSetWdg;
 }
 
-
 class StopwatchSetWdg : public QWidget {
     Q_OBJECT
 

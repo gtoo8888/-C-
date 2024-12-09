@@ -98,6 +98,7 @@ https://www.cnblogs.com/mjios/category/1938094.html?page=2
 ## bug
 
 1. 无法正确读取json文件
+2. keyshot 拼写错误 keyshort
 
 
 单独运行程序需要的库
