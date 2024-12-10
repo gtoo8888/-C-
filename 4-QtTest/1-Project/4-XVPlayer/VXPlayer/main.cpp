@@ -1,8 +1,7 @@
 #include <SDL2/SDL.h>
 #include <QApplication>
 #include <QDebug>
-#include "Clock/StopwatchWdg.h"
-#include "MainWindow.h"
+#include "XVPlayerWidget.h"
 
 #undef main
 void testSDL(void) {
@@ -22,10 +21,7 @@ int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
     //    testSDL();
 
-    //    MainWindow w;
-    //    w.show();
-
-    StopwatchWdg w;
+    XVPlayerWidget w;
     w.show();
     return a.exec();
 }

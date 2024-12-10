@@ -16,51 +16,25 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    Clock/ClockConfig.cpp \
-    Clock/ClockWdg.cpp \
-    Clock/GLogger.cpp \
-    Clock/StopwatchClockWdg.cpp \
-    Clock/StopwatchSetShortKey.cpp \
-    Clock/StopwatchSetWdg.cpp \
-    Clock/StopwatchWdg.cpp \
-    Clock/cJSON.c \
-    VXPlayer/CondMutex.cpp \
-    VXPlayer/XVPlayer.cpp \
-    VXPlayer/VideoPlayerAudio.cpp \
-    VXPlayer/VideoPlayerVideo.cpp \
-    VXPlayer/VideoSlider.cpp \
-    VXPlayer/VideoWdg.cpp \
-    VXPlayer/XVPlayerWidget.cpp \
-    MainWindow.cpp \
+    CondMutex.cpp \
+    XVPlayer.cpp \
+    VideoPlayerAudio.cpp \
+    VideoPlayerVideo.cpp \
+    VideoSlider.cpp \
+    VideoWdg.cpp \
+    XVPlayerWidget.cpp \
     main.cpp
 
 HEADERS += \
-    Clock/ClockConfig.h \
-    Clock/ClockWdg.h \
-    Clock/GLogger.h \
-    Clock/StopwatchClockWdg.h \
-    Clock/StopwatchSetShortKey.h \
-    Clock/StopwatchSetWdg.h \
-    Clock/StopwatchWdg.h \
-    Clock/cJSON.h \
     CondMutex.h \
     Utils.h \
     XVPlayer.h \
     VideoSlider.h \
     VideoWdg.h \
-    XVPlayerWidget.h \
-    MainWindow.h
+    XVPlayerWidget.h
 
 FORMS += \
-    Clock/ClockWdg.ui \
-    Clock/StopwatchClockWdg.ui \
-    Clock/StopwatchSetShortKey.ui \
-    Clock/StopwatchSetWdg.ui \
-    Clock/StopwatchWdg.ui \
-    MainWindow.ui \
     XVPlayerWidget.ui
-
-RC_ICONS = ./Clock/pic/Stopwatch.ico
 
 
 # Default rules for deployment.
@@ -79,10 +53,10 @@ mac{
 ubuntu{
 }
 
-INCLUDEPATH += ../3rdparty/ffmpeg
-INCLUDEPATH += ../3rdparty/
+INCLUDEPATH += ../../3rdparty/ffmpeg
+INCLUDEPATH += ../../3rdparty/
 
-LIBS += -L ../lib/QMakeAll \
+LIBS += -L ../../lib/QMakeAll \
         -lavcodec \
         -lavformat \
         -lavutil \
@@ -90,9 +64,4 @@ LIBS += -L ../lib/QMakeAll \
         -lswresample \
         -lswscale
 
-DISTFILES += \
-    Clock/ClockCfg.json \
-    README.md
 
-RESOURCES += \
-    Clock/Stopwatch.qrc

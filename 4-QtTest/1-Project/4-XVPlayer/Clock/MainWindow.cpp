@@ -1,5 +1,5 @@
 #include "MainWindow.h"
-#include "Clock/ClockWdg.h"
+#include "ClockWdg.h"
 #include "ui_MainWindow.h"
 
 MainWindow::MainWindow(QWidget* parent)

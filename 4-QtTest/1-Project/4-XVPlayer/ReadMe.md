@@ -82,10 +82,9 @@ https://www.cnblogs.com/mjios/category/1938094.html?page=2
 
 ## 优先级低
 1. 使用clang-format格式化
-2. 使用.pro子模块的形式添加代码
-3. QTimer是否是新开线程实现？
-4. 检测内存占用情况
-5. 在线升级
+2. QTimer是否是新开线程实现？
+3. 检测内存占用情况
+4. 在线升级
 
 ## 测试点
 1. 添加测试按钮
