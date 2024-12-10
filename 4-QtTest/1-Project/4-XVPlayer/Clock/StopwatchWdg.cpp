@@ -17,6 +17,19 @@ StopwatchWdg::StopwatchWdg(QWidget* parent)
     vlayout = new QVBoxLayout(this);
     ui->clockShowWdg->setLayout(vlayout);
     ui->labIcon->installEventFilter(this);
+    setWindowIcon(QIcon(":/Stopwatch/pic/Stopwatch.svg"));
+
+    // 判断系统是否支持托盘图标显示
+    if (!QSystemTrayIcon::isSystemTrayAvailable()) {
+        return;
+    }
+
+    // 实例化托盘图标控件
+    trayIcon = new QSystemTrayIcon(this);
+    trayIcon->setIcon(QIcon(":/Stopwatch/pic/Stopwatch.svg"));  // 设置托盘图标显示
+    trayIcon->setToolTip("秒表");                               // 显示提示信息
+    trayIcon->showMessage("托盘", "托盘管理", QSystemTrayIcon::Information, 10000); // FIXME 消息不显示
+    trayIcon->show();                                           // 在任务栏显示图标
 
     connect(ui->btnNewClock, &QPushButton::clicked, this, &StopwatchWdg::slotBtnNewClock);
     connect(ui->btnCleanClock, &QPushButton::clicked, this, &StopwatchWdg::slotBtnCleanClock);

@@ -28,6 +28,7 @@ private:
 
     void initUi(void);
     static StopwatchSetWdg* instanceSetWdg;
+    ClockConfig* clockConfig;
 };
 
 #endif  // STOPWATCHSETWDG_H

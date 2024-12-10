@@ -103,7 +103,6 @@ public:
     ClockConfig(QString configPath);
     ~ClockConfig();
 
-private:
     Setting* settingConfig;
     KeyShot* keyshotConfig;
     About* aboutConfig;

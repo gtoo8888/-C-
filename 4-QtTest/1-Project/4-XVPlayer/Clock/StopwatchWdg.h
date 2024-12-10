@@ -8,6 +8,7 @@
 #include <QVBoxLayout>
 #include <QVector>
 #include <QWidget>
+#include <QSystemTrayIcon>
 #include "GLogger.h"
 #include "StopwatchClockWdg.h"
 
@@ -39,6 +40,7 @@ private:
     QVector<StopwatchClockWdg *> clockWdgVec;
     uint8_t maxClockNum;
     QTimer *updateTimer;
+    QSystemTrayIcon* trayIcon;
 };
 
 #endif  // STOPWATCHWDG_H

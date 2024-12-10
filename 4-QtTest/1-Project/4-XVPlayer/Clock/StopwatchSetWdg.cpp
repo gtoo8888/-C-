@@ -10,7 +10,7 @@ StopwatchSetWdg::StopwatchSetWdg(QWidget* parent)
 
     QString configPath =
         QString("E:\\Desktop\\languguetest\\Cplusplustest\\4-QtTest\\1-Project\\4-XVPlayer\\Clock\\ClockCfg.json");
-    ClockConfig* clockConfig = new ClockConfig(configPath);
+    clockConfig = new ClockConfig(configPath);
 
     initUi();
 }
@@ -23,6 +23,7 @@ void StopwatchSetWdg::initUi() {
     this->resize(600, 400);
     this->setMinimumSize(QSize(600, 400));
     this->setMaximumSize(QSize(600, 400));
+    this->setWindowIcon(QIcon(":/Stopwatch/pic/Set.svg"));
 
     ui->tabWidget->setTabText(0, QString("设置"));
     ui->tabWidget->setTabText(1, QString("快捷键"));
@@ -30,15 +31,15 @@ void StopwatchSetWdg::initUi() {
     ui->tabWidget->setCurrentIndex(0);
 
     // 设置界面
-    ui->leStopwatchCount->setText(QString("6"));  // TOFIX
-    ui->cobDisplayUnit->addItems(QStringList() << "秒" << "毫秒");
-    ui->cobDisplayUnit->setCurrentIndex(0);
-    ui->chbDrag->setChecked(false);
-    ui->chbSlowFastDisplay->setChecked(true);
-    ui->chbAutoClean->setChecked(true);
-    ui->leAutoCleanTime->setText(QString("60"));
-    ui->cobLanguague->addItems(QStringList() << "中文" << "英语");
-    ui->cobLanguague->setCurrentIndex(0);
+    ui->leStopwatchCount->setText(QString::number(clockConfig->settingConfig->StopwatchCount,10));
+    ui->cobDisplayUnit->addItems(QStringList() << "秒" << "毫秒"); // TOFIX
+    ui->cobDisplayUnit->setCurrentIndex(clockConfig->settingConfig->displayUnit);
+    ui->chbDrag->setChecked(clockConfig->settingConfig->bDrag);
+    ui->chbSlowFastDisplay->setChecked(clockConfig->settingConfig->bSlowFastDisplay);
+    ui->chbAutoClean->setChecked(clockConfig->settingConfig->bAUtoClean);
+    ui->leAutoCleanTime->setText(QString::number(clockConfig->settingConfig->autoCleanTime,10));
+    ui->cobLanguague->addItems(QStringList() << "中文" << "英语"); // TOFIX
+    ui->cobLanguague->setCurrentIndex(clockConfig->settingConfig->languague);
 
     // 快捷键界面
     ui->leKeyStop->setText(QString("Space"));
@@ -53,5 +54,6 @@ void StopwatchSetWdg::initUi() {
     ui->btnKeyNew->setText("修改");
 
     // 关于界面
-    ui->labAppVersion->setText("版本号：v0.1");
+    ui->labAppName->setText(QString::fromStdString(clockConfig->aboutConfig->appName));
+    ui->labAppVersion->setText(QString("版本号：v%1").arg(QString::fromStdString(clockConfig->aboutConfig->appVersion)));
 }

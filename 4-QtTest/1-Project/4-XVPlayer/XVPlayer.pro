@@ -20,6 +20,7 @@ SOURCES += \
     Clock/ClockWdg.cpp \
     Clock/GLogger.cpp \
     Clock/StopwatchClockWdg.cpp \
+    Clock/StopwatchSetShortKey.cpp \
     Clock/StopwatchSetWdg.cpp \
     Clock/StopwatchWdg.cpp \
     Clock/cJSON.c \
@@ -38,6 +39,7 @@ HEADERS += \
     Clock/ClockWdg.h \
     Clock/GLogger.h \
     Clock/StopwatchClockWdg.h \
+    Clock/StopwatchSetShortKey.h \
     Clock/StopwatchSetWdg.h \
     Clock/StopwatchWdg.h \
     Clock/cJSON.h \
@@ -52,10 +54,13 @@ HEADERS += \
 FORMS += \
     Clock/ClockWdg.ui \
     Clock/StopwatchClockWdg.ui \
+    Clock/StopwatchSetShortKey.ui \
     Clock/StopwatchSetWdg.ui \
     Clock/StopwatchWdg.ui \
     MainWindow.ui \
     XVPlayerWidget.ui
+
+RC_ICONS = ./Clock/pic/Stopwatch.ico
 
 
 # Default rules for deployment.
@@ -88,3 +93,6 @@ LIBS += -L ../lib/QMakeAll \
 DISTFILES += \
     Clock/ClockCfg.json \
     README.md
+
+RESOURCES += \
+    Clock/Stopwatch.qrc

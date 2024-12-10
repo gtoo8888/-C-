@@ -38,7 +38,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tabSetting">
       <attribute name="title">
@@ -429,7 +429,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QLabel" name="labAppName2">
+        <widget class="QLabel" name="labAppName">
          <property name="text">
           <string> 秒表</string>
          </property>
