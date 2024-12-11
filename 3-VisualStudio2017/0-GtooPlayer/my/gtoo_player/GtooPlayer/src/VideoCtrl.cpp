@@ -2,10 +2,9 @@
 
 VideoCtrl::VideoCtrl(QWidget *parent)
     : QWidget(parent),
-    ui(new Ui::VideoCtrl)
-{
+      ui(new Ui::VideoCtrl) {
     ui->setupUi(this);
 }
 
-VideoCtrl::~VideoCtrl()
-{}
+VideoCtrl::~VideoCtrl() {
+}

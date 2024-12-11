@@ -5,6 +5,7 @@
 #include "ReadThread.h"
 #include "PlayList.h"
 #include "GtooLogger.h"
+#include "RemWordWdg.h"
 
 class GtooPlayer : public QMainWindow
 {
@@ -33,6 +34,8 @@ public slots:
     void pauseVideo(void);
     void startVideo(void);
     void startVideoPlayList(QString playFilePath = "");
+
+    void slotActionRemWord(void);
 
 private:
     void initUtils(void);

@@ -7,24 +7,19 @@
 struct AVFormatContext;
 struct AVCodecParameters;
 
-extern void read_audio_data(void *udata, Uint8 *stream, int len);
+extern void read_audio_data(void* udata, Uint8* stream, int len);
 
-class VoiceDecode
-{
+class VoiceDecode {
 public:
     VoiceDecode();
     ~VoiceDecode();
 
     bool open(const QString& m_url);
+
 private:
     AVFormatContext* pFormatCtx = nullptr;
     AVCodecParameters* pCodecPara = nullptr;
     int mVoiceIndex = 0;
-
-
-
 };
 
 #endif
-
-

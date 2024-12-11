@@ -38,6 +38,9 @@
     <Filter Include="src\moc">
       <UniqueIdentifier>{1e9ed934-7e8f-4b19-ba4d-77402991ae4f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SmalApp">
+      <UniqueIdentifier>{16045eca-dd91-4205-8f24-d69408789bed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="ui\GtooPlayer.ui">
@@ -51,6 +54,12 @@
     </QtUic>
     <QtUic Include="ui\VideoCtrl.ui">
       <Filter>ui</Filter>
+    </QtUic>
+    <QtUic Include="src\SmallApp\RemWord\RemWordToolWdg.ui">
+      <Filter>SmalApp</Filter>
+    </QtUic>
+    <QtUic Include="src\SmallApp\RemWord\RemWordWdg.ui">
+      <Filter>SmalApp</Filter>
     </QtUic>
   </ItemGroup>
   <ItemGroup>
@@ -87,6 +96,12 @@
     <ClCompile Include="src\VoiceDecode.cpp">
       <Filter>src\VideoPlay</Filter>
     </ClCompile>
+    <ClCompile Include="src\SmallApp\RemWord\RemWordToolWdg.cpp">
+      <Filter>SmalApp</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SmallApp\RemWord\RemWordWdg.cpp">
+      <Filter>SmalApp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="include\About.h">
@@ -106,6 +121,12 @@
     </QtMoc>
     <QtMoc Include="include\VideoCtrl.h">
       <Filter>include</Filter>
+    </QtMoc>
+    <QtMoc Include="src\SmallApp\RemWord\RemWordToolWdg.h">
+      <Filter>SmalApp</Filter>
+    </QtMoc>
+    <QtMoc Include="src\SmallApp\RemWord\RemWordWdg.h">
+      <Filter>SmalApp</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

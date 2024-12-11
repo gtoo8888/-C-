@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>gtoo_player</string>
+   <string>GtooPlayer</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -177,7 +177,7 @@
      <x>0</x>
      <y>0</y>
      <width>1200</width>
-     <height>26</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -229,11 +229,19 @@
     <addaction name="actionNote"/>
     <addaction name="actionAbout"/>
    </widget>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>应用</string>
+    </property>
+    <addaction name="actionRemWord"/>
+    <addaction name="actionClock"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
    <addaction name="menu_3"/>
    <addaction name="menu4VideoCtrl"/>
    <addaction name="menuHelp"/>
+   <addaction name="menu"/>
   </widget>
   <widget class="QToolBar" name="toolBar">
    <attribute name="toolBarArea">
@@ -332,6 +340,16 @@
   <action name="actionVideoCtrl">
    <property name="text">
     <string>视频设置</string>
+   </property>
+  </action>
+  <action name="actionRemWord">
+   <property name="text">
+    <string>背单词</string>
+   </property>
+  </action>
+  <action name="actionClock">
+   <property name="text">
+    <string>秒表</string>
    </property>
   </action>
  </widget>
