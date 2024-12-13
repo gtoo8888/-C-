@@ -61,7 +61,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>D:\Qt\Qt5.9.9\5.9.9\msvc2017_64\include;$(ProjectDir)include\;$(ProjectDir)3rdparty\;$(ProjectDir)3rdparty\SDL2\;$(ProjectDir)3rdparty\ffmpeg\;$(ProjectDir)src;$(ProjectDir)src\SmallApp\RemWord;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Qt\Qt5.9.9\5.9.9\msvc2017_64\include;$(ProjectDir)include\;$(ProjectDir)3rdparty\;$(ProjectDir)3rdparty\SDL2\;$(ProjectDir)3rdparty\ffmpeg\;$(ProjectDir)src;$(ProjectDir)src\SmallApp\XiaomiWatchDisplay;$(ProjectDir)src\SmallApp\RemWord;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
@@ -100,6 +100,7 @@
   <ItemGroup>
     <QtUic Include="src\SmallApp\RemWord\RemWordWdg.ui" />
     <QtUic Include="src\SmallApp\RemWord\RemWordToolWdg.ui" />
+    <QtUic Include="src\SmallApp\XiaomiWatchDisplay\XiaomiWatchDisplayWdg.ui" />
     <QtUic Include="ui\About.ui" />
     <QtUic Include="ui\GtooPlayer.ui" />
     <QtUic Include="ui\PlayList.ui" />
@@ -115,6 +116,8 @@
     <ClCompile Include="src\ReadThread.cpp" />
     <ClCompile Include="src\SmallApp\RemWord\RemWordWdg.cpp" />
     <ClCompile Include="src\SmallApp\RemWord\RemWordToolWdg.cpp" />
+    <ClCompile Include="src\SmallApp\XiaomiWatchDisplay\cJSON.c" />
+    <ClCompile Include="src\SmallApp\XiaomiWatchDisplay\XiaomiWatchDisplayWdg.cpp" />
     <ClCompile Include="src\VideoCtrl.cpp" />
     <ClCompile Include="src\VideoDecode.cpp" />
     <ClCompile Include="src\VoiceDecode.cpp" />
@@ -145,6 +148,7 @@
     <QtMoc Include="include\VideoCtrl.h" />
     <QtMoc Include="src\SmallApp\RemWord\RemWordWdg.h" />
     <QtMoc Include="src\SmallApp\RemWord\RemWordToolWdg.h" />
+    <QtMoc Include="src\SmallApp\XiaomiWatchDisplay\XiaomiWatchDisplayWdg.h" />
     <ClInclude Include="src\VoiceDecode.h" />
     <ClInclude Include="x64\Debug\uic\ui_About.h" />
     <ClInclude Include="x64\Debug\uic\ui_GtooPlayer.h" />

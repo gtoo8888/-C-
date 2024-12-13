@@ -19,6 +19,7 @@ gtoolog*.txt
 00-ReceivingOrders
 *.la
 cmake-build-*
+*.vcxproj.user
 
 ##################  Visual Studio 2017 ################## 
 
